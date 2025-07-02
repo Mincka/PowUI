@@ -1,0 +1,154 @@
+.bulkActions {
+  background: linear-gradient(135deg, #e3f2fd 0%, #f3e5f5 100%);
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  padding: 16px 20px;
+  margin-bottom: 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 20px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.selectionInfo {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.selectionCount {
+  font-weight: 600;
+  color: #333;
+  font-size: 16px;
+}
+
+.activeCount {
+  font-size: 14px;
+  color: #4caf50;
+  font-weight: 500;
+}
+
+.inactiveCount {
+  font-size: 14px;
+  color: #ff9800;
+  font-weight: 500;
+}
+
+.actions {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.syncButton,
+.deleteButton,
+.clearButton {
+  padding: 10px 16px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 500;
+  transition: all 0.2s;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  white-space: nowrap;
+}
+
+.syncButton {
+  background: #4caf50;
+  color: white;
+}
+
+.syncButton:hover:not(:disabled) {
+  background: #45a049;
+  transform: translateY(-1px);
+  box-shadow: 0 2px 8px rgba(76, 175, 80, 0.3);
+}
+
+.syncButton:disabled {
+  background: #ccc;
+  color: #999;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
+
+.deleteButton {
+  background: #f44336;
+  color: white;
+}
+
+.deleteButton:hover:not(:disabled) {
+  background: #d32f2f;
+  transform: translateY(-1px);
+  box-shadow: 0 2px 8px rgba(244, 67, 54, 0.3);
+}
+
+.deleteButton:disabled {
+  background: #ccc;
+  color: #999;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
+
+.clearButton {
+  background: #757575;
+  color: white;
+}
+
+.clearButton:hover:not(:disabled) {
+  background: #616161;
+  transform: translateY(-1px);
+  box-shadow: 0 2px 8px rgba(117, 117, 117, 0.3);
+}
+
+.clearButton:disabled {
+  background: #ccc;
+  color: #999;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .bulkActions {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 16px;
+  }
+
+  .selectionInfo {
+    justify-content: center;
+    text-align: center;
+  }
+
+  .actions {
+    justify-content: center;
+  }
+
+  .syncButton,
+  .deleteButton,
+  .clearButton {
+    flex: 1;
+    justify-content: center;
+    min-width: 120px;
+  }
+}
+
+@media (max-width: 480px) {
+  .actions {
+    flex-direction: column;
+  }
+
+  .syncButton,
+  .deleteButton,
+  .clearButton {
+    width: 100%;
+  }
+}

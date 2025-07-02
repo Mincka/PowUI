@@ -1,0 +1,115 @@
+/* InvestmentPerformance Component Styles */
+@import '../../styles/variables.css';
+
+.investmentSection {
+  background: var(--color-bg-white);
+  padding: 25px;
+  border-radius: var(--radius-xl);
+  box-shadow: var(--shadow-lg);
+  margin-bottom: var(--spacing-2xl);
+}
+
+.investmentSection h3 {
+  color: var(--color-text-primary);
+  font-size: var(--font-size-xl);
+  margin-bottom: var(--spacing-xl);
+}
+
+.investmentCards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: var(--spacing-xl);
+}
+
+.investmentCard {
+  border: 2px solid var(--color-bg-border);
+  border-radius: var(--radius-lg);
+  padding: var(--spacing-xl);
+  transition: border-color var(--transition-fast);
+}
+
+.investmentCard:hover {
+  border-color: var(--color-primary);
+}
+
+.investmentCard h4 {
+  color: var(--color-text-primary);
+  font-size: var(--font-size-md);
+  margin-bottom: var(--spacing-sm);
+}
+
+.investmentType {
+  font-size: 0.85rem;
+  color: var(--color-text-secondary);
+  margin-bottom: 15px;
+}
+
+.investmentMetrics {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 15px;
+}
+
+.metric {
+  text-align: center;
+}
+
+.metricLabel {
+  font-size: 0.8rem;
+  color: var(--color-text-secondary);
+  margin-bottom: 5px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.metricValue {
+  font-size: var(--font-size-lg);
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-text-primary);
+}
+
+.metricValue.positive {
+  color: var(--color-success);
+}
+
+.metricValue.negative {
+  color: var(--color-error);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .investmentCards {
+    grid-template-columns: 1fr;
+  }
+
+  .investmentSection {
+    padding: var(--spacing-xl);
+  }
+
+  .investmentSection h3 {
+    font-size: var(--font-size-lg);
+  }
+
+  .investmentCard {
+    padding: var(--spacing-md);
+  }
+
+  .investmentMetrics {
+    grid-template-columns: 1fr;
+    gap: var(--spacing-md);
+  }
+}
+
+@media (max-width: 480px) {
+  .investmentSection {
+    padding: var(--spacing-md);
+  }
+
+  .investmentCard {
+    padding: var(--spacing-sm);
+  }
+
+  .metricValue {
+    font-size: var(--font-size-md);
+  }
+}

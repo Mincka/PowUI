@@ -1,0 +1,32 @@
+# Ignore dependencies
+node_modules
+
+# Ignore build output
+dist
+
+# Ignore environment variables
+.env
+
+# Ignore IDE and OS files
+.vscode
+.idea
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+# Ignore log files
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Ignore git files
+.git
+.gitignore
+
+# Ignore documentation files
+README.md
+ARCHITECTURE.md
+SYNC_IMPLEMENTATION.md
+USER_MANAGEMENT_GUIDE.md

@@ -1,0 +1,343 @@
+/* RealEstateForm Component Styles */
+@import '../../styles/variables.css';
+
+.container {
+  background: var(--color-bg-white);
+  border-radius: var(--radius-xl);
+  padding: 24px;
+  box-shadow: var(--shadow-lg);
+  margin-bottom: var(--spacing-xl);
+}
+
+.formHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
+  border-bottom: 1px solid var(--color-bg-border);
+  padding-bottom: 16px;
+}
+
+.formHeader h2 {
+  margin: 0;
+  color: var(--color-text-primary);
+  font-size: var(--font-size-2xl);
+}
+
+.closeBtn {
+  background: none;
+  border: none;
+  font-size: 24px;
+  cursor: pointer;
+  color: var(--color-text-secondary);
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  transition: background-color var(--transition-fast);
+}
+
+.closeBtn:hover {
+  background-color: var(--color-bg-light);
+}
+
+.tabNavigation {
+  display: flex;
+  margin-bottom: 24px;
+  border-bottom: 1px solid var(--color-bg-border);
+}
+
+.tabBtn {
+  padding: var(--spacing-md) 24px;
+  border: none;
+  background: none;
+  cursor: pointer;
+  font-size: var(--font-size-md);
+  color: var(--color-text-secondary);
+  border-bottom: 2px solid transparent;
+  transition: all var(--transition-fast);
+}
+
+.tabBtn:hover {
+  color: var(--color-text-primary);
+  background-color: #f9f9f9;
+}
+
+.tabBtn.active {
+  color: var(--color-info);
+  border-bottom-color: var(--color-info);
+  background-color: #f3f9ff;
+}
+
+.propertyForm,
+.mortgageForm {
+  margin-bottom: var(--spacing-2xl);
+}
+
+.propertyForm h3,
+.mortgageForm h3 {
+  margin: 0 0 var(--spacing-xl) 0;
+  color: var(--color-text-primary);
+  font-size: var(--font-size-xl);
+}
+
+.formRow {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  margin-bottom: 16px;
+}
+
+.formGroup {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 16px;
+}
+
+.formGroup label {
+  font-weight: var(--font-weight-medium);
+  margin-bottom: var(--spacing-sm);
+  color: var(--color-text-primary);
+  font-size: var(--font-size-base);
+}
+
+.formGroup input,
+.formGroup select,
+.formGroup textarea {
+  padding: 10px var(--spacing-md);
+  border: 2px solid var(--color-bg-border);
+  border-radius: var(--radius-md);
+  font-size: var(--font-size-base);
+  transition: border-color var(--transition-fast);
+  font-family: inherit;
+}
+
+.formGroup input:focus,
+.formGroup select:focus,
+.formGroup textarea:focus {
+  outline: none;
+  border-color: var(--color-info);
+}
+
+.formGroup textarea {
+  resize: vertical;
+  min-height: 80px;
+}
+
+.submitBtn {
+  background: var(--color-info);
+  color: white;
+  border: none;
+  padding: var(--spacing-md) 24px;
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  font-size: var(--font-size-md);
+  font-weight: var(--font-weight-medium);
+  transition: background-color var(--transition-fast);
+  margin-top: 16px;
+}
+
+.submitBtn:hover {
+  background: var(--color-info-dark);
+}
+
+/* Edit Notice */
+.editNotice {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: #e3f2fd;
+  padding: 10px 15px;
+  border-radius: var(--radius-md);
+  margin-bottom: var(--spacing-xl);
+  border-left: 4px solid var(--color-info);
+}
+
+.editNotice span {
+  color: var(--color-info);
+  font-weight: var(--font-weight-medium);
+}
+
+.cancelEditBtn {
+  background: var(--color-text-secondary);
+  color: white;
+  border: none;
+  padding: 6px var(--spacing-md);
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  font-size: var(--font-size-sm);
+  transition: background-color var(--transition-fast);
+}
+
+.cancelEditBtn:hover {
+  background: #555;
+}
+
+/* Existing Entries */
+.existingEntries {
+  margin-top: var(--spacing-3xl);
+  padding-top: var(--spacing-xl);
+  border-top: 2px solid var(--color-bg-border);
+}
+
+.existingEntries h3 {
+  color: var(--color-text-primary);
+  margin-bottom: 15px;
+  font-size: var(--font-size-xl);
+}
+
+.entriesList {
+  display: grid;
+  gap: 15px;
+}
+
+.entryCard {
+  background: var(--color-bg-light);
+  border: 1px solid var(--color-bg-border);
+  border-radius: var(--radius-lg);
+  padding: 15px;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  transition: box-shadow var(--transition-fast);
+}
+
+.entryCard:hover {
+  box-shadow: var(--shadow-md);
+}
+
+.entryInfo {
+  flex: 1;
+}
+
+.entryInfo h4 {
+  margin: 0 0 var(--spacing-sm) 0;
+  color: var(--color-text-primary);
+  font-size: var(--font-size-md);
+}
+
+.entryInfo p {
+  margin: 0 0 5px 0;
+  color: var(--color-text-secondary);
+  font-size: var(--font-size-base);
+}
+
+.entryInfo small {
+  color: var(--color-text-muted);
+  font-size: var(--font-size-xs);
+  display: block;
+  margin-top: 5px;
+}
+
+.entryActions {
+  display: flex;
+  gap: var(--spacing-sm);
+  margin-left: 15px;
+}
+
+.editBtn,
+.deleteBtn {
+  background: none;
+  border: 1px solid #ddd;
+  padding: 6px 10px;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  font-size: var(--font-size-xs);
+  transition: all var(--transition-fast);
+  white-space: nowrap;
+}
+
+.editBtn {
+  color: var(--color-info);
+  border-color: var(--color-info);
+}
+
+.editBtn:hover {
+  background: var(--color-info);
+  color: white;
+}
+
+.deleteBtn {
+  color: var(--color-error);
+  border-color: var(--color-error);
+}
+
+.deleteBtn:hover {
+  background: var(--color-error);
+  color: white;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .container {
+    padding: var(--spacing-xl);
+  }
+
+  .formHeader {
+    flex-direction: column;
+    gap: var(--spacing-md);
+    align-items: stretch;
+    text-align: center;
+  }
+
+  .tabNavigation {
+    flex-direction: column;
+  }
+
+  .tabBtn {
+    text-align: center;
+    padding: var(--spacing-md);
+  }
+
+  .formRow {
+    grid-template-columns: 1fr;
+  }
+
+  .entryCard {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .entryActions {
+    margin-left: 0;
+    margin-top: 10px;
+    justify-content: flex-end;
+  }
+
+  .submitBtn {
+    width: 100%;
+  }
+}
+
+@media (max-width: 480px) {
+  .container {
+    padding: var(--spacing-md);
+  }
+
+  .formHeader h2 {
+    font-size: var(--font-size-xl);
+  }
+
+  .formGroup label {
+    font-size: var(--font-size-sm);
+  }
+
+  .formGroup input,
+  .formGroup select,
+  .formGroup textarea {
+    font-size: var(--font-size-sm);
+    padding: var(--spacing-sm) 10px;
+  }
+
+  .entryActions {
+    flex-direction: column;
+    gap: var(--spacing-xs);
+  }
+
+  .editBtn,
+  .deleteBtn {
+    text-align: center;
+  }
+}

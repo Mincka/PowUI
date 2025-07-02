@@ -1,0 +1,296 @@
+.connectionItem {
+  border-bottom: 1px solid #f0f0f0;
+  padding: 16px 20px;
+  transition: all 0.2s;
+}
+
+.connectionItem:last-child {
+  border-bottom: none;
+}
+
+.connectionItem:hover {
+  background: rgba(0, 0, 0, 0.02);
+}
+
+.connectionItem.needsAttention {
+  background: rgba(255, 152, 0, 0.05);
+  border-left: 4px solid #ff9800;
+  padding-left: 16px;
+}
+
+.connectionItem.duplicateConnection {
+  background: rgba(255, 193, 7, 0.05);
+  border-left: 4px solid #ffc107;
+  padding-left: 16px;
+}
+
+.connectionItem.selected {
+  background: rgba(33, 150, 243, 0.1);
+  border-left: 4px solid #2196f3;
+  padding-left: 16px;
+}
+
+.connectionHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 16px;
+  margin-bottom: 12px;
+}
+
+.connectionInfo {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.connectionIdentity {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.checkbox {
+  width: 18px;
+  height: 18px;
+  cursor: pointer;
+}
+
+.connectionId {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.idNumber {
+  font-weight: 600;
+  color: #333;
+  font-size: 16px;
+}
+
+.uuid {
+  font-size: 12px;
+  color: #999;
+  font-family: monospace;
+}
+
+.duplicateIndicator {
+  font-size: 16px;
+  padding: 4px;
+  border-radius: 4px;
+  cursor: help;
+}
+
+.duplicateIndicator.high {
+  background: rgba(244, 67, 54, 0.1);
+}
+
+.duplicateIndicator.medium {
+  background: rgba(255, 152, 0, 0.1);
+}
+
+.duplicateIndicator.low {
+  background: rgba(255, 193, 7, 0.1);
+}
+
+.connectionMeta {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.statusInfo {
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.statusActive {
+  color: #4caf50;
+  font-weight: 500;
+}
+
+.statusInactive {
+  color: #ff9800;
+  font-weight: 500;
+}
+
+.statusError {
+  color: #f44336;
+  font-weight: 500;
+}
+
+.lastUpdate,
+.nextSync {
+  font-size: 12px;
+  color: #666;
+}
+
+.recommendation {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.badge {
+  font-size: 11px;
+  padding: 3px 8px;
+  border-radius: 10px;
+  font-weight: 600;
+  text-transform: uppercase;
+}
+
+.badgeKeep {
+  background: #e8f5e8;
+  color: #2e7d32;
+}
+
+.badgeDelete {
+  background: #ffebee;
+  color: #c62828;
+}
+
+.badgeReview {
+  background: #fff3e0;
+  color: #f57c00;
+}
+
+.recommendationReason {
+  font-size: 12px;
+  color: #666;
+  font-style: italic;
+}
+
+.duplicateInfo {
+  background: rgba(255, 193, 7, 0.1);
+  padding: 8px;
+  border-radius: 4px;
+  border-left: 3px solid #ffc107;
+}
+
+.duplicateReason {
+  color: #f57c00;
+  font-weight: 500;
+}
+
+.connectionActions {
+  display: flex;
+  gap: 8px;
+  align-items: flex-start;
+}
+
+.syncButton,
+.reauthButton,
+.manageButton,
+.deleteButton {
+  padding: 8px 12px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 16px;
+  transition: all 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 40px;
+  height: 36px;
+}
+
+.syncButton {
+  background: #e3f2fd;
+  color: #1976d2;
+}
+
+.syncButton:hover:not(:disabled) {
+  background: #bbdefb;
+  transform: translateY(-1px);
+}
+
+.syncButton:disabled {
+  background: #f5f5f5;
+  color: #ccc;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.reauthButton {
+  background: #fff3e0;
+  color: #f57c00;
+}
+
+.reauthButton:hover:not(:disabled) {
+  background: #ffe0b2;
+  transform: translateY(-1px);
+}
+
+.reauthButton:disabled {
+  background: #f5f5f5;
+  color: #ccc;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.manageButton {
+  background: #f3e5f5;
+  color: #7b1fa2;
+}
+
+.manageButton:hover:not(:disabled) {
+  background: #e1bee7;
+  transform: translateY(-1px);
+}
+
+.manageButton:disabled {
+  background: #f5f5f5;
+  color: #ccc;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.deleteButton {
+  background: #ffebee;
+  color: #d32f2f;
+}
+
+.deleteButton:hover:not(:disabled) {
+  background: #ffcdd2;
+  transform: translateY(-1px);
+}
+
+.deleteButton:disabled {
+  background: #f5f5f5;
+  color: #ccc;
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .connectionHeader {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 12px;
+  }
+
+  .connectionIdentity {
+    flex-wrap: wrap;
+  }
+
+  .statusInfo {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+  }
+
+  .recommendation {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .connectionActions {
+    justify-content: flex-end;
+  }
+}

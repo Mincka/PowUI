@@ -1,0 +1,62 @@
+{
+  "name": "powui",
+  "version": "1.0.0",
+  "description": "PowUI - A powerful financial dashboard built with TypeScript React for managing banking accounts, investments, and real estate",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc && vite build",
+    "preview": "vite preview",
+    "lint": "eslint . --report-unused-disable-directives --max-warnings 0",
+    "lint:fix": "eslint . --fix",
+    "format": "prettier --write \"src/**/*.{ts,tsx,js,jsx,json,css,md}\"",
+    "format:check": "prettier --check \"src/**/*.{ts,tsx,js,jsx,json,css,md}\"",
+    "type-check": "tsc --noEmit"
+  },
+  "keywords": [
+    "react",
+    "typescript",
+    "vite",
+    "financial",
+    "dashboard",
+    "banking",
+    "charts"
+  ],
+  "author": "Julien <mincka@users.noreply.github.com>",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Mincka/powui.git"
+  },
+  "homepage": "https://github.com/Mincka/powui#readme",
+  "bugs": {
+    "url": "https://github.com/Mincka/powui/issues"
+  },
+  "dependencies": {
+    "chart.js": "^4.4.9",
+    "chartjs-plugin-datalabels": "^2.2.0",
+    "i18next": "^25.2.1",
+    "i18next-browser-languagedetector": "^8.2.0",
+    "react": "^19.1.0",
+    "react-chartjs-2": "^5.3.0",
+    "react-dom": "^19.1.0",
+    "react-i18next": "^15.5.3"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.28.0",
+    "@types/node": "^24.0.10",
+    "@types/react": "^19.1.6",
+    "@types/react-dom": "^19.1.6",
+    "@typescript-eslint/eslint-plugin": "^8.34.0",
+    "@typescript-eslint/parser": "^8.34.0",
+    "@vitejs/plugin-react": "^4.5.1",
+    "eslint": "^9.28.0",
+    "eslint-plugin-react": "^7.37.5",
+    "eslint-plugin-react-hooks": "^5.2.0",
+    "eslint-plugin-react-refresh": "^0.4.20",
+    "globals": "^16.2.0",
+    "prettier": "^3.2.5",
+    "typescript": "^5.8.3",
+    "vite": "^7.0.0"
+  }
+}

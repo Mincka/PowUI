@@ -1,0 +1,384 @@
+/* BankManager Component Styles */
+@import '../../styles/variables.css';
+
+.container {
+  background: var(--color-bg-white);
+  border-radius: var(--radius-xl);
+  box-shadow: var(--shadow-lg);
+  overflow: hidden;
+  margin-bottom: var(--spacing-3xl);
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 25px 25px 0;
+  margin-bottom: var(--spacing-xl);
+}
+
+.header h3 {
+  color: var(--color-text-primary);
+  font-size: var(--font-size-xl);
+  margin: 0;
+}
+
+.header p {
+  font-size: 14px;
+  color: var(--color-text-secondary);
+  margin: 0 0 16px 0;
+}
+
+.viewToggle {
+  display: flex;
+  border-radius: var(--radius-sm);
+  overflow: hidden;
+  box-shadow: var(--shadow-sm);
+}
+
+.bankView {
+  padding: 0 25px 25px;
+}
+
+.bankSection {
+  margin-bottom: var(--spacing-3xl);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-md);
+  overflow: hidden;
+}
+
+.bankHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: var(--spacing-lg) var(--spacing-xl);
+  margin: 0;
+  color: white;
+  border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+  cursor: pointer;
+}
+
+.bankHeaderLeft {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-md);
+}
+
+.collapseIcon {
+  font-size: var(--font-size-lg);
+  font-weight: bold;
+}
+
+.bankHeader h3 {
+  margin: 0;
+}
+
+.bankHeaderInfo {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-md);
+}
+
+.accountCount {
+  color: rgba(255, 255, 255, 0.9);
+  font-size: var(--font-size-sm);
+}
+
+.balanceBadge {
+  background: white;
+  padding: var(--spacing-sm) var(--spacing-md);
+  border-radius: var(--radius-lg);
+  font-weight: var(--font-weight-bold);
+  font-size: var(--font-size-lg);
+  box-shadow: var(--shadow-sm);
+  border: 2px solid rgba(255, 255, 255, 0.2);
+}
+
+.balanceBadge.balancePositive {
+  color: var(--color-success);
+}
+
+.balanceBadge.balanceNegative {
+  color: var(--color-error);
+}
+
+.balanceBadge.balanceZero {
+  color: var(--color-text-secondary);
+}
+
+.bankAccounts {
+  background: var(--color-bg-white);
+}
+
+.accountsTable {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 0;
+}
+
+.accountsTable th,
+.accountsTable td {
+  padding: 15px 25px;
+  text-align: left;
+  border-bottom: 1px solid var(--color-bg-border);
+  vertical-align: middle;
+}
+
+.accountsTable th {
+  background: var(--color-bg-light);
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-text-primary);
+  font-size: var(--font-size-base);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.textAlignRight {
+  text-align: right;
+}
+
+.colAccount {
+  width: 40%;
+}
+.colType {
+  width: 15%;
+}
+.colBalance {
+  width: 15%;
+}
+.colComingBalance {
+  width: 15%;
+}
+.colLastUpdate {
+  width: 15%;
+}
+
+.accountsTable tr:hover {
+  background: var(--color-bg-light);
+}
+
+.accountsTable th:first-child,
+.accountsTable td:first-child {
+  padding-left: var(--spacing-xl);
+}
+
+.accountsTable th:last-child,
+.accountsTable td:last-child {
+  padding-right: var(--spacing-xl);
+}
+
+.accountName {
+  font-weight: var(--font-weight-medium);
+  color: var(--color-text-primary);
+}
+
+.accountNumber {
+  font-size: var(--font-size-sm);
+  color: var(--color-text-secondary);
+  margin-top: 2px;
+}
+
+.accountType {
+  display: inline-block;
+  padding: var(--spacing-xs) var(--spacing-sm);
+  border-radius: var(--radius-xl);
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-medium);
+  color: white;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.balancePositive {
+  color: var(--color-success);
+  font-weight: var(--font-weight-semibold);
+  text-align: right;
+}
+
+.balanceNegative {
+  color: var(--color-error);
+  font-weight: var(--font-weight-semibold);
+  text-align: right;
+}
+
+.balanceZero {
+  color: var(--color-text-secondary);
+  text-align: right;
+}
+
+.lastUpdate {
+  font-size: var(--font-size-sm);
+  color: var(--color-text-secondary);
+  text-align: right;
+}
+
+.editForm {
+  display: flex;
+  gap: var(--spacing-xs);
+  align-items: center;
+}
+
+.editSelect,
+.editInput {
+  padding: var(--spacing-xs) var(--spacing-sm);
+  border-radius: var(--radius-sm);
+  border: 1px solid #ddd;
+  font-size: var(--font-size-xs);
+  max-width: 120px;
+}
+
+.editSelect:focus,
+.editInput:focus {
+  outline: none;
+  border-color: var(--color-primary);
+}
+
+.saveButton {
+  padding: var(--spacing-xs) var(--spacing-sm);
+  background: var(--color-success);
+  color: white;
+  border: none;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  font-size: var(--font-size-xs);
+  transition: background-color var(--transition-fast);
+}
+
+.saveButton:hover {
+  background: var(--color-success-dark);
+}
+
+.cancelButton {
+  padding: var(--spacing-xs) var(--spacing-sm);
+  background: var(--color-error);
+  color: white;
+  border: none;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  font-size: var(--font-size-xs);
+  transition: background-color var(--transition-fast);
+}
+
+.cancelButton:hover {
+  background: var(--color-error-dark);
+}
+
+.editButton {
+  padding: var(--spacing-xs) var(--spacing-sm);
+  background: var(--color-info);
+  color: white;
+  border: none;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  font-size: var(--font-size-xs);
+  transition: background-color var(--transition-fast);
+}
+
+.editButton:hover {
+  background: var(--color-info-dark);
+}
+
+.accountView {
+  padding: 0 25px 25px;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .header {
+    flex-direction: column;
+    gap: 15px;
+    align-items: stretch;
+  }
+
+  .viewToggle {
+    width: 100%;
+  }
+
+  .viewToggle button {
+    flex: 1;
+  }
+
+  .bankView,
+  .accountView {
+    padding: 0 15px 15px;
+  }
+
+  .bankHeader {
+    flex-direction: column;
+    gap: 10px;
+    text-align: center;
+    padding: var(--spacing-md) 15px;
+  }
+
+  .bankHeaderInfo {
+    flex-direction: column;
+    gap: var(--spacing-sm);
+  }
+
+  .balanceBadge {
+    font-size: var(--font-size-base);
+    padding: var(--spacing-xs) var(--spacing-sm);
+  }
+
+  .accountsTable th:first-child,
+  .accountsTable td:first-child {
+    padding-left: 15px;
+  }
+
+  .accountsTable th:last-child,
+  .accountsTable td:last-child {
+    padding-right: 15px;
+  }
+
+  .accountsTable {
+    font-size: var(--font-size-base);
+  }
+
+  .accountsTable th,
+  .accountsTable td {
+    padding: 10px 15px;
+  }
+}
+
+@media (max-width: 480px) {
+  .accountsTable {
+    font-size: var(--font-size-xs);
+  }
+
+  .accountsTable th,
+  .accountsTable td {
+    padding: var(--spacing-sm) 10px;
+  }
+}
+
+.controls {
+  display: flex;
+  gap: var(--spacing-sm);
+}
+
+.controlButton {
+  background: var(--color-bg-light);
+  border: 1px solid var(--color-bg-border);
+  border-radius: var(--radius-md);
+  padding: var(--spacing-sm) var(--spacing-md);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--spacing-sm);
+  cursor: pointer;
+  color: var(--color-text-secondary);
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-medium);
+  transition: all var(--transition-fast);
+}
+
+.controlButton:hover {
+  background: var(--color-bg-border);
+  color: var(--color-text-primary);
+}
+
+.controlButton svg {
+  width: 16px;
+  height: 16px;
+  stroke-width: 2.5;
+}

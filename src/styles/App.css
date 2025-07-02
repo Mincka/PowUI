@@ -1,0 +1,204 @@
+/* Import shared variables */
+@import './variables.css';
+
+/* Reset and base styles */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family:
+    -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell',
+    'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  background-color: #f5f5f5;
+  color: #333;
+}
+
+.app {
+  min-height: 100vh;
+  padding: 20px;
+}
+
+.header {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  padding: 30px;
+  border-radius: 12px;
+  margin-bottom: 30px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+}
+
+.header h1 {
+  font-size: 2.5rem;
+  font-weight: 300;
+  margin-bottom: 10px;
+}
+
+.header p {
+  font-size: 1.1rem;
+  opacity: 0.9;
+}
+
+.config-loading-indicator {
+  margin-top: 15px;
+  padding: 10px 20px;
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 6px;
+  font-size: 0.9rem;
+  color: white;
+  text-align: center;
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0% {
+    opacity: 0.7;
+  }
+  50% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0.7;
+  }
+}
+
+/* Loading and Error States */
+.loading,
+.app > .error {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 400px;
+  font-size: 1.2rem;
+}
+
+.loading {
+  color: #666;
+}
+
+.app > .error {
+  color: #f44336;
+  flex-direction: column;
+  text-align: center;
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 30px;
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  border-left: 4px solid #f44336;
+}
+
+.app > .error > div {
+  margin-bottom: 20px;
+  line-height: 1.5;
+  word-wrap: break-word;
+}
+
+.app > .error button {
+  margin-top: 10px;
+  padding: 12px 24px;
+  background: #f44336;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 1rem;
+  transition: background-color 0.2s;
+}
+
+.app > .error button:hover {
+  background: #d32f2f;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .app {
+    padding: 10px;
+  }
+
+  .header {
+    padding: 20px;
+  }
+
+  .header h1 {
+    font-size: 2rem;
+  }
+
+  .dashboard {
+    grid-template-columns: 1fr;
+  }
+
+  .charts-section {
+    grid-template-columns: 1fr;
+  }
+
+  .filter-controls {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .accounts-table {
+    font-size: 0.9rem;
+  }
+
+  .accounts-table th,
+  .accounts-table td {
+    padding: 10px 15px;
+  }
+
+  .investment-cards {
+    grid-template-columns: 1fr;
+  }
+
+  .api-configuration {
+    padding: 10px;
+  }
+
+  .api-configuration .config-form {
+    padding: 20px;
+  }
+
+  .config-actions {
+    flex-direction: column;
+    gap: 15px;
+    align-items: stretch;
+  }
+
+  .main-actions {
+    justify-content: stretch;
+  }
+
+  .main-actions button {
+    flex: 1;
+  }
+}
+
+@media (max-width: 480px) {
+  .accounts-table {
+    font-size: 0.8rem;
+  }
+
+  .accounts-table th,
+  .accounts-table td {
+    padding: 8px 10px;
+  }
+
+  .summary-card .amount {
+    font-size: 1.5rem;
+  }
+
+  .api-config-toggle {
+    top: 10px;
+    right: 10px;
+  }
+
+  .config-toggle-btn {
+    padding: 8px 12px;
+    font-size: 0.8rem;
+  }
+}

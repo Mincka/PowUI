@@ -1,0 +1,531 @@
+.container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.modal {
+  background: white;
+  border-radius: 8px;
+  padding: 24px;
+  width: 90%;
+  max-width: 600px;
+  max-height: 80vh;
+  overflow-y: auto;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 20px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid #e0e0e0;
+}
+
+.header h3 {
+  margin: 0;
+  color: #333;
+  font-size: 1.25rem;
+}
+
+.closeBtn {
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  color: #666;
+  cursor: pointer;
+  padding: 4px 8px;
+  border-radius: 4px;
+  transition: background-color 0.2s;
+}
+
+.closeBtn:hover {
+  background-color: #f0f0f0;
+}
+
+.section {
+  margin-bottom: 24px;
+}
+
+.sectionTitle {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 12px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.usersList {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 16px;
+}
+
+.userItem {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 16px;
+  border: 1px solid #e0e0e0;
+  border-radius: 6px;
+  background-color: #fafafa;
+  transition: all 0.2s;
+}
+
+.userItem:hover {
+  background-color: #f0f0f0;
+  border-color: #d0d0d0;
+}
+
+.userItem.active {
+  background-color: #e3f2fd;
+  border-color: #2196f3;
+}
+
+.userInfo {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  flex: 1;
+}
+
+.userName {
+  font-weight: 500;
+  color: #333;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.activeIndicator {
+  background-color: #4caf50;
+  color: white;
+  font-size: 0.75rem;
+  padding: 2px 8px;
+  border-radius: 12px;
+  font-weight: 500;
+}
+
+.userDetails {
+  font-size: 0.875rem;
+  color: #666;
+}
+
+.userActions {
+  display: flex;
+  gap: 8px;
+}
+
+.btnPrimary {
+  background-color: #2196f3;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 6px;
+  font-size: 0.875rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+  min-width: 70px;
+}
+
+.btnPrimary:hover {
+  background-color: #1976d2;
+  transform: translateY(-1px);
+}
+
+.btnPrimary:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.btnCurrent {
+  background-color: #4caf50 !important;
+  cursor: default !important;
+}
+
+.btnCurrent:hover {
+  background-color: #4caf50 !important;
+  transform: none !important;
+}
+
+.btnSecondary {
+  background-color: #607d8b;
+  color: white;
+  border: none;
+  padding: 8px 12px;
+  border-radius: 6px;
+  font-size: 0.875rem;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.btnSecondary:hover {
+  background-color: #455a64;
+  transform: translateY(-1px);
+}
+
+.btnDanger {
+  background-color: #f44336;
+  color: white;
+  border: none;
+  padding: 8px 12px;
+  border-radius: 6px;
+  font-size: 0.875rem;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.btnDanger:hover {
+  background-color: #d32f2f;
+  transform: translateY(-1px);
+}
+
+.btnDanger:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.createUserForm {
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  padding: 16px;
+  background-color: #fafafa;
+}
+
+.configPanel {
+  border: 1px solid #e0e0e0;
+  border-radius: 12px;
+  padding: 20px;
+  background-color: #f8f9fa;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.formGroup {
+  margin-bottom: 16px;
+}
+
+.formGroup label {
+  display: block;
+  margin-bottom: 6px;
+  font-weight: 500;
+  color: #333;
+}
+
+.formGroup input {
+  width: 100%;
+  padding: 10px 12px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 0.875rem;
+  transition: border-color 0.2s;
+}
+
+.formGroup input:focus {
+  outline: none;
+  border-color: #2196f3;
+  box-shadow: 0 0 0 2px rgba(33, 150, 243, 0.1);
+}
+
+.formGroup input.valid {
+  border-color: #4caf50;
+}
+
+.formGroup input.invalid {
+  border-color: #f44336;
+}
+
+.secretInputGroup {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.secretInputGroup input {
+  padding-right: 40px;
+}
+
+.tokenInputGroup {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 0;
+}
+
+.tokenInputGroup input {
+  flex: 1;
+  padding-right: 80px;
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
+  border-right: none;
+}
+
+.toggleVisibility {
+  position: absolute;
+  right: 44px;
+  background: none;
+  border: none;
+  font-size: 1rem;
+  cursor: pointer;
+  padding: 6px;
+  color: #666;
+  border-radius: 4px;
+  z-index: 2;
+}
+
+.toggleVisibility:hover {
+  background-color: rgba(0, 0, 0, 0.1);
+}
+
+.generateTokenBtn {
+  background-color: #607d8b;
+  color: white;
+  border: 1px solid #607d8b;
+  border-left: none;
+  padding: 0;
+  border-top-right-radius: 4px;
+  border-bottom-right-radius: 4px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: all 0.2s;
+  min-width: 42px;
+  height: 39px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.generateTokenBtn:hover {
+  background-color: #455a64;
+  transform: translateY(-1px);
+}
+
+.generateTokenBtn:disabled {
+  background-color: #ccc;
+  border-color: #ccc;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.tokenHelp {
+  font-size: 0.75rem;
+  color: #666;
+  margin-top: 6px;
+  font-style: italic;
+}
+
+.formActions {
+  display: flex;
+  gap: 12px;
+  justify-content: flex-end;
+}
+
+.btnCreate {
+  background-color: #4caf50;
+  color: white;
+  border: none;
+  padding: 10px 16px;
+  border-radius: 4px;
+  font-size: 0.875rem;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.btnCreate:hover {
+  background-color: #388e3c;
+}
+
+.btnCreate:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+}
+
+.btnCancel {
+  background-color: #666;
+  color: white;
+  border: none;
+  padding: 10px 16px;
+  border-radius: 4px;
+  font-size: 0.875rem;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.btnCancel:hover {
+  background-color: #555;
+}
+
+.emptyState {
+  text-align: center;
+  padding: 24px;
+  color: #666;
+  font-style: italic;
+}
+
+.loading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  color: #666;
+}
+
+.error {
+  background-color: #ffebee;
+  color: #c62828;
+  padding: 12px;
+  border-radius: 4px;
+  margin-bottom: 16px;
+  border: 1px solid #ffcdd2;
+}
+
+.success {
+  background-color: #e8f5e8;
+  color: #2e7d32;
+  padding: 12px;
+  border-radius: 4px;
+  margin-bottom: 16px;
+  border: 1px solid #c8e6c9;
+}
+
+.info {
+  background-color: #e3f2fd;
+  color: #1565c0;
+  padding: 12px;
+  border-radius: 6px;
+  font-size: 0.875rem;
+  margin-bottom: 16px;
+  border-left: 4px solid #2196f3;
+}
+
+.warning {
+  background-color: #fff3cd;
+  color: #856404;
+  padding: 12px;
+  border-radius: 6px;
+  font-size: 0.875rem;
+  margin-top: 8px;
+  border-left: 4px solid #ffc107;
+}
+
+.toggleCreateForm {
+  background-color: #2196f3;
+  color: white;
+  border: none;
+  padding: 10px 16px;
+  border-radius: 4px;
+  font-size: 0.875rem;
+  cursor: pointer;
+  transition: background-color 0.2s;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.toggleCreateForm:hover {
+  background-color: #1976d2;
+}
+
+.btnRefresh {
+  background-color: #2196f3;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 4px;
+  font-size: 0.875rem;
+  cursor: pointer;
+  transition: background-color 0.2s;
+  margin-top: 12px;
+}
+
+.btnRefresh:hover {
+  background-color: #1976d2;
+}
+
+.btnRefresh:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+}
+
+.btnConfigure {
+  background-color: #ff9800;
+  color: white;
+  border: none;
+  padding: 6px 12px;
+  border-radius: 4px;
+  font-size: 0.875rem;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.btnConfigure:hover {
+  background-color: #f57c00;
+}
+
+.btnRenew {
+  background-color: #9c27b0;
+  color: white;
+  border: none;
+  padding: 6px 12px;
+  border-radius: 4px;
+  font-size: 0.875rem;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.btnRenew:hover {
+  background-color: #7b1fa2;
+}
+
+.btnRenew:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+}
+
+.btnEdit {
+  background-color: #607d8b;
+  color: white;
+  border: none;
+  padding: 6px 12px;
+  border-radius: 4px;
+  font-size: 0.875rem;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.btnEdit:hover {
+  background-color: #455a64;
+}
+
+.btnEdit:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+}
+
+.unconfigured {
+  border-color: #ff9800;
+  background-color: #fff3e0;
+}
+
+.unconfiguredIndicator {
+  background-color: #ff9800;
+  color: white;
+  font-size: 0.75rem;
+  padding: 2px 8px;
+  border-radius: 12px;
+  font-weight: 500;
+}

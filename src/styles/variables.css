@@ -1,0 +1,72 @@
+/* CSS Custom Properties - Shared Variables */
+:root {
+  /* Colors */
+  --color-primary: #667eea;
+  --color-primary-dark: #5a6fd8;
+  --color-secondary: #764ba2;
+  --color-success: #4caf50;
+  --color-success-dark: #45a049;
+  --color-error: #f44336;
+  --color-error-dark: #d32f2f;
+  --color-warning: #ff9800;
+  --color-info: #2196f3;
+  --color-info-dark: #1976d2;
+
+  /* Text Colors */
+  --color-text-primary: #333;
+  --color-text-secondary: #666;
+  --color-text-muted: #888;
+  --color-text-light: #999;
+
+  /* Background Colors */
+  --color-bg-primary: #f5f5f5;
+  --color-bg-white: #ffffff;
+  --color-bg-light: #f8f9fa;
+  --color-bg-border: #e0e0e0;
+  --color-bg-hover: #f0f0f0;
+
+  /* Spacing */
+  --spacing-xs: 4px;
+  --spacing-sm: 8px;
+  --spacing-md: 12px;
+  --spacing-lg: 16px;
+  --spacing-xl: 20px;
+  --spacing-2xl: 24px;
+  --spacing-3xl: 30px;
+
+  /* Border Radius */
+  --radius-sm: 4px;
+  --radius-md: 6px;
+  --radius-lg: 8px;
+  --radius-xl: 12px;
+
+  /* Shadows */
+  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.1);
+  --shadow-md: 0 2px 8px rgba(0, 0, 0, 0.1);
+  --shadow-lg: 0 2px 10px rgba(0, 0, 0, 0.1);
+  --shadow-xl: 0 4px 20px rgba(0, 0, 0, 0.15);
+
+  /* Transitions */
+  --transition-fast: 0.2s ease;
+  --transition-medium: 0.3s ease;
+
+  /* Font Sizes */
+  --font-size-xs: 0.8rem;
+  --font-size-sm: 0.85rem;
+  --font-size-base: 0.9rem;
+  --font-size-md: 1rem;
+  --font-size-lg: 1.1rem;
+  --font-size-xl: 1.2rem;
+  --font-size-2xl: 1.5rem;
+  --font-size-3xl: 2rem;
+
+  /* Font Weights */
+  --font-weight-normal: 400;
+  --font-weight-medium: 500;
+  --font-weight-semibold: 600;
+
+  /* Z-index */
+  --z-modal: 1001;
+  --z-overlay: 1000;
+  --z-dropdown: 100;
+}

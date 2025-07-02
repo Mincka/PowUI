@@ -1,0 +1,335 @@
+/* Overlay and modal styling reused from NewConnectionSetup */
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.modal {
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+  max-width: 600px;
+  width: 90%;
+  max-height: 90vh;
+  overflow-y: auto;
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20px 24px;
+  border-bottom: 1px solid #e0e0e0;
+}
+
+.header h2 {
+  margin: 0;
+  font-size: 1.5rem;
+  color: #333;
+}
+
+.closeBtn {
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  cursor: pointer;
+  color: #666;
+  padding: 4px;
+  border-radius: 4px;
+  transition: background-color 0.2s;
+}
+
+.closeBtn:hover {
+  background-color: #f0f0f0;
+}
+
+.progressBar {
+  display: flex;
+  align-items: center;
+  padding: 16px 24px;
+  background-color: #f8f9fa;
+  border-bottom: 1px solid #e0e0e0;
+}
+
+.progressStep {
+  display: flex;
+  align-items: center;
+  margin-right: 40px;
+}
+
+.progressStep:last-child {
+  margin-right: 0;
+}
+
+.stepNumber {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.8rem;
+  font-weight: bold;
+  margin-right: 8px;
+  background-color: #e0e0e0;
+  color: #666;
+}
+
+.progressStep.active .stepNumber {
+  background-color: #007bff;
+  color: white;
+}
+
+.progressStep.completed .stepNumber {
+  background-color: #28a745;
+  color: white;
+}
+
+.stepLabel {
+  font-size: 0.9rem;
+  color: #666;
+}
+
+.progressStep.active .stepLabel {
+  color: #007bff;
+  font-weight: 500;
+}
+
+.progressStep.completed .stepLabel {
+  color: #28a745;
+}
+
+.content {
+  padding: 24px;
+}
+
+.stepContent {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.stepHeader h3 {
+  margin: 0 0 8px 0;
+  font-size: 1.2rem;
+  color: #333;
+}
+
+.stepHeader p {
+  margin: 0;
+  color: #666;
+  line-height: 1.5;
+}
+
+/* Connection info styling */
+.connectionInfo {
+  background-color: #f8f9fa;
+  border: 1px solid #e9ecef;
+  border-radius: 6px;
+  padding: 16px;
+  margin: 16px 0;
+}
+
+.connectionDetail {
+  display: flex;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+.connectionDetail:last-child {
+  margin-bottom: 0;
+}
+
+.label {
+  font-weight: 500;
+  color: #495057;
+  margin-right: 8px;
+  min-width: 80px;
+}
+
+.value {
+  color: #212529;
+  font-family: 'Courier New', monospace;
+  background-color: #ffffff;
+  padding: 2px 6px;
+  border-radius: 3px;
+  border: 1px solid #dee2e6;
+}
+
+/* Config check styling */
+.configCheck {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.configItem {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 0.9rem;
+}
+
+.checkValid {
+  color: #28a745;
+}
+
+.checkInvalid {
+  color: #dc3545;
+}
+
+.warning {
+  background-color: #fff3cd;
+  border: 1px solid #ffeaa7;
+  border-radius: 6px;
+  padding: 12px;
+  color: #856404;
+}
+
+.warning p {
+  margin: 0;
+}
+
+/* Error styling */
+.error {
+  background-color: #f8d7da;
+  border: 1px solid #f5c6cb;
+  border-radius: 6px;
+  padding: 12px;
+  color: #721c24;
+}
+
+.error span {
+  font-size: 0.9rem;
+}
+
+/* Code and URL display */
+.codeDisplay,
+.urlPreview {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.codeDisplay label,
+.urlPreview label {
+  font-weight: 500;
+  color: #495057;
+  font-size: 0.9rem;
+}
+
+.codeValue,
+.urlValue {
+  background-color: #f8f9fa;
+  border: 1px solid #e9ecef;
+  border-radius: 4px;
+  padding: 12px;
+  font-family: 'Courier New', monospace;
+  font-size: 0.8rem;
+  color: #495057;
+  word-break: break-all;
+  max-height: 100px;
+  overflow-y: auto;
+}
+
+.codeValue code,
+.urlValue code {
+  background: none;
+  padding: 0;
+  font-size: inherit;
+  color: inherit;
+}
+
+/* Button styling */
+.stepActions {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  margin-top: 20px;
+}
+
+.btnPrimary {
+  background-color: #007bff;
+  color: white;
+  border: none;
+  padding: 12px 24px;
+  border-radius: 6px;
+  font-size: 0.9rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.btnPrimary:hover:not(:disabled) {
+  background-color: #0056b3;
+}
+
+.btnPrimary:disabled {
+  background-color: #6c757d;
+  cursor: not-allowed;
+}
+
+.btnSecondary {
+  background-color: #6c757d;
+  color: white;
+  border: none;
+  padding: 12px 24px;
+  border-radius: 6px;
+  font-size: 0.9rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.btnSecondary:hover:not(:disabled) {
+  background-color: #545b62;
+}
+
+.btnSecondary:disabled {
+  background-color: #adb5bd;
+  cursor: not-allowed;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  .modal {
+    width: 95%;
+    margin: 20px;
+  }
+
+  .header {
+    padding: 16px 20px;
+  }
+
+  .content {
+    padding: 20px;
+  }
+
+  .progressBar {
+    padding: 12px 20px;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .progressStep {
+    margin-right: 20px;
+  }
+
+  .stepActions {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .btnPrimary,
+  .btnSecondary {
+    width: 100%;
+  }
+}
