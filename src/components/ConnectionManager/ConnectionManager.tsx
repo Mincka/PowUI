@@ -234,7 +234,7 @@ export const ConnectionManager: React.FC<ConnectionManagerProps> = ({
     });
 
     return groups.sort((a, b) => a.bankName.localeCompare(b.bankName));
-  }, [connections, accounts, duplicateConnections, connectorMap]);
+  }, [connections, accounts, duplicateConnections, connectorMap, t]);
 
   // Filter groups based on current filter mode
   const filteredGroups = useMemo(() => {

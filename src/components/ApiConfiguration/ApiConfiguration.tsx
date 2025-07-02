@@ -71,7 +71,7 @@ export const ApiConfiguration: React.FC<ApiConfigurationProps> = ({
     } catch (error) {
       console.error('Error loading saved configuration:', error);
     }
-  }, []);
+  }, [config]);
 
   // Load from localStorage whenever the panel becomes visible
   useEffect(() => {

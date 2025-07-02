@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
 import { PowensUser, CombinedUserData } from '../../types/accounts';
 import { UserService } from '../../services/userService';
@@ -54,22 +54,7 @@ export const UserManager: React.FC<UserManagerProps> = ({
     }
   }, [usersToken]);
 
-  // Update tokens when currentConfig changes
-  useEffect(() => {
-    setClientSecret(currentConfig.clientSecret || '');
-    setUsersToken(currentConfig.usersToken || '');
-  }, [currentConfig.clientSecret, currentConfig.usersToken]);
-
-  // Load users when component becomes visible
-  useEffect(() => {
-    if (isVisible) {
-      loadUsers();
-      setError(null);
-      setSuccess(null);
-    }
-  }, [isVisible]);
-
-  const loadUsers = async () => {
+  const loadUsers = useCallback(async () => {
     if (!usersToken.trim()) {
       // If we don't have Users token, just show local users
       const storedUsers = UserService.getStoredUsers();
@@ -103,7 +88,22 @@ export const UserManager: React.FC<UserManagerProps> = ({
     } finally {
       setIsLoading(false);
     }
-  };
+  }, [usersToken, currentConfig]);
+
+  // Update tokens when currentConfig changes
+  useEffect(() => {
+    setClientSecret(currentConfig.clientSecret || '');
+    setUsersToken(currentConfig.usersToken || '');
+  }, [currentConfig.clientSecret, currentConfig.usersToken]);
+
+  // Load users when component becomes visible
+  useEffect(() => {
+    if (isVisible) {
+      loadUsers();
+      setError(null);
+      setSuccess(null);
+    }
+  }, [isVisible, loadUsers]);
 
   const handleCreateUser = async () => {
     if (!currentConfig.clientId || !clientSecret.trim()) {
