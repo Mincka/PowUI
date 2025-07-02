@@ -25,6 +25,10 @@ COPY --from=build /app/dist /usr/share/nginx/html
 # Copy custom nginx config with security headers
 COPY public/nginx.conf /etc/nginx/nginx.conf
 
+# Create nginx cache directories and set permissions before switching to non-root user
+RUN mkdir -p /var/cache/nginx/client_temp /var/cache/nginx/proxy_temp /var/cache/nginx/fastcgi_temp /var/cache/nginx/uwsgi_temp /var/cache/nginx/scgi_temp && \
+    chown -R nginx:nginx /var/cache/nginx
+
 # Use non-root user for security
 USER nginx
 
