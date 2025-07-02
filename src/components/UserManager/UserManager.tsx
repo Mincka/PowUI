@@ -88,7 +88,8 @@ export const UserManager: React.FC<UserManagerProps> = ({
     } finally {
       setIsLoading(false);
     }
-  }, [usersToken, currentConfig]);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [usersToken, currentConfig.apiUrl]); // Only depend on apiUrl instead of entire currentConfig
 
   // Update tokens when currentConfig changes
   useEffect(() => {
