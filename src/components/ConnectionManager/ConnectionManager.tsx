@@ -296,7 +296,7 @@ export const ConnectionManager: React.FC<ConnectionManagerProps> = ({
 
     const bankInfo = getConnectionBankInfo(connectionId);
     const bankName =
-      bankInfo.bankNames.length > 0 ? bankInfo.bankNames.join(', ') : 'Connexion inconnue';
+      bankInfo.bankNames.length > 0 ? bankInfo.bankNames.join(', ') : t('unknown_connection');
 
     setDeleteConfirmation({
       connectionId,
@@ -354,7 +354,7 @@ export const ConnectionManager: React.FC<ConnectionManagerProps> = ({
 
     const bankInfo = getConnectionBankInfo(connectionId);
     const bankName =
-      bankInfo.bankNames.length > 0 ? bankInfo.bankNames.join(', ') : 'Connexion inconnue';
+      bankInfo.bankNames.length > 0 ? bankInfo.bankNames.join(', ') : t('unknown_connection');
 
     setWebviewModal({
       connectionId,
@@ -418,7 +418,7 @@ export const ConnectionManager: React.FC<ConnectionManagerProps> = ({
             onClick={handleSyncAll}
             disabled={syncStatus.isLoading || statusSummary.active === 0}
             className={styles.syncAllButton}
-            title="Synchroniser toutes les connexions actives"
+            title={t('sync_all_active_connections')}
           >
             {syncStatus.isLoading ? '⟳' : '↻'}
             {t('global_sync')}

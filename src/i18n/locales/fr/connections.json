@@ -115,5 +115,7 @@
   "deleting_connections": "Suppression...",
   "created_date": "Créée:",
   "updated_date": "MAJ:",
-  "deletion_warning_bulk": "⚠️ Attention : La suppression de connexions est irréversible et supprimera également tous les comptes, transactions et données associées de manière permanente."
+  "deletion_warning_bulk": "⚠️ Attention : La suppression de connexions est irréversible et supprimera également tous les comptes, transactions et données associées de manière permanente.",
+  "unknown_connection": "Connexion inconnue",
+  "sync_all_active_connections": "Synchroniser toutes les connexions actives"
 }

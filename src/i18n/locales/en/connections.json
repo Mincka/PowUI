@@ -115,5 +115,7 @@
   "deleting_connections": "Deleting...",
   "created_date": "Created:",
   "updated_date": "Updated:",
-  "deletion_warning_bulk": "⚠️ Warning: Deleting connections is irreversible and will also permanently delete all associated accounts, transactions, and data."
+  "deletion_warning_bulk": "⚠️ Warning: Deleting connections is irreversible and will also permanently delete all associated accounts, transactions, and data.",
+  "unknown_connection": "Unknown connection",
+  "sync_all_active_connections": "Synchronize all active connections"
 }

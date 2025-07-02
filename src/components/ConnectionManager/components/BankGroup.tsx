@@ -63,10 +63,16 @@ export const BankGroup: React.FC<BankGroupProps> = ({
             )}
             <div className={styles.bankStats}>
               <span className={styles.stat}>
-                {group.connections.length} connexion{group.connections.length > 1 ? 's' : ''}
+                {group.connections.length === 1 
+                  ? t('connections:connections_count', { count: group.connections.length })
+                  : t('connections:connections_count_plural', { count: group.connections.length })
+                }
               </span>
               <span className={styles.stat}>
-                {group.totalAccounts} compte{group.totalAccounts > 1 ? 's' : ''}
+                {group.totalAccounts === 1 
+                  ? t('one_account')
+                  : t('multiple_accounts', { count: group.totalAccounts })
+                }
               </span>
               {group.totalBalance !== 0 && (
                 <span className={styles.stat}>{formatBalance(group.totalBalance)}</span>
