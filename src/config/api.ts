@@ -1,7 +1,7 @@
 export interface ApiConfig {
   mode: 'direct' | 'mock';
   // Direct BiAPI mode
-  apiUrl: string; // Full API URL with version, e.g. https://powens1-sandbox.biapi.pro/2.0/
+  apiUrl: string; // Full API URL with version, e.g. https://demo1-sandbox.biapi.pro/2.0/
   userId: string;
   bearerToken: string;
   clientId: string;
@@ -96,7 +96,7 @@ export const needsInitialSetup = (apiConfig: ApiConfig): boolean => {
 /**
  * Returns the full API URL for a given endpoint.
  * Assumes apiUrl ends with a slash.
- * Example: apiUrl = "https://powens1-sandbox.biapi.pro/2.0/"
+ * Example: apiUrl = "https://demo1-sandbox.biapi.pro/2.0/"
  */
 export const getBaseUrl = (config: ApiConfig): string => {
   return `${config.apiUrl}users/${config.userId}`;

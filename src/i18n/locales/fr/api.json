@@ -98,6 +98,8 @@
   "token_regenerate_help": "Cliquez sur le bouton 🔄 pour régénérer un nouveau token d'authentification",
   "confirm_clear_all_data": "Êtes-vous sûr de vouloir effacer toute la configuration et les données utilisateurs ? Cette action ne peut pas être annulée.",
   "configuration_cleared": "Toute la configuration et les données utilisateurs ont été effacées.",
+  "api_url": "URL de l'API",
+  "api_url_placeholder": "https://demo1-sandbox.biapi.pro/2.0/",
   "organization_settings": "Paramètres de l'organisation",
   "application_settings": "Paramètres de l'application Powens",
   "where_to_find_info": "Où trouver cette information ?",

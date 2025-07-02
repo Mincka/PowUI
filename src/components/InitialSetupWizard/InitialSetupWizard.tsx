@@ -289,7 +289,7 @@ export const InitialSetupWizard: React.FC<InitialSetupWizardProps> = ({
           type="text"
           value={config.apiUrl}
           onChange={e => handleConfigUpdate('apiUrl', e.target.value)}
-          placeholder={t('api_url_placeholder', 'https://powens1-sandbox.biapi.pro/2.0/')}
+          placeholder={t('api_url_placeholder', 'https://demo1-sandbox.biapi.pro/2.0/')}
           className={config.apiUrl ? styles.valid : styles.invalid}
           autoComplete="off"
         />

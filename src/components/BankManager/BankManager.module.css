@@ -138,19 +138,23 @@
 }
 
 .colAccount {
-  width: 40%;
+  width: 28%;
 }
 .colType {
-  width: 15%;
+  width: 22%;
 }
 .colBalance {
-  width: 15%;
+  width: 13%;
 }
 .colComingBalance {
-  width: 15%;
+  width: 13%;
 }
 .colLastUpdate {
-  width: 15%;
+  width: 14%;
+}
+.colActions {
+  width: 10%;
+  text-align: center;
 }
 
 .accountsTable tr:hover {
@@ -381,4 +385,38 @@
   width: 16px;
   height: 16px;
   stroke-width: 2.5;
+}
+
+/* Transaction-related styles */
+.transactionToggle {
+  background: var(--color-primary);
+  color: white;
+  border: none;
+  border-radius: var(--radius-sm);
+  padding: var(--spacing-xs) var(--spacing-sm);
+  font-size: var(--font-size-sm);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-xs);
+  margin: 0 auto;
+  min-width: 80px;
+  justify-content: center;
+}
+
+.transactionToggle:hover {
+  background: var(--color-primary-dark);
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-sm);
+}
+
+.transactionCell {
+  padding: 0 !important;
+  background: var(--color-bg-light);
+  border-bottom: 2px solid var(--color-bg-border) !important;
+}
+
+.transactionCell > * {
+  margin: 0;
 }

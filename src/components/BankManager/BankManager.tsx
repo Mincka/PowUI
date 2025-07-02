@@ -10,6 +10,7 @@ import {
 import { ConnectorService } from '../../services/connectorService';
 import { AccountsService } from '../../services/accountsService';
 import { useAppData } from '../../contexts/AppDataContext';
+import { Transactions } from '../Transactions';
 import styles from './BankManager.module.css';
 
 interface BankManagerProps {
@@ -22,6 +23,13 @@ export const BankManager: React.FC<BankManagerProps> = ({ accounts }) => {
   const [isLoadingConnectors, setIsLoadingConnectors] = useState(false);
   const [collapsedBanks, setCollapsedBanks] = useState<Record<string, boolean>>(() => {
     const storedState = localStorage.getItem('bankManagerCollapsedState');
+    if (storedState) {
+      return JSON.parse(storedState);
+    }
+    return {};
+  });
+  const [visibleTransactions, setVisibleTransactions] = useState<Record<number, boolean>>(() => {
+    const storedState = localStorage.getItem('bankManagerTransactionsState');
     if (storedState) {
       return JSON.parse(storedState);
     }
@@ -70,6 +78,10 @@ export const BankManager: React.FC<BankManagerProps> = ({ accounts }) => {
   }, [collapsedBanks]);
 
   useEffect(() => {
+    localStorage.setItem('bankManagerTransactionsState', JSON.stringify(visibleTransactions));
+  }, [visibleTransactions]);
+
+  useEffect(() => {
     const loadConnectors = async () => {
       if (accounts.length === 0 || connections.length === 0) return;
 
@@ -110,6 +122,13 @@ export const BankManager: React.FC<BankManagerProps> = ({ accounts }) => {
     setCollapsedBanks(prevState => ({
       ...prevState,
       [bankName]: !prevState[bankName],
+    }));
+  };
+
+  const toggleTransactions = (accountId: number) => {
+    setVisibleTransactions(prevState => ({
+      ...prevState,
+      [accountId]: !prevState[accountId],
     }));
   };
 
@@ -245,40 +264,63 @@ export const BankManager: React.FC<BankManagerProps> = ({ accounts }) => {
                           <th className={`${styles.colLastUpdate} ${styles.textAlignRight}`}>
                             {t('last_update')}
                           </th>
+                          <th className={styles.colActions}>{t('transactions')}</th>
                         </tr>
                       </thead>
                       <tbody>
                         {bankInfo.accounts.map(account => {
+                          const showTransactions = visibleTransactions[account.id] ?? false;
                           return (
-                            <tr key={account.id}>
-                              <td className={styles.colAccount}>
-                                <div className={styles.accountName}>{account.name}</div>
-                                <div className={styles.accountNumber}>{account.number}</div>
-                              </td>
-                              <td className={styles.colType}>
-                                <span
-                                  className={styles.accountType}
-                                  style={{ backgroundColor: getAccountTypeColor(account.type) }}
+                            <React.Fragment key={account.id}>
+                              <tr>
+                                <td className={styles.colAccount}>
+                                  <div className={styles.accountName}>{account.name}</div>
+                                  <div className={styles.accountNumber}>{account.number}</div>
+                                </td>
+                                <td className={styles.colType}>
+                                  <span
+                                    className={styles.accountType}
+                                    style={{ backgroundColor: getAccountTypeColor(account.type) }}
+                                  >
+                                    {getAccountTypeDisplayName(account.type)}
+                                  </span>
+                                </td>
+                                <td
+                                  className={`${styles.colBalance} ${getBalanceClass(account.balance)}`}
                                 >
-                                  {getAccountTypeDisplayName(account.type)}
-                                </span>
-                              </td>
-                              <td
-                                className={`${styles.colBalance} ${getBalanceClass(account.balance)}`}
-                              >
-                                {account.balance !== 0 ? formatCurrency(account.balance) : '-'}
-                              </td>
-                              <td
-                                className={`${styles.colComingBalance} ${getBalanceClass(account.coming_balance)}`}
-                              >
-                                {account.coming !== null && account.coming_balance !== 0
-                                  ? formatCurrency(account.coming_balance)
-                                  : '-'}
-                              </td>
-                              <td className={`${styles.colLastUpdate} ${styles.lastUpdate}`}>
-                                {formatDateTime(account.last_update)}
-                              </td>
-                            </tr>
+                                  {account.balance !== 0 ? formatCurrency(account.balance) : '-'}
+                                </td>
+                                <td
+                                  className={`${styles.colComingBalance} ${getBalanceClass(account.coming_balance)}`}
+                                >
+                                  {account.coming !== null && account.coming_balance !== 0
+                                    ? formatCurrency(account.coming_balance)
+                                    : '-'}
+                                </td>
+                                <td className={`${styles.colLastUpdate} ${styles.lastUpdate}`}>
+                                  {formatDateTime(account.last_update)}
+                                </td>
+                                <td className={styles.colActions}>
+                                  <button
+                                    onClick={() => toggleTransactions(account.id)}
+                                    className={styles.transactionToggle}
+                                    title={showTransactions ? t('hide_transactions') : t('show_transactions')}
+                                  >
+                                    📋 {showTransactions ? '▼' : '▶'}
+                                  </button>
+                                </td>
+                              </tr>
+                              {showTransactions && (
+                                <tr>
+                                  <td colSpan={6} className={styles.transactionCell}>
+                                    <Transactions
+                                      accountId={account.id}
+                                      accountName={account.name}
+                                    />
+                                  </td>
+                                </tr>
+                              )}
+                            </React.Fragment>
                           );
                         })}
                       </tbody>

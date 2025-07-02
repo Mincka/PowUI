@@ -1,0 +1,422 @@
+/* Transactions Component Styles */
+@import '../../styles/variables.css';
+
+.container {
+  background: var(--color-bg-light);
+  border-radius: var(--radius-md);
+  margin: var(--spacing-md) 0;
+  overflow: hidden;
+  border-left: 4px solid var(--color-primary);
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: var(--spacing-md) var(--spacing-lg);
+  background: var(--color-bg-white);
+  border-bottom: 1px solid var(--color-bg-border);
+}
+
+.header h4 {
+  margin: 0;
+  color: var(--color-text-primary);
+  font-size: var(--font-size-lg);
+  font-weight: var(--font-weight-semibold);
+}
+
+.transactionCount {
+  color: var(--color-text-secondary);
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-medium);
+}
+
+/* Filters */
+.filtersContainer {
+  display: flex;
+  align-items: flex-end;
+  gap: var(--spacing-md);
+  padding: var(--spacing-md) var(--spacing-lg);
+  background: var(--color-bg-white);
+  border-bottom: 1px solid var(--color-bg-border);
+}
+
+.filters {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: var(--spacing-md);
+  flex: 1;
+}
+
+.filterActions {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+}
+
+.resetButton {
+  background: var(--color-bg-light);
+  color: var(--color-text-secondary);
+  border: 1px solid var(--color-bg-border);
+  border-radius: var(--radius-sm);
+  padding: var(--spacing-sm);
+  font-size: var(--font-size-lg);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+}
+
+.resetButton:hover {
+  background: var(--color-bg-border);
+  color: var(--color-text-primary);
+  transform: translateY(-1px);
+}
+
+.filterGroup {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-xs);
+}
+
+.filterGroup label {
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-medium);
+  color: var(--color-text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.filterSelect,
+.filterInput {
+  padding: var(--spacing-sm) var(--spacing-md);
+  border: 1px solid var(--color-bg-border);
+  border-radius: var(--radius-sm);
+  font-size: var(--font-size-base);
+  background: var(--color-bg-white);
+  color: var(--color-text-primary);
+  transition: border-color var(--transition-fast);
+}
+
+.filterSelect:focus,
+.filterInput:focus {
+  outline: none;
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.1);
+}
+
+/* Table */
+.tableContainer {
+  overflow-x: auto;
+  background: var(--color-bg-white);
+}
+
+.transactionsTable {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 0;
+}
+
+.transactionsTable th,
+.transactionsTable td {
+  padding: var(--spacing-md) var(--spacing-lg);
+  text-align: left;
+  border-bottom: 1px solid var(--color-bg-border);
+  vertical-align: top;
+}
+
+.transactionsTable th {
+  background: var(--color-bg-light);
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-text-primary);
+  font-size: var(--font-size-sm);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  position: sticky;
+  top: 0;
+  z-index: 1;
+}
+
+.transactionRow:hover {
+  background: var(--color-bg-light);
+}
+
+.textAlignRight {
+  text-align: right;
+}
+
+/* Column widths */
+.colDate {
+  width: 12%;
+  min-width: 100px;
+}
+
+.colDescription {
+  width: 40%;
+  min-width: 200px;
+}
+
+.colType {
+  width: 15%;
+  min-width: 120px;
+}
+
+.colCategory {
+  width: 18%;
+  min-width: 140px;
+}
+
+.colAmount {
+  width: 15%;
+  min-width: 100px;
+}
+
+/* Date styling */
+.dateInfo {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.mainDate {
+  font-weight: var(--font-weight-medium);
+  color: var(--color-text-primary);
+  font-size: var(--font-size-sm);
+}
+
+.dateTime {
+  font-size: var(--font-size-xs);
+  color: var(--color-text-secondary);
+}
+
+/* Description styling */
+.description {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-xs);
+}
+
+.wording {
+  font-weight: var(--font-weight-medium);
+  color: var(--color-text-primary);
+  font-size: var(--font-size-base);
+}
+
+.originalWording {
+  font-size: var(--font-size-sm);
+  color: var(--color-text-secondary);
+  font-style: italic;
+}
+
+.cardInfo {
+  font-size: var(--font-size-xs);
+  color: var(--color-info);
+  font-weight: var(--font-weight-medium);
+}
+
+/* Transaction type styling */
+.transactionType {
+  display: inline-block;
+  padding: var(--spacing-xs) var(--spacing-sm);
+  border-radius: var(--radius-xl);
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-medium);
+  color: white;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  min-width: 70px;
+  text-align: center;
+}
+
+/* Category styling */
+.categories {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--spacing-xs);
+}
+
+.category {
+  display: inline-block;
+  padding: var(--spacing-xs) var(--spacing-sm);
+  background: var(--color-bg-light);
+  border-radius: var(--radius-sm);
+  font-size: var(--font-size-xs);
+  color: var(--color-text-secondary);
+  border: 1px solid var(--color-bg-border);
+}
+
+/* Balance styling */
+.balancePositive {
+  color: var(--color-success);
+  font-weight: var(--font-weight-semibold);
+}
+
+.balanceNegative {
+  color: var(--color-error);
+  font-weight: var(--font-weight-semibold);
+}
+
+.balanceZero {
+  color: var(--color-text-secondary);
+}
+
+/* Load more button */
+.loadMore {
+  padding: var(--spacing-lg);
+  text-align: center;
+  background: var(--color-bg-white);
+  border-top: 1px solid var(--color-bg-border);
+}
+
+.loadMoreButton {
+  background: var(--color-primary);
+  color: white;
+  border: none;
+  border-radius: var(--radius-md);
+  padding: var(--spacing-md) var(--spacing-xl);
+  font-size: var(--font-size-base);
+  font-weight: var(--font-weight-medium);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.loadMoreButton:hover:not(:disabled) {
+  background: var(--color-primary-dark);
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-md);
+}
+
+.loadMoreButton:disabled {
+  background: var(--color-text-secondary);
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
+
+/* Status messages */
+.loading,
+.error,
+.endMessage,
+.noTransactions {
+  padding: var(--spacing-xl);
+  text-align: center;
+  background: var(--color-bg-white);
+}
+
+.loading p,
+.endMessage p,
+.noTransactions p {
+  margin: 0;
+  color: var(--color-text-secondary);
+  font-style: italic;
+}
+
+.error {
+  background: var(--color-error-light);
+  border-left: 4px solid var(--color-error);
+}
+
+.error p {
+  margin: 0 0 var(--spacing-md) 0;
+  color: var(--color-error);
+}
+
+.retryButton {
+  background: var(--color-error);
+  color: white;
+  border: none;
+  border-radius: var(--radius-sm);
+  padding: var(--spacing-sm) var(--spacing-md);
+  font-size: var(--font-size-sm);
+  cursor: pointer;
+  transition: background-color var(--transition-fast);
+}
+
+.retryButton:hover {
+  background: var(--color-error-dark);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .filtersContainer {
+    flex-direction: column;
+    gap: var(--spacing-md);
+    padding: var(--spacing-sm) var(--spacing-md);
+  }
+
+  .filters {
+    grid-template-columns: 1fr;
+    gap: var(--spacing-sm);
+  }
+
+  .filterActions {
+    align-self: flex-end;
+  }
+
+  .header {
+    flex-direction: column;
+    gap: var(--spacing-sm);
+    align-items: flex-start;
+    padding: var(--spacing-md);
+  }
+
+  .transactionsTable th,
+  .transactionsTable td {
+    padding: var(--spacing-sm) var(--spacing-md);
+  }
+
+  .transactionsTable {
+    font-size: var(--font-size-sm);
+  }
+
+  .colDate,
+  .colType,
+  .colCategory {
+    display: none;
+  }
+
+  .colDescription {
+    width: 60%;
+  }
+
+  .colAmount {
+    width: 40%;
+  }
+
+  .description {
+    gap: 2px;
+  }
+
+  .wording {
+    font-size: var(--font-size-sm);
+  }
+
+  .originalWording {
+    font-size: var(--font-size-xs);
+  }
+}
+
+@media (max-width: 480px) {
+  .container {
+    margin: var(--spacing-sm) 0;
+  }
+
+  .header,
+  .filters,
+  .loadMore {
+    padding: var(--spacing-sm);
+  }
+
+  .transactionsTable th,
+  .transactionsTable td {
+    padding: var(--spacing-xs) var(--spacing-sm);
+  }
+
+  .loadMoreButton {
+    padding: var(--spacing-sm) var(--spacing-lg);
+    font-size: var(--font-size-sm);
+  }
+}

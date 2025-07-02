@@ -98,6 +98,8 @@
   "token_regenerate_help": "Click the 🔄 button to regenerate a new authentication token",
   "confirm_clear_all_data": "Are you sure you want to clear all configuration and user data? This action cannot be undone.",
   "configuration_cleared": "All configuration and user data has been cleared.",
+  "api_url": "API URL",
+  "api_url_placeholder": "https://demo1-sandbox.biapi.pro/2.0/",
   "organization_settings": "Organization Settings",
   "application_settings": "Powens Application Settings",
   "where_to_find_info": "Where to find this information?",
