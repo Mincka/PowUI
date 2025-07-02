@@ -55,7 +55,6 @@ export const ApiConfiguration: React.FC<ApiConfigurationProps> = ({
       if (saved) {
         const savedConfig = JSON.parse(saved);
         const updatedConfig = {
-          ...config,
           mode: savedConfig.mode || 'mock',
           apiUrl: savedConfig.apiUrl || '',
           userId: savedConfig.userId || '',
@@ -71,7 +70,7 @@ export const ApiConfiguration: React.FC<ApiConfigurationProps> = ({
     } catch (error) {
       console.error('Error loading saved configuration:', error);
     }
-  }, [config]);
+  }, []); // Remove config dependency to prevent infinite loop
 
   // Load from localStorage whenever the panel becomes visible
   useEffect(() => {

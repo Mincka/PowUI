@@ -29,6 +29,7 @@
   "hide": "Masquer",
   "user_id_label": "ID: {{id}}",
   "configure_domain_client_first": "Veuillez d'abord configurer le domaine et le Client ID",
+  "configure_api_url_client_first": "Veuillez d'abord configurer l'URL de l'API et le Client ID",
   "user_management": "Gestion des Utilisateurs Powens",
   "user_management_info": "Cette liste affiche tous les utilisateurs de votre application Powens. Configurez les utilisateurs inconnus en ajoutant leur token d'authentification.",
   "refresh_users": "🔄 Actualiser les utilisateurs",
