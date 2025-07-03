@@ -174,7 +174,7 @@ export const AccountHistoryCharts: React.FC<AccountHistoryChartsProps> = ({
     accountsWithAverage.sort((a, b) => Math.abs(b.latestBalance) - Math.abs(a.latestBalance));
 
     // Create datasets for each account
-    const datasets = accountsWithAverage.map((item, index) => {
+    const datasets = accountsWithAverage.map((item) => {
       const { account, bankName, data, latestBalance, color } = item;
       
       // Format currency for legend - no cents, compact notation

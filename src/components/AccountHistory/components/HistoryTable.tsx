@@ -23,14 +23,12 @@ export const HistoryTable: React.FC<HistoryTableProps> = ({ history, accounts })
   const { t } = useTranslation('financial');
   const { connections } = useAppData();
   const [connectorMap, setConnectorMap] = useState<Map<number, Connector>>(new Map());
-  const [isLoadingConnectors, setIsLoadingConnectors] = useState(false);
 
   // Load connectors (similar to BankManager)
   useEffect(() => {
     const loadConnectors = async () => {
       if (accounts.length === 0 || connections.length === 0) return;
 
-      setIsLoadingConnectors(true);
       try {
         const config = AccountsService.getConfig();
 
@@ -55,8 +53,6 @@ export const HistoryTable: React.FC<HistoryTableProps> = ({ history, accounts })
         }
       } catch (error) {
         console.error('Failed to load connectors:', error);
-      } finally {
-        setIsLoadingConnectors(false);
       }
     };
 

@@ -17,7 +17,6 @@ export const AccountHistorySettings: React.FC<AccountHistorySettingsProps> = ({ 
   const [showConfirmClear, setShowConfirmClear] = useState(false);
   const { connections } = useAppData();
   const [connectorMap, setConnectorMap] = useState<Map<number, Connector>>(new Map());
-  const [isLoadingConnectors, setIsLoadingConnectors] = useState(false);
   
   const {
     selectedAccounts,
@@ -33,14 +32,12 @@ export const AccountHistorySettings: React.FC<AccountHistorySettingsProps> = ({ 
     const loadConnectors = async () => {
       if (eligibleAccounts.length === 0 || connections.length === 0) return;
 
-      setIsLoadingConnectors(true);
       try {
         const config = AccountsService.getConfig();
 
         // Get unique connection IDs from accounts
         const connectionIds = [...new Set(eligibleAccounts.map(acc => acc.id_connection).filter(Boolean))];
         if (connectionIds.length === 0) {
-          setIsLoadingConnectors(false);
           return;
         }
 
@@ -61,8 +58,6 @@ export const AccountHistorySettings: React.FC<AccountHistorySettingsProps> = ({ 
         }
       } catch (error) {
         console.error('Failed to load connectors:', error);
-      } finally {
-        setIsLoadingConnectors(false);
       }
     };
 
