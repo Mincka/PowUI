@@ -95,7 +95,7 @@ To access more accounts from the same bank with `directaccess` method:
 4. You may be prompted to "Add more accounts" during or after the connection process
 5. Follow the flow to select and authorize additional accounts
 
-🧪 **Development Tool Notice**
+## Development Tool Notice
 
 **PowUI is designed as a development and prototyping tool, not a production-ready aggregator.** Since it operates in Powens' sandbox environment, this application serves as a convenient way for developers to:
 - Familiarize themselves with the Powens API workflows
@@ -111,7 +111,7 @@ To access more accounts from the same bank with `directaccess` method:
 
 **Before moving to production**, developers should implement proper backend authentication, secure credential handling, and use Powens' production environment with appropriate security measures.
 
-⚠️ **Security Warning**
+## ⚠️ Security Warning
 
 - PowUI does not include any backend server. All data is sent directly from your browser to the Powens API.
 - API credentials and tokens are stored in your browser's localStorage. This is acceptable for local use, but if you deploy PowUI online, be aware that credentials could be exposed to attackers targeting your users. Do not use this application in production or on the public internet without understanding these risks.
@@ -121,7 +121,7 @@ To access more accounts from the same bank with `directaccess` method:
 This project was inspired by the blog post ["Je récupère le solde de son compte bancaire et les dernières opérations"](https://www.sigalou-domotique.fr/je-recuperer-le-solde-de-son-compte-bancaire-et-les-dernieres-operations) by [Sigalou](https://github.com/Sigalou).  
 Many thanks to the author for sharing their work and providing inspiration for this application.
 
-## ⚠️ Disclaimer
+## Disclaimer
 
 **This project is NOT affiliated with, endorsed by, or officially connected to Powens in any way.** PowUI is an independent, third-party application developed by the community to demonstrate and facilitate interaction with Powens' publicly available API. This is an unofficial tool created for educational and development purposes.
 
@@ -129,6 +129,6 @@ Many thanks to the author for sharing their work and providing inspiration for t
 
 Powens is a trademark of its respective owners. All references to Powens services and APIs are for compatibility and integration purposes only.
 
-## 📜 License
+## License
 
 This project is licensed under the [MIT License](./LICENSE).
