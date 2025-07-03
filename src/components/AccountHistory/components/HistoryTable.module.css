@@ -1,0 +1,239 @@
+.tableContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.tableWrapper {
+  overflow-x: auto;
+  border-radius: var(--border-radius);
+  border: 1px solid var(--border-color);
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  background: white;
+  font-size: 0.875rem;
+}
+
+.table th {
+  background: var(--background-secondary);
+  border-bottom: 2px solid var(--border-color);
+  padding: 1rem 0.75rem;
+  text-align: left;
+  font-weight: 600;
+  color: var(--text-primary);
+  white-space: nowrap;
+}
+
+.table td {
+  padding: 0.75rem;
+  border-bottom: 1px solid var(--border-color);
+  white-space: nowrap;
+}
+
+.dateHeader,
+.dateCell {
+  min-width: 100px;
+  background: var(--background-tertiary);
+  font-weight: 500;
+  position: sticky;
+  left: 0;
+  z-index: 1;
+}
+
+.dateHeader {
+  background: var(--background-secondary);
+  border-right: 1px solid var(--border-color);
+}
+
+.dateCell {
+  background: white;
+  border-right: 1px solid var(--border-color);
+  font-weight: 500;
+  color: var(--text-primary);
+}
+
+.bankHeader {
+  background: var(--primary-color);
+  color: white;
+  text-align: center !important;
+  font-weight: 600;
+  font-size: 0.875rem;
+  padding: 0.75rem;
+  border-bottom: 2px solid var(--primary-color);
+  border-left: 2px solid white;
+  border-right: 2px solid white;
+  position: relative;
+  vertical-align: middle;
+  line-height: 1.2;
+}
+
+.bankHeader:first-of-type {
+  border-left: none;
+}
+
+.bankHeader:last-of-type {
+  border-right: none;
+}
+
+.accountHeader {
+  min-width: 120px;
+  text-align: center;
+}
+
+.accountHeaderContent {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  align-items: center;
+}
+
+.accountName {
+  font-weight: 600;
+  color: var(--text-primary);
+  font-size: 0.875rem;
+}
+
+.accountType {
+  font-size: 0.75rem;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  font-weight: 500;
+  background: var(--background-tertiary);
+  padding: 0.125rem 0.375rem;
+  border-radius: calc(var(--border-radius) / 2);
+}
+
+.totalHeader {
+  min-width: 120px;
+  text-align: center;
+  background: var(--primary-light, rgba(59, 130, 246, 0.1));
+  color: var(--primary-color);
+  border-left: 2px solid var(--primary-color);
+}
+
+.balanceCell,
+.totalCell {
+  text-align: center;
+  font-weight: 500;
+}
+
+.totalCell {
+  background: var(--primary-light, rgba(59, 130, 246, 0.05));
+  border-left: 2px solid var(--primary-color);
+  font-weight: 600;
+}
+
+.positiveBalance {
+  color: var(--success-color, #10b981);
+}
+
+.negativeBalance {
+  color: var(--danger-color, #ef4444);
+}
+
+.noData {
+  color: var(--text-secondary);
+  font-style: italic;
+}
+
+.dataRow:hover {
+  background: var(--background-hover);
+}
+
+.dataRow:hover .dateCell {
+  background: var(--background-hover);
+}
+
+.tableSummary {
+  text-align: center;
+  padding: 1rem;
+  background: var(--background-secondary);
+  border-radius: var(--border-radius);
+}
+
+.summaryText {
+  font-size: 0.875rem;
+  color: var(--text-secondary);
+  font-style: italic;
+}
+
+.noData {
+  text-align: center;
+  padding: 2rem;
+  color: var(--text-secondary);
+  background: var(--background-secondary);
+  border-radius: var(--border-radius);
+}
+
+@media (max-width: 768px) {
+  .table {
+    font-size: 0.75rem;
+  }
+
+  .table th,
+  .table td {
+    padding: 0.5rem 0.375rem;
+  }
+
+  .dateHeader,
+  .dateCell {
+    min-width: 80px;
+  }
+
+  .accountHeader {
+    min-width: 100px;
+  }
+
+  .accountName {
+    font-size: 0.75rem;
+  }
+
+  .accountType {
+    font-size: 0.65rem;
+    padding: 0.1rem 0.25rem;
+  }
+
+  .totalHeader {
+    min-width: 100px;
+  }
+}
+
+@media (max-width: 480px) {
+  .table {
+    font-size: 0.7rem;
+  }
+
+  .table th,
+  .table td {
+    padding: 0.4rem 0.25rem;
+  }
+
+  .dateHeader,
+  .dateCell {
+    min-width: 70px;
+  }
+
+  .accountHeader {
+    min-width: 80px;
+  }
+
+  .accountHeaderContent {
+    gap: 0.1rem;
+  }
+
+  .accountName {
+    font-size: 0.7rem;
+  }
+
+  .accountType {
+    font-size: 0.6rem;
+    padding: 0.05rem 0.2rem;
+  }
+
+  .totalHeader {
+    min-width: 80px;
+  }
+}

@@ -17,6 +17,7 @@ import { FinancialSummary } from './components/FinancialSummary';
 import { BankManager } from './components/BankManager';
 import { ConnectionManager } from './components/ConnectionManager';
 import { NewConnectionSetup } from './components/NewConnectionSetup';
+import { AccountHistory } from './components/AccountHistory';
 import { AppDataProvider, useAppData } from './contexts/AppDataContext';
 import { AccountsService } from './services/accountsService';
 import { ConnectorService } from './services/connectorService';
@@ -229,6 +230,8 @@ function AppContent() {
       />
 
       <InvestmentPerformance investmentAccounts={summary.investmentAccounts} />
+
+      <AccountHistory accounts={data.accounts} />
 
       {showNewConnectionSetup && (
         <NewConnectionSetup onClose={() => setShowNewConnectionSetup(false)} />

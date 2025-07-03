@@ -1,0 +1,260 @@
+.settings {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.section {
+  background: var(--background-secondary);
+  border-radius: var(--border-radius);
+  padding: 1.5rem;
+}
+
+.sectionTitle {
+  margin: 0 0 0.5rem 0;
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.sectionDescription {
+  margin: 0 0 1.5rem 0;
+  color: var(--text-secondary);
+  line-height: 1.5;
+  font-size: 0.875rem;
+}
+
+.selectionControls {
+  display: flex;
+  gap: 0.75rem;
+  margin-bottom: 1.5rem;
+}
+
+.controlButton {
+  background: var(--primary-color);
+  color: white;
+  border: none;
+  border-radius: var(--border-radius);
+  padding: 0.5rem 1rem;
+  font-size: 0.875rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.controlButton:hover:not(:disabled) {
+  background: var(--primary-hover);
+  transform: translateY(-1px);
+}
+
+.controlButton:disabled {
+  background: var(--border-color);
+  cursor: not-allowed;
+  transform: none;
+  opacity: 0.6;
+}
+
+.accountList {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  margin-bottom: 1rem;
+  max-height: 400px;
+  overflow-y: auto;
+  border: 1px solid var(--border-color);
+  border-radius: var(--border-radius);
+  padding: 1rem;
+}
+
+.bankGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.bankHeader {
+  font-weight: 600;
+  color: var(--primary-color);
+  font-size: 0.875rem;
+  padding: 0.5rem 0.75rem;
+  background: var(--primary-light, rgba(59, 130, 246, 0.1));
+  border-radius: var(--border-radius);
+  border-left: 3px solid var(--primary-color);
+}
+
+.accountItem {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.75rem;
+  border-radius: var(--border-radius);
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+  border: 1px solid transparent;
+}
+
+.accountItem:hover {
+  background: var(--background-hover);
+  border-color: var(--border-color);
+}
+
+.checkbox {
+  width: 18px;
+  height: 18px;
+  cursor: pointer;
+  accent-color: var(--primary-color);
+}
+
+.accountInfo {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.accountName {
+  font-weight: 500;
+  color: var(--text-primary);
+  font-size: 0.875rem;
+}
+
+.accountDetails {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+}
+
+.accountType {
+  font-size: 0.75rem;
+  color: var(--text-secondary);
+  background: var(--background-tertiary);
+  padding: 0.25rem 0.5rem;
+  border-radius: calc(var(--border-radius) / 2);
+  text-transform: uppercase;
+  font-weight: 500;
+}
+
+.accountBalance {
+  font-size: 0.875rem;
+  color: var(--text-primary);
+  font-weight: 500;
+  margin-left: auto;
+}
+
+.selectionSummary {
+  text-align: center;
+  font-size: 0.875rem;
+  color: var(--text-secondary);
+  font-style: italic;
+  padding: 0.75rem;
+  background: var(--background-tertiary);
+  border-radius: var(--border-radius);
+}
+
+.clearButton {
+  background: var(--danger-color, #dc3545);
+  color: white;
+  border: none;
+  border-radius: var(--border-radius);
+  padding: 0.75rem 1.5rem;
+  font-size: 0.875rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.clearButton:hover {
+  background: var(--danger-hover, #c82333);
+  transform: translateY(-1px);
+}
+
+.confirmationBox {
+  background: var(--background-tertiary);
+  border: 1px solid var(--border-color);
+  border-radius: var(--border-radius);
+  padding: 1.5rem;
+}
+
+.confirmationText {
+  margin: 0 0 1.5rem 0;
+  color: var(--text-primary);
+  font-weight: 500;
+  text-align: center;
+}
+
+.confirmationButtons {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+}
+
+.confirmButton {
+  background: var(--danger-color, #dc3545);
+  color: white;
+  border: none;
+  border-radius: var(--border-radius);
+  padding: 0.75rem 1.5rem;
+  font-size: 0.875rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.confirmButton:hover {
+  background: var(--danger-hover, #c82333);
+  transform: translateY(-1px);
+}
+
+.cancelButton {
+  background: var(--background-secondary);
+  color: var(--text-primary);
+  border: 1px solid var(--border-color);
+  border-radius: var(--border-radius);
+  padding: 0.75rem 1.5rem;
+  font-size: 0.875rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.cancelButton:hover {
+  background: var(--background-hover);
+  transform: translateY(-1px);
+}
+
+.noAccountsMessage {
+  text-align: center;
+  padding: 3rem 1rem;
+  color: var(--text-secondary);
+}
+
+.noAccountsMessage h3 {
+  margin: 0 0 0.5rem 0;
+  color: var(--text-primary);
+}
+
+.noAccountsMessage p {
+  margin: 0;
+  line-height: 1.5;
+}
+
+@media (max-width: 768px) {
+  .selectionControls {
+    flex-direction: column;
+  }
+
+  .controlButton {
+    width: 100%;
+    text-align: center;
+  }
+
+  .accountDetails {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.5rem;
+  }
+
+  .accountBalance {
+    margin-left: 0;
+  }
+
+  .confirmationButtons {
+    flex-direction: column;
+  }
+}
