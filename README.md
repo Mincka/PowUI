@@ -30,31 +30,6 @@ PowUI is an interface to easily interact with the Powens API. It enables you to 
    - Follow the setup wizard to connect your bank accounts
    - Create a new connection for each bank you want to aggregate (make sure the `Connector` is `Activated` in Powens).
 
-## Understanding Powens Data Retrieval Methods
-
-Powens uses different methods to retrieve banking information, each with different security implications:
-
-**🔐 Data Retrieval Methods**
-
-**Primary Method - Open Banking (PSD2 API):**
-- Uses standardized European banking APIs (PSD2 regulation)
-- More secure as it doesn't require sharing actual banking credentials
-- Limited to banks that fully support Open Banking standards
-
-**Secondary Method - Web Scraping/Robots:**
-- For banks not supporting Open Banking or for additional account access
-- Uses automated systems that connect directly to banking interfaces with your actual credentials
-- **This method is significantly less secure** as it involves sharing your real banking credentials
-- See [Powens Terms and Conditions](https://www.powens.com/powens-terms-and-conditions-of-use/) for detailed information about data handling and risks
-
-**Adding Additional Accounts:**
-To access more accounts from the same bank with `directaccess` method:
-1. Go to the Connection Manager 
-2. Use the gear icon for an existing connection
-3. Connect to your bank initially
-4. You may be prompted to "Add more accounts" during or after the connection process
-5. Follow the flow to select and authorize additional accounts
-
 ## 🚀 Getting Started
 
 ### Prerequisites
@@ -94,6 +69,31 @@ docker run -p 3000:80 powui
 
 - The app will be available at [http://localhost:3000](http://localhost:3000).
 - You can provide your own `.env` file for API configuration (see `.env.example` for required variables).
+
+## Understanding Powens Data Retrieval Methods
+
+Powens uses different methods to retrieve banking information, each with different security implications:
+
+**🔐 Data Retrieval Methods**
+
+**Primary Method - Open Banking (PSD2 API):**
+- Uses standardized European banking APIs (PSD2 regulation)
+- More secure as it doesn't require sharing actual banking credentials
+- Limited to banks that fully support Open Banking standards
+
+**Secondary Method - Web Scraping/Robots:**
+- For banks not supporting Open Banking or for additional account access
+- Uses automated systems that connect directly to banking interfaces with your actual credentials
+- **This method is significantly less secure** as it involves sharing your real banking credentials
+- See [Powens Terms and Conditions](https://www.powens.com/powens-terms-and-conditions-of-use/) for detailed information about data handling and risks
+
+**Adding Additional Accounts:**
+To access more accounts from the same bank with `directaccess` method:
+1. Go to the Connection Manager 
+2. Use the gear icon for an existing connection
+3. Connect to your bank initially
+4. You may be prompted to "Add more accounts" during or after the connection process
+5. Follow the flow to select and authorize additional accounts
 
 🧪 **Development Tool Notice**
 
