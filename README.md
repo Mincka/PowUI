@@ -117,10 +117,6 @@ To access more accounts from the same bank with `directaccess` method:
 - API credentials and tokens are stored in your browser's localStorage. This is acceptable for local use, but if you deploy PowUI online, be aware that credentials could be exposed to attackers targeting your users. Do not use this application in production or on the public internet without understanding these risks.
 - **Bank credentials are never handled by PowUI** - all banking authentication and credential management is handled securely by Powens through their dedicated authentication flows. PowUI only receives aggregated financial data after users have authenticated directly with their banks through Powens' secure interface.
 
-**Context & Credits**  
-This project was inspired by the blog post ["Je récupère le solde de son compte bancaire et les dernières opérations"](https://www.sigalou-domotique.fr/je-recuperer-le-solde-de-son-compte-bancaire-et-les-dernieres-operations) by [Sigalou](https://github.com/Sigalou).  
-Many thanks to the author for sharing their work and providing inspiration for this application.
-
 ## Disclaimer
 
 **This project is NOT affiliated with, endorsed by, or officially connected to Powens in any way.** PowUI is an independent, third-party application developed by the community to demonstrate and facilitate interaction with Powens' publicly available API. This is an unofficial tool created for educational and development purposes.
@@ -128,6 +124,10 @@ Many thanks to the author for sharing their work and providing inspiration for t
 **This software is provided "AS-IS" without any warranty, support, or guarantees.** The developers assume no liability for any issues, security breaches, data loss, or damages that may arise from using this application. Users assume all risks associated with its use.
 
 Powens is a trademark of its respective owners. All references to Powens services and APIs are for compatibility and integration purposes only.
+
+## Credits
+This project was inspired by the blog post ["Je récupère le solde de son compte bancaire et les dernières opérations"](https://www.sigalou-domotique.fr/je-recuperer-le-solde-de-son-compte-bancaire-et-les-dernieres-operations) by [Sigalou](https://github.com/Sigalou).  
+Many thanks to the author for sharing their work and providing inspiration for this application.
 
 ## License
 
