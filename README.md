@@ -2,32 +2,6 @@
 
 PowUI is an interface to easily interact with the Powens API. It enables you to visualize aggregated financial data for users in a Powens app and serves as a basic management interface to manage users and their connections for essential operations.
 
-🧪 **Development Tool Notice**
-
-**PowUI is designed as a development and prototyping tool, not a production-ready aggregator.** Since it operates in Powens' sandbox environment, this application serves as a convenient way for developers to:
-- Familiarize themselves with the Powens API workflows
-- Test and validate their integration setup before building production applications
-- Prototype user interfaces and data visualization concepts
-- Understand the API's capabilities and limitations
-
-**Sandbox Environment Limitations:**
-- Bank connectors in the sandbox environment may break more frequently than in production
-- Powens prioritizes connector fixes and maintenance for paying customers over free sandbox users
-- Some banking institutions may have limited or unstable connectivity in sandbox mode
-- Data synchronization may be less reliable compared to the production environment
-
-**Before moving to production**, developers should implement proper backend authentication, secure credential handling, and use Powens' production environment with appropriate security measures.
-
-⚠️ **Security Warning**
-
-- PowUI does not include any backend server. All data is sent directly from your browser to the Powens API.
-- API credentials and tokens are stored in your browser's localStorage. This is acceptable for local use, but if you deploy PowUI online, be aware that credentials could be exposed to attackers targeting your users. Do not use this application in production or on the public internet without understanding these risks.
-- **Bank credentials are never handled by PowUI** - all banking authentication and credential management is handled securely by Powens through their dedicated authentication flows. PowUI only receives aggregated financial data after users have authenticated directly with their banks through Powens' secure interface.
-
-**Context & Credits**  
-This project was inspired by the blog post ["Je récupère le solde de son compte bancaire et les dernières opérations"](https://www.sigalou-domotique.fr/je-recuperer-le-solde-de-son-compte-bancaire-et-les-dernieres-operations) by [Sigalou](https://github.com/Sigalou).  
-Many thanks to the author for sharing their work and providing inspiration for this application.
-
 ## Step-by-step setup:
 
 ### 🌐 Steps 1-3: Done on Powens Website
@@ -121,46 +95,31 @@ docker run -p 3000:80 powui
 - The app will be available at [http://localhost:3000](http://localhost:3000).
 - You can provide your own `.env` file for API configuration (see `.env.example` for required variables).
 
-## 📁 Project Architecture
+🧪 **Development Tool Notice**
 
-```
-src/
-├── components/             # React components
-│   ├── ApiConfiguration/   # API settings component
-│   ├── BankChart/         # Bank visualization component
-│   ├── BankManager/       # Bank account management
-│   ├── Charts/            # Chart components
-│   ├── Dashboard/         # Main dashboard
-│   ├── Filters/           # Filter controls
-│   ├── FinancialSummary/  # Financial overview
-│   ├── InvestmentPerformance/ # Investment analytics
-│   ├── ManagementControls/ # UI control components
-│   └── RealEstateForm/    # Real estate management
-├── hooks/                 # Custom React hooks
-│   ├── useAccountsData.ts # Data fetching and management
-│   └── useApiConfig.ts    # Configuration management
-├── services/              # API services and external integrations
-│   ├── accountsService.ts # Banking API service
-│   └── realEstateService.ts # Real estate data service
-├── utils/                 # Utility functions
-│   ├── accountDeduplication.ts # Duplicate handling
-│   ├── bankUtils.ts       # Bank-specific utilities
-│   ├── chartDataUtils.ts  # Chart data preparation
-│   ├── currencyUtils.ts   # Currency formatting
-│   ├── financialCalculations.ts # Financial calculations
-│   └── accountUtils.ts    # Legacy compatibility layer
-├── types/                 # TypeScript type definitions
-│   ├── accounts.ts        # Account-related types
-│   ├── errors.ts          # Error handling types
-│   └── realEstate.ts      # Real estate types
-├── config/                # Configuration files
-│   └── api.ts             # API configuration
-├── data/                  # Mock data and test fixtures
-│   └── mockData.ts        # Development data
-└── styles/                # Global styles
-    ├── App.css            # Main application styles
-    └── variables.css      # CSS custom properties
-```
+**PowUI is designed as a development and prototyping tool, not a production-ready aggregator.** Since it operates in Powens' sandbox environment, this application serves as a convenient way for developers to:
+- Familiarize themselves with the Powens API workflows
+- Test and validate their integration setup before building production applications
+- Prototype user interfaces and data visualization concepts
+- Understand the API's capabilities and limitations
+
+**Sandbox Environment Limitations:**
+- Bank connectors in the sandbox environment may break more frequently than in production
+- Powens prioritizes connector fixes and maintenance for paying customers over free sandbox users
+- Some banking institutions may have limited or unstable connectivity in sandbox mode
+- Data synchronization may be less reliable compared to the production environment
+
+**Before moving to production**, developers should implement proper backend authentication, secure credential handling, and use Powens' production environment with appropriate security measures.
+
+⚠️ **Security Warning**
+
+- PowUI does not include any backend server. All data is sent directly from your browser to the Powens API.
+- API credentials and tokens are stored in your browser's localStorage. This is acceptable for local use, but if you deploy PowUI online, be aware that credentials could be exposed to attackers targeting your users. Do not use this application in production or on the public internet without understanding these risks.
+- **Bank credentials are never handled by PowUI** - all banking authentication and credential management is handled securely by Powens through their dedicated authentication flows. PowUI only receives aggregated financial data after users have authenticated directly with their banks through Powens' secure interface.
+
+**Context & Credits**  
+This project was inspired by the blog post ["Je récupère le solde de son compte bancaire et les dernières opérations"](https://www.sigalou-domotique.fr/je-recuperer-le-solde-de-son-compte-bancaire-et-les-dernieres-operations) by [Sigalou](https://github.com/Sigalou).  
+Many thanks to the author for sharing their work and providing inspiration for this application.
 
 ## ⚠️ Disclaimer
 
