@@ -1,5 +1,6 @@
 import { Account } from '../types/accounts';
 import { AccountHistoryEntry, AccountHistorySettings, ChartType } from '../types/accountHistory';
+import { getLocalDateString } from '../utils/dateUtils';
 
 export class AccountHistoryService {
   private static readonly HISTORY_KEY_PREFIX = 'accountHistory_';
@@ -119,7 +120,7 @@ export class AccountHistoryService {
       return;
     }
 
-    const today = new Date().toISOString().split('T')[0]; // YYYY-MM-DD
+    const today = getLocalDateString(); // YYYY-MM-DD in user's local timezone
     const selectedAccounts = this.getSelectedAccounts(userId);
     
     // Filter accounts to only eligible ones

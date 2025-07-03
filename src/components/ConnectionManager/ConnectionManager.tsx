@@ -76,7 +76,7 @@ export const ConnectionManager: React.FC<ConnectionManagerProps> = ({
   const [webviewModal, setWebviewModal] = useState<{
     connectionId: number;
     connectionBankName: string;
-    mode: 'manage';
+    mode: 'manage' | 'reconnect';
   } | null>(null);
 
   // Process and group connections by connector/bank
@@ -363,6 +363,21 @@ export const ConnectionManager: React.FC<ConnectionManagerProps> = ({
     });
   };
 
+  const handleReauthConnection = (connectionId: number) => {
+    const connection = connections.find(conn => conn.id === connectionId);
+    if (!connection) return;
+
+    const bankInfo = getConnectionBankInfo(connectionId);
+    const bankName =
+      bankInfo.bankNames.length > 0 ? bankInfo.bankNames.join(', ') : t('unknown_connection');
+
+    setWebviewModal({
+      connectionId,
+      connectionBankName: bankName,
+      mode: 'reconnect',
+    });
+  };
+
   const statusSummary = getConnectionStatusSummary();
 
   if (isLoadingConnections || isLoadingAccounts) {
@@ -468,6 +483,7 @@ export const ConnectionManager: React.FC<ConnectionManagerProps> = ({
                 onToggleConnection={handleToggleConnection}
                 onSyncConnection={handleSyncConnection}
                 onManageConnection={handleManageConnection}
+                onReauthConnection={handleReauthConnection}
                 onDeleteConnection={handleDeleteClick}
                 getNextSyncTime={getNextSyncTime}
                 connectionNeedsAttention={connectionNeedsAttention}

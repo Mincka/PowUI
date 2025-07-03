@@ -75,6 +75,7 @@
   "active": "Active",
   "update_label": "Updated:",
   "next_sync_label": "Next:",
+  "access_expire_label": "Expires:",
   "delete_action": "Delete",
   "review_action": "Review",
   "sync_connection": "Synchronize this connection",
@@ -117,5 +118,14 @@
   "updated_date": "Updated:",
   "deletion_warning_bulk": "⚠️ Warning: Deleting connections is irreversible and will also permanently delete all associated accounts, transactions, and data.",
   "unknown_connection": "Unknown connection",
-  "sync_all_active_connections": "Synchronize all active connections"
+  "sync_all_active_connections": "Synchronize all active connections",
+  "reauth_connection": "Re-authenticate",
+  "reauth_connection_tooltip": "Re-authenticate this connection to fix authentication issues",
+  "reauth_title": "🔐 Re-authentication",
+  "reauth_description": "Re-authenticate your {{bankName}} connection to resolve authentication issues.",
+  "reauth_step_title": "Re-authenticate connection",
+  "reauth_step_description": "Re-authenticate your {{bankName}} connection to resolve authentication issues.",
+  "reauth_url_label": "Re-authentication URL:",
+  "open_reauth": "🔐 Open re-authentication",
+  "step_label_reauth": "Re-authentication"
 }

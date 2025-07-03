@@ -12,6 +12,7 @@ interface ConnectionItemProps {
   onToggleSelection: () => void;
   onSync: () => void;
   onManage?: () => void;
+  onReauth?: () => void;
   onDelete: () => void;
   getNextSyncTime: (connectionId: number) => string | null;
   connectionNeedsAttention: (connectionId: number) => boolean;
@@ -24,6 +25,7 @@ export const ConnectionItem: React.FC<ConnectionItemProps> = ({
   onToggleSelection,
   onSync,
   onManage,
+  onReauth,
   onDelete,
   getNextSyncTime,
   connectionNeedsAttention,
@@ -57,10 +59,39 @@ export const ConnectionItem: React.FC<ConnectionItemProps> = ({
     }
   };
 
+  // Helper function to determine if connection needs re-authentication
+  const needsReauth = () => {
+    if (!connection.state && !connection.error) return false;
+    const authErrors = ['SCARequired', 'webauthRequired', 'additionalInformationNeeded', 'decoupled', 'wrongpass'];
+    return authErrors.includes(connection.state || '') || authErrors.includes(connection.error || '');
+  };
+
   const getConnectionStatusDisplay = () => {
     if (connection.state || connection.error) {
+      const errorCode = connection.state || connection.error || 'unknown_error';
+      const descriptionKey = `errors:${errorCode}_description`;
+      
+      // Try to get translated error description, fallback to original message or error code
+      let detailedMessage;
+      try {
+        detailedMessage = t(descriptionKey);
+        // If translation key doesn't exist, fall back to original message or error code
+        if (detailedMessage === descriptionKey) {
+          detailedMessage = connection.error_message || t(`errors:${errorCode}`) || errorCode;
+          // If the main error key also doesn't exist, use error code
+          if (detailedMessage === `errors:${errorCode}`) {
+            detailedMessage = errorCode;
+          }
+        }
+      } catch {
+        detailedMessage = connection.error_message || errorCode;
+      }
+
+      // Show detailed message with error code in parentheses: "Message (ErrorCode)"
+      const displayText = `${detailedMessage} (${errorCode})`;
+
       return {
-        text: connection.error_message || connection.state || connection.error || t('error'),
+        text: displayText,
         class: styles.statusError,
       };
     }
@@ -129,12 +160,26 @@ export const ConnectionItem: React.FC<ConnectionItemProps> = ({
           <div className={styles.connectionMeta}>
             <div className={styles.statusInfo}>
               <span className={status.class}>{status.text}</span>
+              {needsReauth() && onReauth && (
+                <button 
+                  onClick={onReauth}
+                  className={styles.errorActionButton}
+                  disabled={syncStatus.isLoading}
+                >
+                  {t(`errors:${connection.state || connection.error}_action`)}
+                </button>
+              )}
               <span className={styles.lastUpdate}>
                 {t('update_label')} {formatDateTime(connection.last_update)}
               </span>
               {nextSync && (
                 <span className={styles.nextSync}>
                   {t('next_sync_label')} {formatDateTimeShort(nextSync)}
+                </span>
+              )}
+              {connection.expire && (
+                <span className={styles.expireDate}>
+                  {t('access_expire_label')} {formatDateTime(connection.expire)}
                 </span>
               )}
             </div>
@@ -177,6 +222,17 @@ export const ConnectionItem: React.FC<ConnectionItemProps> = ({
           >
             {isCurrentlySyncing ? '⟳' : '↻'}
           </button>
+
+          {needsReauth() && onReauth && (
+            <button
+              onClick={onReauth}
+              disabled={syncStatus.isLoading}
+              className={styles.reauthButton}
+              title={t('reauth_connection_tooltip')}
+            >
+              🔐
+            </button>
+          )}
 
           <button
             onClick={() => onManage && onManage()}

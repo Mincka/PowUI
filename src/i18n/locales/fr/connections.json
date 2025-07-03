@@ -75,6 +75,7 @@
   "active": "Actif",
   "update_label": "Maj:",
   "next_sync_label": "Prochaine:",
+  "access_expire_label": "Expire:",
   "delete_action": "Supprimer",
   "review_action": "Examiner",
   "sync_connection": "Synchroniser cette connexion",
@@ -117,5 +118,14 @@
   "updated_date": "MAJ:",
   "deletion_warning_bulk": "⚠️ Attention : La suppression de connexions est irréversible et supprimera également tous les comptes, transactions et données associées de manière permanente.",
   "unknown_connection": "Connexion inconnue",
-  "sync_all_active_connections": "Synchroniser toutes les connexions actives"
+  "sync_all_active_connections": "Synchroniser toutes les connexions actives",
+  "reauth_connection": "Se ré-authentifier",
+  "reauth_connection_tooltip": "Ré-authentifier cette connexion pour résoudre les problèmes d'authentification",
+  "reauth_title": "🔐 Ré-authentification",
+  "reauth_description": "Ré-authentifiez votre connexion {{bankName}} pour résoudre les problèmes d'authentification.",
+  "reauth_step_title": "Ré-authentifier la connexion",
+  "reauth_step_description": "Ré-authentifiez votre connexion {{bankName}} pour résoudre les problèmes d'authentification.",
+  "reauth_url_label": "URL de ré-authentification:",
+  "open_reauth": "🔐 Ouvrir la ré-authentification",
+  "step_label_reauth": "Ré-authentification"
 }

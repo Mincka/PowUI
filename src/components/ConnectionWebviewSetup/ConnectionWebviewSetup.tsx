@@ -8,7 +8,7 @@ import styles from './ConnectionWebviewSetup.module.css';
 interface ConnectionWebviewSetupProps {
   connectionId: number;
   connectionBankName: string;
-  mode: 'manage';
+  mode: 'manage' | 'reconnect';
   onClose: () => void;
 }
 
@@ -17,6 +17,7 @@ type SetupStep = 'configure' | 'get-code' | 'open-url';
 export const ConnectionWebviewSetup: React.FC<ConnectionWebviewSetupProps> = ({
   connectionId,
   connectionBankName,
+  mode,
   onClose,
 }) => {
   const { apiConfig } = useApiConfig();
@@ -37,15 +38,33 @@ export const ConnectionWebviewSetup: React.FC<ConnectionWebviewSetupProps> = ({
   }, [isConfigValid, currentStep]);
 
   const getModalTitle = () => {
-    return '⚙️ Gestion de connexion';
+    return mode === 'reconnect' ? '🔐 Ré-authentification' : '⚙️ Gestion de connexion';
   };
 
   const getStepTitle = () => {
-    return 'Gérer la connexion';
+    return mode === 'reconnect' ? 'Ré-authentifier la connexion' : 'Gérer la connexion';
   };
 
   const getStepDescription = () => {
-    return `Gérez les comptes et paramètres de votre connexion ${connectionBankName}.`;
+    return mode === 'reconnect' 
+      ? `Ré-authentifiez votre connexion ${connectionBankName} pour résoudre les problèmes d'authentification.`
+      : `Gérez les comptes et paramètres de votre connexion ${connectionBankName}.`;
+  };
+
+  const getActionLabel = () => {
+    return mode === 'reconnect' ? 'Ré-authentification' : 'Gestion';
+  };
+
+  const getUrlLabel = () => {
+    return mode === 'reconnect' ? 'URL de ré-authentification:' : 'URL de gestion:';
+  };
+
+  const getOpenButtonText = () => {
+    return mode === 'reconnect' ? '🔐 Ouvrir la ré-authentification' : '🌐 Ouvrir la gestion';
+  };
+
+  const getStepLabel = () => {
+    return mode === 'reconnect' ? 'Ré-authentification' : 'Gestion';
   };
 
   const handleGetTemporaryCode = async () => {
@@ -64,9 +83,11 @@ export const ConnectionWebviewSetup: React.FC<ConnectionWebviewSetupProps> = ({
       setTemporaryCode(result.code);
       setCurrentStep('open-url');
 
-      // Build the webview URL for manage mode
+      // Build the webview URL based on mode
       const lang = currentLanguage === 'en' ? 'en' : 'fr';
-      const url = AccountsService.buildManageWebviewUrl(connectionId, result.code, apiConfig, lang);
+      const url = mode === 'reconnect' 
+        ? AccountsService.buildReconnectWebviewUrl(connectionId, result.code, apiConfig, lang)
+        : AccountsService.buildManageWebviewUrl(connectionId, result.code, apiConfig, lang);
 
       setWebviewUrl(url);
     } catch (err) {
@@ -108,7 +129,7 @@ export const ConnectionWebviewSetup: React.FC<ConnectionWebviewSetupProps> = ({
         </div>
         <div className={styles.connectionDetail}>
           <span className={styles.label}>Action:</span>
-          <span className={styles.value}>Gestion</span>
+          <span className={styles.value}>{getActionLabel()}</span>
         </div>
       </div>
 
@@ -221,7 +242,7 @@ export const ConnectionWebviewSetup: React.FC<ConnectionWebviewSetupProps> = ({
       </div>
 
       <div className={styles.urlPreview}>
-        <label>URL de gestion:</label>
+        <label>{getUrlLabel()}</label>
         <div className={styles.urlValue}>
           <code>{webviewUrl}</code>
         </div>
@@ -229,7 +250,7 @@ export const ConnectionWebviewSetup: React.FC<ConnectionWebviewSetupProps> = ({
 
       <div className={styles.stepActions}>
         <button onClick={handleOpenWebview} className={styles.btnPrimary}>
-          🌐 Ouvrir la gestion
+          {getOpenButtonText()}
         </button>
 
         <button onClick={handleReset} className={styles.btnSecondary}>
@@ -266,7 +287,7 @@ export const ConnectionWebviewSetup: React.FC<ConnectionWebviewSetupProps> = ({
             className={`${styles.progressStep} ${currentStep === 'open-url' ? styles.active : ''}`}
           >
             <span className={styles.stepNumber}>3</span>
-            <span className={styles.stepLabel}>Gestion</span>
+            <span className={styles.stepLabel}>{getStepLabel()}</span>
           </div>
         </div>
 

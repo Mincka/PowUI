@@ -569,6 +569,25 @@ export class AccountsService {
   }
 
   /**
+   * Build webview URL for re-authenticating an existing connection
+   */
+  static buildReconnectWebviewUrl(
+    connectionId: number,
+    temporaryCode: string,
+    customConfig?: ApiConfig,
+    lang: string = 'fr'
+  ): string {
+    const config = customConfig || this.config;
+
+    // Extract domain from apiUrl for webview
+    const domain = config.apiUrl.replace(/^https?:\/\//, '').replace(/\/.*$/, '');
+    const redirectUri = encodeURIComponent(
+      'https://integrate.budget-insight.com/demos/connect/callback'
+    );
+    return `https://webview.powens.com/${lang}/reconnect?domain=${domain}&client_id=${encodeURIComponent(config.clientId)}&code=${encodeURIComponent(temporaryCode)}&connection_id=${connectionId}&redirect_uri=${redirectUri}`;
+  }
+
+  /**
    * Returns mock data for development and testing
    * Mock data is now maintained in a separate file for better organization
    */

@@ -14,6 +14,7 @@ interface BankGroupProps {
   onToggleConnection: (id: number) => void;
   onSyncConnection: (id: number) => void;
   onManageConnection: (id: number) => void;
+  onReauthConnection: (id: number) => void;
   onDeleteConnection: (id: number) => void;
   getNextSyncTime: (id: number) => string | null;
   connectionNeedsAttention: (id: number) => boolean;
@@ -28,6 +29,7 @@ export const BankGroup: React.FC<BankGroupProps> = ({
   onToggleConnection,
   onSyncConnection,
   onManageConnection,
+  onReauthConnection,
   onDeleteConnection,
   getNextSyncTime,
   connectionNeedsAttention,
@@ -115,6 +117,7 @@ export const BankGroup: React.FC<BankGroupProps> = ({
               onToggleSelection={() => onToggleConnection(connection.id)}
               onSync={() => onSyncConnection(connection.id)}
               onManage={() => onManageConnection(connection.id)}
+              onReauth={() => onReauthConnection(connection.id)}
               onDelete={() => onDeleteConnection(connection.id)}
               getNextSyncTime={getNextSyncTime}
               connectionNeedsAttention={connectionNeedsAttention}
