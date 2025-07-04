@@ -189,7 +189,7 @@ export const AccountHistoryCharts: React.FC<AccountHistoryChartsProps> = ({
       const baseDataset = {
         label: `${bankName} - ${account.name} (${formattedAmount})`,
         data,
-        backgroundColor: chartType === 'area' ? `${color}40` : color,
+        backgroundColor: chartType === 'area' ? `${color}80` : color,
         borderColor: color,
         borderWidth: chartType === 'area' ? 2 : 1,
       };
@@ -206,8 +206,9 @@ export const AccountHistoryCharts: React.FC<AccountHistoryChartsProps> = ({
             ...baseDataset,
             fill: true,
             tension: 0.3,
-            pointRadius: 4,
-            pointHoverRadius: 6,
+            pointRadius: 2,
+            pointHoverRadius: 4,
+            stack: 'area-stack', // Add stacking for area charts
           };
         case 'line':
           return {
@@ -378,6 +379,17 @@ export const AccountHistoryCharts: React.FC<AccountHistoryChartsProps> = ({
       case 'area':
         return {
           ...baseOptions,
+          scales: {
+            ...baseOptions.scales,
+            x: {
+              ...baseOptions.scales.x,
+              stacked: true,
+            },
+            y: {
+              ...baseOptions.scales.y,
+              stacked: true,
+            },
+          },
           elements: {
             line: {
               tension: 0.3,

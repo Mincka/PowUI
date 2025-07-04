@@ -16,6 +16,16 @@ export const ChartTypeSelector: React.FC<ChartTypeSelectorProps> = ({
 
   const chartTypes: { value: ChartType; label: string; description: string }[] = [
     {
+      value: 'line',
+      label: t('line_chart'),
+      description: t('line_chart_description'),
+    },
+    {
+      value: 'area',
+      label: t('area_chart'),
+      description: t('area_chart_description'),
+    },
+    {
       value: 'multiColumn',
       label: t('multi_column_chart'),
       description: t('multi_column_chart_description'),
@@ -24,16 +34,6 @@ export const ChartTypeSelector: React.FC<ChartTypeSelectorProps> = ({
       value: 'stacked',
       label: t('stacked_chart'),
       description: t('stacked_chart_description'),
-    },
-    {
-      value: 'area',
-      label: t('area_chart'),
-      description: t('area_chart_description'),
-    },
-    {
-      value: 'line',
-      label: t('line_chart'),
-      description: t('line_chart_description'),
     },
   ];
 

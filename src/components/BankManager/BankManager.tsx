@@ -7,6 +7,7 @@ import {
   getAccountTypeDisplayName,
   getAccountTypeColor,
 } from '../../utils/accountUtils';
+import { generateBankColor, isUnknownBank } from '../../utils/bankUtils';
 import { ConnectorService } from '../../services/connectorService';
 import { AccountsService } from '../../services/accountsService';
 import { useAppData } from '../../contexts/AppDataContext';
@@ -220,7 +221,7 @@ export const BankManager: React.FC<BankManagerProps> = ({ accounts }) => {
                 <div
                   className={styles.bankHeader}
                   style={{
-                    backgroundColor: connectorInfo?.color,
+                    backgroundColor: connectorInfo?.color || (isUnknownBank(bankName) ? generateBankColor(bankName) : undefined),
                     cursor: 'pointer',
                   }}
                   onClick={() => toggleBankCollapse(bankName)}

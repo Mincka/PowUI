@@ -7,43 +7,12 @@ import { ConnectorService } from '../services/connectorService';
  */
 
 export const guessBankFromAccount = (account: Account): string => {
-  // Try to guess bank from BIC code
-  if (account.bic) {
-    const bic = account.bic.toUpperCase();
-    if (bic.includes('BNPP')) return 'BNP Paribas';
-    if (bic.includes('CRLY')) return 'Crédit Lyonnais';
-    if (bic.includes('AGRI')) return 'Crédit Agricole';
-    if (bic.includes('BRED')) return 'BRED';
-    if (bic.includes('CCBP')) return 'Crédit Coopératif';
-    if (bic.includes('CEPA')) return "Caisse d'Épargne";
-    if (bic.includes('CMCI')) return 'Crédit Mutuel';
-    if (bic.includes('HSBC')) return 'HSBC';
-    if (bic.includes('SGAB')) return 'Société Générale';
-    if (bic.includes('INGE')) return 'ING Direct';
-    if (bic.includes('REVO')) return 'Revolut';
-    if (bic.includes('N26')) return 'N26';
-  }
+  // Map connection IDs to specific bank names for demo data
+  if (account.id_connection === 8) return 'BoursoBank';
+  if (account.id_connection === 17) return 'Fortuneo';
+  if (account.id_connection === 25) return 'Bourse Direct';
 
-  // Try to guess from account name or original name
-  const accountName = (account.name + ' ' + account.original_name).toLowerCase();
-  if (accountName.includes('bnp') || accountName.includes('paribas')) return 'BNP Paribas';
-  if (accountName.includes('crédit lyonnais') || accountName.includes('lcl'))
-    return 'Crédit Lyonnais';
-  if (accountName.includes('crédit agricole') || accountName.includes('ca '))
-    return 'Crédit Agricole';
-  if (accountName.includes('bred')) return 'BRED';
-  if (accountName.includes('société générale') || accountName.includes('sg '))
-    return 'Société Générale';
-  if (accountName.includes('crédit mutuel') || accountName.includes('cm ')) return 'Crédit Mutuel';
-  if (accountName.includes("caisse d'épargne") || accountName.includes('ce '))
-    return "Caisse d'Épargne";
-  if (accountName.includes('hsbc')) return 'HSBC';
-  if (accountName.includes('ing')) return 'ING Direct';
-  if (accountName.includes('revolut')) return 'Revolut';
-  if (accountName.includes('n26')) return 'N26';
-  if (accountName.includes('boursorama')) return 'Boursorama';
-  if (accountName.includes('orange bank')) return 'Orange Bank';
-
+  // Fallback to generic bank name if no specific connection ID matches
   return 'Banque Inconnue';
 };
 
@@ -117,6 +86,54 @@ export const organizeAccountsByBankWithConnectors = (
   });
 
   return accountsByBank;
+};
+
+/**
+ * Generate a consistent random color for a bank name
+ * @param bankName The name of the bank to generate a color for
+ * @returns A CSS color string (HSL format)
+ */
+export const generateBankColor = (bankName: string): string => {
+  // Create a simple hash from the bank name for consistency
+  let hash = 0;
+  for (let i = 0; i < bankName.length; i++) {
+    const char = bankName.charCodeAt(i);
+    hash = ((hash << 5) - hash) + char;
+    hash = hash & hash; // Convert to 32-bit integer
+  }
+
+  // Use the hash to generate HSL values
+  const hue = Math.abs(hash) % 360; // 0-359 degrees
+  const saturation = 45 + (Math.abs(hash) % 30); // 45-75% saturation for pleasant colors
+  const lightness = 35 + (Math.abs(hash) % 20); // 35-55% lightness for good contrast
+
+  return `hsl(${hue}, ${saturation}%, ${lightness}%)`;
+};
+
+/**
+ * Check if a bank is considered "unknown" and should get a random color
+ * @param bankName The name of the bank to check
+ * @returns True if the bank should get a random color
+ */
+export const isUnknownBank = (bankName: string): boolean => {
+  const knownBanks = [
+    'BNP Paribas',
+    'Crédit Lyonnais',
+    'Crédit Agricole',
+    'BRED',
+    'Crédit Coopératif',
+    'Caisse d\'Épargne',
+    'Crédit Mutuel',
+    'HSBC',
+    'Société Générale',
+    'ING Direct',
+    'Revolut',
+    'N26',
+    'Boursorama',
+    'Orange Bank'
+  ];
+
+  return !knownBanks.includes(bankName) || bankName === 'Banque Inconnue';
 };
 
 /**

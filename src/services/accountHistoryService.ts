@@ -1,6 +1,6 @@
 import { Account } from '../types/accounts';
 import { AccountHistoryEntry, AccountHistorySettings, ChartType } from '../types/accountHistory';
-import { getLocalDateString } from '../utils/dateUtils';
+import { getLocalDateString, formatLocalDate } from '../utils/dateUtils';
 
 export class AccountHistoryService {
   private static readonly HISTORY_KEY_PREFIX = 'accountHistory_';
@@ -51,7 +51,7 @@ export class AccountHistoryService {
     return {
       enabled: true,
       selectedAccounts: [],
-      preferredChartType: 'multiColumn',
+      preferredChartType: 'line',
       userId,
     };
   }
@@ -264,5 +264,111 @@ export class AccountHistoryService {
     const history = this.getHistoryForSelectedAccounts(userId);
     const accountIds = [...new Set(history.map(entry => entry.accountId))];
     return accountIds;
+  }
+
+  /**
+   * Generate realistic account history for demo mode
+   * Creates 10 days of historical data ending with today
+   */
+  static generateDemoHistory(accounts: Account[], userId: number): void {
+    if (!this.isEnabled()) {
+      return;
+    }
+
+    const eligibleAccounts = accounts.filter(account => this.isAccountEligible(account));
+    
+    if (eligibleAccounts.length === 0) {
+      return;
+    }
+
+    // Auto-select all eligible accounts for demo
+    const accountIds = eligibleAccounts.map(account => account.id);
+    this.setSelectedAccounts(userId, accountIds);
+
+    // Generate history for the past 10 days (including today)
+    const historyEntries: AccountHistoryEntry[] = [];
+    const today = new Date();
+    
+    for (let dayOffset = 9; dayOffset >= 0; dayOffset--) {
+      const date = new Date(today);
+      date.setDate(today.getDate() - dayOffset);
+      const dateString = formatLocalDate(date);
+      
+      eligibleAccounts.forEach(account => {
+        // Generate realistic balance progression
+        const currentBalance = account.balance;
+        const baseVariation = this.getAccountVariationPattern(account, dayOffset);
+        const randomVariation = (Math.random() - 0.5) * 0.02; // ±1% random variation
+        const totalVariation = baseVariation + randomVariation;
+        
+        // Calculate historical balance
+        let historicalBalance: number;
+        if (dayOffset === 0) {
+          // Today's balance should match current balance
+          historicalBalance = currentBalance;
+        } else {
+          // Apply variation to get historical balance
+          historicalBalance = currentBalance * (1 - totalVariation * dayOffset / 10);
+        }
+        
+        // Round to 2 decimal places for realistic banking values
+        historicalBalance = Math.round(historicalBalance * 100) / 100;
+        
+        historyEntries.push({
+          accountId: account.id,
+          date: dateString,
+          balance: historicalBalance,
+          userId,
+        });
+      });
+    }
+
+    // Save the generated history
+    this.saveHistory(userId, historyEntries);
+    console.log(`Generated demo history for ${eligibleAccounts.length} accounts over 10 days`);
+  }
+
+  /**
+   * Get account-specific variation pattern for realistic history
+   */
+  private static getAccountVariationPattern(account: Account, dayOffset: number): number {
+    const accountType = account.type?.toLowerCase() || '';
+    const isBusinessAccount = account.usage === 'ORGA';
+    
+    // Base variation patterns by account type
+    let baseVariation = 0;
+    
+    if (accountType.includes('checking')) {
+      // Checking accounts have moderate daily variations
+      baseVariation = isBusinessAccount ? 0.08 : 0.05; // Business accounts vary more
+      // Add weekly pattern (less money mid-week, more after salary/payments)
+      const weeklyPattern = Math.sin((dayOffset * 2 * Math.PI) / 7) * 0.02;
+      baseVariation += weeklyPattern;
+    } else if (accountType.includes('savings')) {
+      // Savings accounts grow slowly and steadily
+      baseVariation = -0.01; // Slight growth over time
+      // Add monthly deposit pattern
+      if (dayOffset === 7 || dayOffset === 3) {
+        baseVariation -= 0.03; // Deposits on certain days
+      }
+    } else if (accountType.includes('market') || accountType.includes('investment')) {
+      // Investment accounts have higher volatility
+      baseVariation = 0.12;
+      // Add market-like volatility pattern
+      const marketPattern = Math.sin((dayOffset * 4 * Math.PI) / 10) * 0.04;
+      baseVariation += marketPattern;
+    } else if (accountType.includes('card')) {
+      // Credit cards typically increase debt over time, then get paid off
+      baseVariation = 0.03;
+      // Simulate payment cycles
+      if (dayOffset === 2) {
+        baseVariation -= 0.15; // Payment made
+      }
+    } else {
+      // Default variation for other account types
+      baseVariation = 0.03;
+    }
+    
+    return baseVariation;
   }
 }

@@ -93,9 +93,106 @@ export class ConnectorService {
   }
 
   /**
+   * Get mock connectors for demo mode
+   */
+  static getMockConnectors(): ConnectorsResponse {
+    return {
+      connectors: [
+        {
+          id: 101,
+          name: 'BoursoBank',
+          hidden: false,
+          charged: false,
+          code: 'boursobank',
+          beta: false,
+          color: '#00A651',
+          slug: 'boursobank',
+          sync_periodicity: null,
+          months_to_fetch: null,
+          siret: null,
+          uuid: 'boursobank-demo',
+          restricted: false,
+          stability: {
+            status: 'stable',
+            last_update: '2025-01-01',
+          },
+          capabilities: ['accounts', 'transactions'],
+          available_auth_mechanisms: ['password'],
+          categories: [],
+          auth_mechanism: 'password',
+          account_types: ['checking', 'savings', 'market'],
+          account_usages: ['PRIV', 'ORGA'],
+          products: [],
+        },
+        {
+          id: 102,
+          name: 'Fortuneo',
+          hidden: false,
+          charged: false,
+          code: 'fortuneo',
+          beta: false,
+          color: '#FF6900',
+          slug: 'fortuneo',
+          sync_periodicity: null,
+          months_to_fetch: null,
+          siret: null,
+          uuid: 'fortuneo-demo',
+          restricted: false,
+          stability: {
+            status: 'stable',
+            last_update: '2025-01-01',
+          },
+          capabilities: ['accounts', 'transactions'],
+          available_auth_mechanisms: ['password'],
+          categories: [],
+          auth_mechanism: 'password',
+          account_types: ['loan', 'card'],
+          account_usages: ['PRIV', 'ORGA'],
+          products: [],
+        },
+        {
+          id: 103,
+          name: 'Bourse Direct',
+          hidden: false,
+          charged: false,
+          code: 'bourse-direct',
+          beta: false,
+          color: '#003366',
+          slug: 'bourse-direct',
+          sync_periodicity: null,
+          months_to_fetch: null,
+          siret: null,
+          uuid: 'bourse-direct-demo',
+          restricted: false,
+          stability: {
+            status: 'stable',
+            last_update: '2025-01-01',
+          },
+          capabilities: ['accounts', 'transactions'],
+          available_auth_mechanisms: ['password'],
+          categories: [],
+          auth_mechanism: 'password',
+          account_types: ['savings', 'market', 'card', 'revolving_credit'],
+          account_usages: ['PRIV'],
+          products: [],
+        },
+      ],
+      total: 3,
+    };
+  }
+
+  /**
    * Fetch connectors from API (no authentication required)
    */
   static async fetchConnectors(config: ApiConfig): Promise<ConnectorsResponse> {
+    // Return mock data in mock mode
+    if (config.mode === 'mock') {
+      console.log('🎭 Using mock connectors data');
+      // Simulate API delay
+      await new Promise(resolve => setTimeout(resolve, 200));
+      return this.getMockConnectors();
+    }
+
     try {
       // Build the connectors URL (no auth required)
       const apiUrl = `${config.apiUrl}connectors`;

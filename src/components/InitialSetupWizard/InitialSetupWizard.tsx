@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { ApiConfig } from '../../config/api';
 import { UserService } from '../../services/userService';
+import { AccountHistoryService } from '../../services/accountHistoryService';
 import { CombinedUserData } from '../../types/accounts';
 import styles from './InitialSetupWizard.module.css';
 
@@ -45,6 +46,11 @@ export const InitialSetupWizard: React.FC<InitialSetupWizardProps> = ({
   const [shouldGenerateToken, setShouldGenerateToken] = useState(true);
   const [isCreatingUser, setIsCreatingUser] = useState(false);
 
+  // Allow demo mode on any domain
+  const isDemoDomain = () => {
+    return true;
+  };
+
   useEffect(() => {
     if (isVisible) {
       // Reset wizard state when opened
@@ -58,6 +64,58 @@ export const InitialSetupWizard: React.FC<InitialSetupWizardProps> = ({
       setShouldGenerateToken(true);
     }
   }, [isVisible]);
+
+  const handleSkipAndDemo = async () => {
+    setIsLoading(true);
+    setError(null);
+    setSuccess(null);
+
+    try {
+
+      // Set the demo user as active
+      UserService.setActiveUser(8);
+
+      // Generate realistic account history for demo
+      const { mockAccountsData } = await import('../../data/mockData');
+      AccountHistoryService.generateDemoHistory(mockAccountsData.accounts, 8);
+
+      // Configure mock mode
+      const demoConfig: ApiConfig = {
+        mode: 'mock',
+        apiUrl: '',
+        userId: '8',
+        bearerToken: 'demo-token',
+        clientId: '',
+        clientSecret: '',
+        usersToken: '',
+      };
+
+      // Save demo configuration to localStorage
+      localStorage.setItem(
+        'apiConfig',
+        JSON.stringify({
+          mode: 'mock',
+          apiUrl: '',
+          userId: '8',
+          bearerToken: 'demo-token',
+          apiVersion: '2.0',
+          clientId: '',
+          useMockData: true,
+        })
+      );
+
+      setSuccess(t('demo_mode_activated'));
+      
+      // Complete the setup with demo config
+      setTimeout(() => {
+        onComplete(demoConfig);
+      }, 1000);
+    } catch (err) {
+      setError('Failed to activate demo mode');
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   const sanitizeInput = (value: string) => {
     // Allow only safe characters: letters, numbers, dash, underscore, dot, space, and limit length
@@ -279,6 +337,24 @@ export const InitialSetupWizard: React.FC<InitialSetupWizardProps> = ({
         <h3>{t('initial_setup_title')}</h3>
         <p>{t('initial_setup_description')}</p>
       </div>
+
+      {/* Demo mode section first */}
+      {isDemoDomain() && (
+        <div className={styles.demoSection}>
+          <div className={styles.demoHeader}>
+            <h4>{t('demo_mode_title')}</h4>
+            <p>{t('demo_mode_description')}</p>
+          </div>
+          <button
+            onClick={handleSkipAndDemo}
+            className={styles.btnDemo}
+            disabled={isLoading}
+            type="button"
+          >
+            {isLoading ? t('configuring') : t('skip_and_demo')}
+          </button>
+        </div>
+      )}
 
       {/* Organization-level settings */}
       <div className={styles.sectionHeader}>{t('organization_settings')}</div>

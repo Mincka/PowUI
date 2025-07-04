@@ -270,6 +270,7 @@ export class TransactionService {
     const seed = accountId * 123; // Use account ID to generate different data for each account
     
     const mockTransactionTemplates = [
+      // General transactions
       {
         type: TransactionType.CARD,
         original_wording: 'CARREFOUR MARKET PARIS 15',
@@ -322,6 +323,138 @@ export class TransactionService {
         wording: 'Allocation familiale',
         value: 320.50,
         categories: [{ code: 'aide_sociale', parent_code: 'revenus' }],
+        card: null
+      },
+      // Business-specific transactions
+      {
+        type: TransactionType.TRANSFER,
+        original_wording: 'VIREMENT CLIENT ABC COMPANY',
+        simplified_wording: 'ABC Company',
+        wording: 'Paiement facture #2025-001',
+        value: 1250.00,
+        categories: [{ code: 'revenus_entreprise', parent_code: 'revenus' }],
+        card: null
+      },
+      {
+        type: TransactionType.CARD,
+        original_wording: 'AMAZON BUSINESS FR',
+        simplified_wording: 'Amazon Business',
+        wording: 'Fournitures bureau',
+        value: -89.99,
+        categories: [{ code: 'fournitures', parent_code: 'entreprise' }],
+        card: '****9876'
+      },
+      {
+        type: TransactionType.TRANSFER,
+        original_wording: 'PRELEVEMENT URSSAF',
+        simplified_wording: 'URSSAF',
+        wording: 'Cotisations sociales',
+        value: -456.78,
+        categories: [{ code: 'charges_sociales', parent_code: 'entreprise' }],
+        card: null
+      },
+      // Investment-related transactions
+      {
+        type: TransactionType.TRANSFER,
+        original_wording: 'VIREMENT VERS COMPTE TITRES',
+        simplified_wording: 'Versement investissement',
+        wording: 'Apport compte titres',
+        value: -1000.00,
+        categories: [{ code: 'investissement', parent_code: 'epargne' }],
+        card: null
+      },
+      {
+        type: TransactionType.TRANSFER,
+        original_wording: 'DIVIDENDE ACTIONS TOTAL',
+        simplified_wording: 'Dividende Total',
+        wording: 'Dividende actions',
+        value: 125.50,
+        categories: [{ code: 'dividendes', parent_code: 'revenus' }],
+        card: null
+      },
+      {
+        type: TransactionType.FEE,
+        original_wording: 'FRAIS COURTAGE BOURSE',
+        simplified_wording: 'Frais courtage',
+        wording: 'Commission transaction',
+        value: -9.90,
+        categories: [{ code: 'frais_bancaires', parent_code: 'frais' }],
+        card: null
+      },
+      // Credit card specific
+      {
+        type: TransactionType.CARD,
+        original_wording: 'FNAC PARIS CHATELET',
+        simplified_wording: 'Fnac',
+        wording: 'Achat électronique',
+        value: -299.99,
+        categories: [{ code: 'loisirs', parent_code: 'vie_quotidienne' }],
+        card: '****2468'
+      },
+      {
+        type: TransactionType.CARD,
+        original_wording: 'RESTAURANT LE PETIT PARIS',
+        simplified_wording: 'Restaurant',
+        wording: 'Déjeuner professionnel',
+        value: -89.50,
+        categories: [{ code: 'restaurants', parent_code: 'vie_quotidienne' }],
+        card: '****3579'
+      },
+      // Loan payments
+      {
+        type: TransactionType.TRANSFER,
+        original_wording: 'PAIEMENT PRET IMMOBILIER',
+        simplified_wording: 'Paiement prêt',
+        wording: 'Mensualité prêt immobilier',
+        value: -800.00,
+        categories: [{ code: 'pret_immo', parent_code: 'logement' }],
+        card: null
+      },
+      {
+        type: TransactionType.TRANSFER,
+        original_wording: 'PAIEMENT PRET AUTO',
+        simplified_wording: 'Paiement prêt auto',
+        wording: 'Mensualité véhicule',
+        value: -420.00,
+        categories: [{ code: 'pret_auto', parent_code: 'transport' }],
+        card: null
+      },
+      // High-yield savings specific
+      {
+        type: TransactionType.TRANSFER,
+        original_wording: 'INTERETS CREDITEURS',
+        simplified_wording: 'Intérêts',
+        wording: 'Intérêts livret épargne',
+        value: 25.30,
+        categories: [{ code: 'interets', parent_code: 'revenus' }],
+        card: null
+      },
+      {
+        type: TransactionType.TRANSFER,
+        original_wording: 'VIREMENT EPARGNE AUTOMATIQUE',
+        simplified_wording: 'Épargne automatique',
+        wording: 'Versement programmé',
+        value: 500.00,
+        categories: [{ code: 'epargne', parent_code: 'epargne' }],
+        card: null
+      },
+      // Line of credit transactions
+      {
+        type: TransactionType.TRANSFER,
+        original_wording: 'UTILISATION LIGNE CREDIT',
+        simplified_wording: 'Utilisation crédit',
+        wording: 'Tirage ligne de crédit',
+        value: -2000.00,
+        categories: [{ code: 'credit', parent_code: 'financement' }],
+        card: null
+      },
+      {
+        type: TransactionType.FEE,
+        original_wording: 'INTERET LIGNE CREDIT',
+        simplified_wording: 'Intérêts crédit',
+        wording: 'Intérêts ligne de crédit',
+        value: -18.75,
+        categories: [{ code: 'interets_debiteurs', parent_code: 'frais' }],
         card: null
       }
     ];

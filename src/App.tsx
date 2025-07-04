@@ -22,6 +22,7 @@ import { AppDataProvider, useAppData } from './contexts/AppDataContext';
 import { AccountsService } from './services/accountsService';
 import { ConnectorService } from './services/connectorService';
 import { InitialSetupWizard } from './components/InitialSetupWizard/InitialSetupWizard';
+import { Footer } from './components/Footer';
 import './styles/App.css';
 
 function AppContent() {
@@ -241,6 +242,8 @@ function AppContent() {
         onAccountsRefresh={refetch}
         onToggleNewConnectionSetup={() => setShowNewConnectionSetup(!showNewConnectionSetup)}
       />
+
+      <Footer />
     </div>
   );
 }

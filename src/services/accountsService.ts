@@ -5,6 +5,7 @@ import {
   validateApiConfig,
   getAccountsUrl,
   getBaseUrl,
+  getApiConfigValidationErrors,
 } from '../config/api';
 import { mockAccountsData } from '../data/mockData';
 
@@ -130,7 +131,9 @@ export class AccountsService {
     const config = customConfig || this.config;
 
     if (!validateApiConfig(config)) {
-      throw new Error(`API configuration is incomplete for ${config.mode} mode.`);
+      const missingFields = getApiConfigValidationErrors(config);
+      const missingFieldsList = missingFields.join(', ');
+      throw new Error(`API configuration is incomplete for ${config.mode} mode. Missing fields: ${missingFieldsList}`);
     }
 
     // Handle different modes
@@ -364,9 +367,9 @@ export class AccountsService {
     return {
       connections: [
         {
-          id: 1,
-          id_user: 1,
-          id_connector: 40,
+          id: 8, // BoursoBank connection (matches accounts with id_connection: 8)
+          id_user: 8,
+          id_connector: 101, // BoursoBank connector
           state: null,
           error: null,
           error_message: null,
@@ -375,13 +378,13 @@ export class AccountsService {
           active: true,
           last_push: null,
           expire: new Date(Date.now() + 86400000 * 30).toISOString(), // 30 days from now
-          connector_uuid: 'test-connector-uuid-1',
+          connector_uuid: 'boursobank-demo-uuid',
           next_try: new Date(Date.now() + 3600000).toISOString(), // 1 hour from now
         },
         {
-          id: 2,
-          id_user: 1,
-          id_connector: 40,
+          id: 17, // Fortuneo connection (matches accounts with id_connection: 17)
+          id_user: 8,
+          id_connector: 102, // Fortuneo connector
           state: null,
           error: null,
           error_message: null,
@@ -390,28 +393,13 @@ export class AccountsService {
           active: true,
           last_push: null,
           expire: new Date(Date.now() + 86400000 * 25).toISOString(), // 25 days from now
-          connector_uuid: 'test-connector-uuid-2',
+          connector_uuid: 'fortuneo-demo-uuid',
           next_try: new Date(Date.now() + 7200000).toISOString(), // 2 hours from now
         },
         {
-          id: 3,
-          id_user: 1,
-          id_connector: 41,
-          state: 'wrongpass',
-          error: 'wrongpass',
-          error_message: 'Identifiants incorrects',
-          last_update: new Date(Date.now() - 14400000).toISOString(), // 4 hours ago
-          created: new Date(Date.now() - 259200000).toISOString(), // 3 days ago
-          active: false,
-          last_push: null,
-          expire: new Date(Date.now() + 86400000 * 20).toISOString(), // 20 days from now
-          connector_uuid: 'test-connector-uuid-3',
-          next_try: null,
-        },
-        {
-          id: 4,
-          id_user: 1,
-          id_connector: 40,
+          id: 25, // Bourse Direct connection (matches accounts with id_connection: 25)
+          id_user: 8,
+          id_connector: 103, // Bourse Direct connector
           state: null,
           error: null,
           error_message: null,
@@ -420,7 +408,7 @@ export class AccountsService {
           active: true,
           last_push: null,
           expire: new Date(Date.now() + 86400000 * 28).toISOString(), // 28 days from now
-          connector_uuid: 'test-connector-uuid-4',
+          connector_uuid: 'bourse-direct-demo-uuid',
           next_try: new Date(Date.now() + 5400000).toISOString(), // 1.5 hours from now
         },
       ],

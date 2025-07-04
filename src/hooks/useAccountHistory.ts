@@ -7,7 +7,7 @@ import { UserService } from '../services/userService';
 export const useAccountHistory = () => {
   const [isEnabled, setIsEnabled] = useState(AccountHistoryService.isEnabled());
   const [selectedAccounts, setSelectedAccounts] = useState<number[]>([]);
-  const [preferredChartType, setPreferredChartType] = useState<ChartType>('multiColumn');
+  const [preferredChartType, setPreferredChartType] = useState<ChartType>('line');
   const [history, setHistory] = useState<AccountHistoryEntry[]>([]);
 
   const activeUser = UserService.getActiveUser();
@@ -74,7 +74,7 @@ export const useAccountHistory = () => {
       AccountHistoryService.clearUserHistory(userId);
       setHistory([]);
       setSelectedAccounts([]);
-      setPreferredChartType('multiColumn');
+      setPreferredChartType('line');
     }
   }, [userId]);
 

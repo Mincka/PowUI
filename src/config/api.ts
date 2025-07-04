@@ -61,6 +61,27 @@ export const validateApiConfig = (apiConfig: ApiConfig): boolean => {
   }
 };
 
+// Function to get detailed validation errors
+export const getApiConfigValidationErrors = (apiConfig: ApiConfig): string[] => {
+  const errors: string[] = [];
+  
+  switch (apiConfig.mode) {
+    case 'direct':
+      if (!apiConfig.apiUrl) errors.push('API URL');
+      if (!apiConfig.clientId) errors.push('Client ID');
+      if (!apiConfig.userId) errors.push('User ID');
+      if (!apiConfig.bearerToken) errors.push('Bearer Token');
+      break;
+    case 'mock':
+      // Mock mode doesn't require validation
+      break;
+    default:
+      errors.push('Invalid mode');
+  }
+  
+  return errors;
+};
+
 // Function to validate configuration for new connection setup (requires client ID)
 export const validateApiConfigForNewConnection = (apiConfig: ApiConfig): boolean => {
   return validateApiConfig(apiConfig) && !!apiConfig.clientId;

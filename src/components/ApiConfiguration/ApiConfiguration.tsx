@@ -5,6 +5,7 @@ import {
   validateApiConfig,
   validateBaseApiConfig,
   needsInitialSetup,
+  getApiConfigValidationErrors,
 } from '../../config/api';
 import { AccountsService } from '../../services/accountsService';
 import { UserManager } from '../UserManager';
@@ -87,6 +88,7 @@ export const ApiConfiguration: React.FC<ApiConfigurationProps> = ({
     setConfig(updatedConfig);
   };
 
+
   const handleSave = () => {
     // Set the mode based on the mock data preference
     const configWithMode = {
@@ -95,19 +97,21 @@ export const ApiConfiguration: React.FC<ApiConfigurationProps> = ({
     };
 
     // For mock mode, or when base config is valid (domain + clientId)
-    if (useMockData || validateBaseApiConfig(configWithMode)) {
+    const canSaveConfig = useMockData || validateBaseApiConfig(configWithMode);
+
+    if (canSaveConfig) {
       try {
         // Save to localStorage for persistence including mock data preference
         localStorage.setItem(
           'apiConfig',
           JSON.stringify({
             mode: configWithMode.mode,
-            apiUrl: config.apiUrl,
-            userId: config.userId,
-            bearerToken: config.bearerToken,
-            clientId: config.clientId || '',
-            clientSecret: config.clientSecret || '',
-            usersToken: config.usersToken || '',
+            apiUrl: configWithMode.apiUrl,
+            userId: configWithMode.userId,
+            bearerToken: configWithMode.bearerToken,
+            clientId: configWithMode.clientId || '',
+            clientSecret: configWithMode.clientSecret || '',
+            usersToken: configWithMode.usersToken || '',
             useMockData: useMockData, // Keep for backward compatibility
           })
         );
@@ -182,9 +186,12 @@ export const ApiConfiguration: React.FC<ApiConfigurationProps> = ({
     };
 
     if (!validateApiConfig(testConfig)) {
+      const missingFields = getApiConfigValidationErrors(testConfig);
+      const missingFieldsList = missingFields.join(', ');
       setTestResult({
         success: false,
-        message: t('config_incomplete_error'),
+        message: t('config_incomplete_detailed', { fields: missingFieldsList }) || 
+                `Configuration incomplete. Missing fields: ${missingFieldsList}`,
       });
       return;
     }
@@ -385,134 +392,151 @@ export const ApiConfiguration: React.FC<ApiConfigurationProps> = ({
             </button>
           </div>
         </div>
-        {/* Organization-level settings */}
-        <div className={styles.sectionHeader}>
-          {t('organization_settings', 'Organization Settings')}
-        </div>
-        <div className={styles.formGroup}>
-          <label htmlFor="api-url">{t('api_url', 'API URL')} *</label>
-          <input
-            id="api-url"
-            type="text"
-            value={config.apiUrl}
-            onChange={e => handleConfigUpdate('apiUrl', e.target.value)}
-            placeholder={t('api_url_placeholder', 'https://demo1-sandbox.biapi.pro/2.0/')}
-            className={config.apiUrl ? styles.valid : styles.invalid}
-          />
-        </div>
-        <div className={styles.formGroup}>
-          <label htmlFor="users-token">{t('users_token')} *</label>
-          <div className={styles.secretInputGroup}>
-            <input
-              id="users-token"
-              type={showUsersToken ? 'text' : 'password'}
-              value={config.usersToken || ''}
-              onChange={e => handleConfigUpdate('usersToken', e.target.value)}
-              placeholder={t('users_token_placeholder')}
-              className={config.usersToken ? styles.valid : styles.invalid}
-            />
-            <button
-              type="button"
-              onClick={() => setShowUsersToken(!showUsersToken)}
-              className={styles.toggleVisibility}
-              title={showUsersToken ? t('hide') : t('show')}
-            >
-              {showUsersToken ? '👁️' : '👁️‍🗨️'}
-            </button>
+        {useMockData ? (
+          /* Demo Mode UI - Show info and reset message */
+          <div className={styles.demoModeActive}>
+            <div className={styles.demoModeInfo}>
+              <h4>{t('demo_mode_active', 'Demo Mode Active')}</h4>
+              <p>{t('demo_mode_active_description', 'The application is currently running in demo mode with sample data. To configure real API access, you must reset the application to start manual setup.')}</p>
+            </div>
           </div>
-        </div>
-
-        {/* Application-level settings */}
-        <div className={styles.sectionHeader}>
-          {t('application_settings', 'Powens Application Settings')}
-        </div>
-        <div className={styles.formGroup}>
-          <label htmlFor="client-id">{t('client_id')} *</label>
-          <input
-            id="client-id"
-            type="text"
-            value={config.clientId}
-            onChange={e => handleConfigUpdate('clientId', e.target.value)}
-            placeholder={t('client_id_placeholder')}
-            className={config.clientId ? styles.valid : styles.invalid}
-          />
-        </div>
-        <div className={styles.formGroup}>
-          <label htmlFor="client-secret">{t('client_secret')} *</label>
-          <div className={styles.secretInputGroup}>
-            <input
-              id="client-secret"
-              type={showClientSecret ? 'text' : 'password'}
-              value={config.clientSecret || ''}
-              onChange={e => handleConfigUpdate('clientSecret', e.target.value)}
-              placeholder={t('client_secret_placeholder')}
-              className={config.clientSecret ? styles.valid : styles.invalid}
-            />
-            <button
-              type="button"
-              onClick={() => setShowClientSecret(!showClientSecret)}
-              className={styles.toggleVisibility}
-              title={showClientSecret ? t('hide') : t('show')}
-            >
-              {showClientSecret ? '👁️' : '👁️‍🗨️'}
-            </button>
-          </div>
-        </div>
-
-        {/* User Management Section */}
-        <div className={styles.userManagement}>
-          <div className={styles.userInfo}>
-            {activeUser ? (
-              <div className={styles.activeUserDisplay}>
-                <span className={styles.userLabel}>{t('current_user')}</span>
-                <span className={styles.userName}>
-                  {activeUser.name || `User ${activeUser.id}`}
-                </span>
-                <span className={styles.userBadge}>
-                  {t('user_id_label', { id: activeUser.id })}
-                </span>
+        ) : (
+          /* Manual Configuration UI - Show all fields */
+          <>
+            {/* Organization-level settings */}
+            <div className={styles.sectionHeader}>
+              {t('organization_settings', 'Organization Settings')}
+            </div>
+            <div className={styles.formGroup}>
+              <label htmlFor="api-url">{t('api_url', 'API URL')} *</label>
+              <input
+                id="api-url"
+                type="text"
+                value={config.apiUrl}
+                onChange={e => handleConfigUpdate('apiUrl', e.target.value)}
+                placeholder={t('api_url_placeholder', 'https://demo1-sandbox.biapi.pro/2.0/')}
+                className={config.apiUrl ? styles.valid : styles.invalid}
+              />
+            </div>
+            <div className={styles.formGroup}>
+              <label htmlFor="users-token">{t('users_token')} *</label>
+              <div className={styles.secretInputGroup}>
+                <input
+                  id="users-token"
+                  type={showUsersToken ? 'text' : 'password'}
+                  value={config.usersToken || ''}
+                  onChange={e => handleConfigUpdate('usersToken', e.target.value)}
+                  placeholder={t('users_token_placeholder')}
+                  className={config.usersToken ? styles.valid : styles.invalid}
+                />
+                <button
+                  type="button"
+                  onClick={() => setShowUsersToken(!showUsersToken)}
+                  className={styles.toggleVisibility}
+                  title={showUsersToken ? t('hide') : t('show')}
+                >
+                  {showUsersToken ? '👁️' : '👁️‍🗨️'}
+                </button>
               </div>
+            </div>
+
+            {/* Application-level settings */}
+            <div className={styles.sectionHeader}>
+              {t('application_settings', 'Powens Application Settings')}
+            </div>
+            <div className={styles.formGroup}>
+              <label htmlFor="client-id">{t('client_id')} *</label>
+              <input
+                id="client-id"
+                type="text"
+                value={config.clientId}
+                onChange={e => handleConfigUpdate('clientId', e.target.value)}
+                placeholder={t('client_id_placeholder')}
+                className={config.clientId ? styles.valid : styles.invalid}
+              />
+            </div>
+            <div className={styles.formGroup}>
+              <label htmlFor="client-secret">{t('client_secret')} *</label>
+              <div className={styles.secretInputGroup}>
+                <input
+                  id="client-secret"
+                  type={showClientSecret ? 'text' : 'password'}
+                  value={config.clientSecret || ''}
+                  onChange={e => handleConfigUpdate('clientSecret', e.target.value)}
+                  placeholder={t('client_secret_placeholder')}
+                  className={config.clientSecret ? styles.valid : styles.invalid}
+                />
+                <button
+                  type="button"
+                  onClick={() => setShowClientSecret(!showClientSecret)}
+                  className={styles.toggleVisibility}
+                  title={showClientSecret ? t('hide') : t('show')}
+                >
+                  {showClientSecret ? '👁️' : '👁️‍🗨️'}
+                </button>
+              </div>
+            </div>
+
+            {/* User Management Section */}
+            <div className={styles.userManagement}>
+              <div className={styles.userInfo}>
+                {activeUser ? (
+                  <div className={styles.activeUserDisplay}>
+                    <span className={styles.userLabel}>{t('current_user')}</span>
+                    <span className={styles.userName}>
+                      {activeUser.name || `User ${activeUser.id}`}
+                    </span>
+                    <span className={styles.userBadge}>
+                      {t('user_id_label', { id: activeUser.id })}
+                    </span>
+                  </div>
+                ) : (
+                  <div className={styles.noActiveUser}>
+                    <span className={styles.userLabel}>{t('no_powens_user')}</span>
+                  </div>
+                )}
+              </div>
+              <button
+                onClick={() => setShowUserManager(true)}
+                className={styles.btnManageUsers}
+                type="button"
+                disabled={!config.apiUrl || !config.clientId}
+                title={
+                  !config.apiUrl || !config.clientId
+                    ? t('configure_api_url_client_first', 'Configure API URL and Client ID first')
+                    : ''
+                }
+              >
+                {t('manage_users')}
+              </button>
+            </div>
+          </>
+        )}
+
+        {!useMockData && (
+          <div className={styles.configStatus}>
+            {isBaseConfigValid ? (
+              <span className={styles.statusValid}>{t('base_config_valid')}</span>
             ) : (
-              <div className={styles.noActiveUser}>
-                <span className={styles.userLabel}>{t('no_powens_user')}</span>
-              </div>
+              <span className={styles.statusInvalid}>{t('config_incomplete')}</span>
             )}
           </div>
-          <button
-            onClick={() => setShowUserManager(true)}
-            className={styles.btnManageUsers}
-            type="button"
-            disabled={!config.apiUrl || !config.clientId}
-            title={
-              !config.apiUrl || !config.clientId
-                ? t('configure_api_url_client_first', 'Configure API URL and Client ID first')
-                : ''
-            }
-          >
-            {t('manage_users')}
-          </button>
-        </div>
+        )}
 
-        <div className={styles.configStatus}>
-          {useMockData ? (
-            <span className={styles.statusValid}>{t('mock_data_enabled')}</span>
-          ) : isBaseConfigValid ? (
-            <span className={styles.statusValid}>{t('base_config_valid')}</span>
-          ) : (
-            <span className={styles.statusInvalid}>{t('config_incomplete')}</span>
-          )}
-        </div>
-
-        <div className={styles.mockDataOption}>
-          <label className={styles.checkboxLabel}>
-            <input
-              type="checkbox"
-              checked={useMockData}
-              onChange={e => setUseMockData(e.target.checked)}
-            />
-            <span>{t('use_mock_data')}</span>
-          </label>
-        </div>
+        {!useMockData && (
+          <div className={styles.enableDemoOption}>
+            <button
+              onClick={() => setUseMockData(true)}
+              className={styles.btnEnableDemo}
+              type="button"
+            >
+              {t('enable_demo_mode', 'Switch to Demo Mode')}
+            </button>
+            <p className={styles.enableDemoDescription}>
+              {t('enable_demo_description', 'Switch to demo mode to explore the application with sample data.')}
+            </p>
+          </div>
+        )}
 
         {!useMockData && (
           <div className={styles.testConnection}>
@@ -535,34 +559,51 @@ export const ApiConfiguration: React.FC<ApiConfigurationProps> = ({
           </div>
         )}
 
-        <div className={styles.configActions}>
-          <div className={styles.utilityActions}>
-            <button onClick={clearConfiguration} className={styles.btnClear} type="button">
-              {t('common:reset')}
-            </button>
-            <button
-              onClick={resetToInitialSetup}
-              className={styles.btnReset}
-              type="button"
-              title={t('configuration_wizard_tooltip')}
-            >
-              {t('configuration_wizard')}
-            </button>
+        {useMockData ? (
+          /* Demo Mode Actions - Only show Reset */
+          <div className={styles.configActions}>
+            <div className={styles.utilityActions}>
+              <button onClick={clearConfiguration} className={styles.btnClear} type="button">
+                {t('common:reset')}
+              </button>
+            </div>
+            <div className={styles.mainActions}>
+              <button onClick={handleCancel} className={styles.btnCancel} type="button">
+                {t('common:cancel')}
+              </button>
+            </div>
           </div>
-          <div className={styles.mainActions}>
-            <button onClick={handleCancel} className={styles.btnCancel} type="button">
-              {t('common:cancel')}
-            </button>
-            <button
-              onClick={handleSave}
-              className={styles.btnSave}
-              disabled={!canSave}
-              type="button"
-            >
-              {t('common:save')}
-            </button>
+        ) : (
+          /* Manual Mode Actions - Show all buttons */
+          <div className={styles.configActions}>
+            <div className={styles.utilityActions}>
+              <button onClick={clearConfiguration} className={styles.btnClear} type="button">
+                {t('common:reset')}
+              </button>
+              <button
+                onClick={resetToInitialSetup}
+                className={styles.btnReset}
+                type="button"
+                title={t('configuration_wizard_tooltip')}
+              >
+                {t('configuration_wizard')}
+              </button>
+            </div>
+            <div className={styles.mainActions}>
+              <button onClick={handleCancel} className={styles.btnCancel} type="button">
+                {t('common:cancel')}
+              </button>
+              <button
+                onClick={handleSave}
+                className={styles.btnSave}
+                disabled={!canSave}
+                type="button"
+              >
+                {t('common:save')}
+              </button>
+            </div>
           </div>
-        </div>
+        )}
       </div>
 
       {/* User Manager Modal */}
