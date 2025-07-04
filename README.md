@@ -2,6 +2,14 @@
 
 PowUI is an interface to easily interact with the Powens API. It enables you to visualize aggregated financial data for users in a Powens app and serves as a basic management interface to manage users and their connections for essential operations.
 
+## 🌍 Demo Website
+
+The latest development version of PowUI is available for testing here:
+**[https://powui.jehrhart.workers.dev/](https://powui.jehrhart.workers.dev/)**
+
+> ⚠️ **This demo is for testing and development purposes only.**
+> It should not be used for production or with real financial data.
+
 ## Step-by-step setup:
 
 ### 🌐 Steps 1-3: Done on Powens Website
