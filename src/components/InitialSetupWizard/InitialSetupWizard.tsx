@@ -5,7 +5,7 @@ import { UserService } from '../../services/userService';
 import { AccountHistoryService } from '../../services/accountHistoryService';
 import { AccountsService } from '../../services/accountsService';
 import { ConnectorService } from '../../services/connectorService';
-import { CombinedUserData, Connector } from '../../types/accounts';
+import { CombinedUserData, Connector, Connection } from '../../types/accounts';
 import { isAdvancedConnectionStepsEnabled, getCurrentLanguage } from '../../utils/connectionUtils';
 import styles from './InitialSetupWizard.module.css';
 
@@ -55,7 +55,7 @@ export const InitialSetupWizard: React.FC<InitialSetupWizardProps> = ({
   const [isLoadingConnection, setIsLoadingConnection] = useState(false);
   const [connectionError, setConnectionError] = useState<string>('');
   const [finalConfig, setFinalConfig] = useState<ApiConfig | null>(null);
-  const [existingConnections, setExistingConnections] = useState<any[]>([]);
+  const [existingConnections, setExistingConnections] = useState<Connection[]>([]);
   const [isLoadingConnections, setIsLoadingConnections] = useState(false);
   const [connectorMap, setConnectorMap] = useState<Map<number, Connector>>(new Map());
 
@@ -123,7 +123,7 @@ export const InitialSetupWizard: React.FC<InitialSetupWizardProps> = ({
       setTimeout(() => {
         onComplete(demoConfig);
       }, 1000);
-    } catch (err) {
+    } catch (_err) {
       setError('Failed to activate demo mode');
     } finally {
       setIsLoading(false);
@@ -393,9 +393,9 @@ export const InitialSetupWizard: React.FC<InitialSetupWizardProps> = ({
   };
 
   // Get bank name from connector
-  const getBankName = (connection: any): string => {
+  const getBankName = (connection: Connection): string => {
     if (!connection.id_connector) {
-      return connection.name || `Connection ${connection.id}`;
+      return `Connection ${connection.id}`;
     }
     return ConnectorService.getConnectorName(connection.id_connector, connectorMap);
   };

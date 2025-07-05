@@ -62,6 +62,8 @@ export const AccountHistorySettings: React.FC<AccountHistorySettingsProps> = ({ 
     };
 
     loadConnectors();
+    // Only re-run when collection size changes to avoid excessive API calls
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [eligibleAccounts.length, connections.length]); // Use lengths to avoid infinite loop
 
   // Group accounts by bank using proper connector logic

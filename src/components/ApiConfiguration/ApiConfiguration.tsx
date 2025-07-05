@@ -198,6 +198,7 @@ export const ApiConfiguration: React.FC<ApiConfigurationProps> = ({
   useEffect(() => {
     loadFromLocalStorage();
     loadActiveUser();
+    // loadFromLocalStorage is memoized with useCallback and doesn't use accounts/connections directly
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 

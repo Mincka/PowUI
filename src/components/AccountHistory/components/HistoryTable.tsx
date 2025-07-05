@@ -57,6 +57,8 @@ export const HistoryTable: React.FC<HistoryTableProps> = ({ history, accounts })
     };
 
     loadConnectors();
+    // Only re-run when visibility changes, not on every state update
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [accounts.length, connections.length]); // Use lengths to avoid infinite loop
 
   // Helper function to convert hex to rgba

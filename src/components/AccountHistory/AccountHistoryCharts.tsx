@@ -12,8 +12,9 @@ import {
   Legend,
   Filler,
   TimeScale,
+  TooltipItem,
 } from 'chart.js';
-import ChartDataLabels from 'chartjs-plugin-datalabels';
+import ChartDataLabels, { Context as DataLabelsContext } from 'chartjs-plugin-datalabels';
 import { Bar, Line } from 'react-chartjs-2';
 import { Account, Connector } from '../../types/accounts';
 import { AccountHistoryEntry, ChartType } from '../../types/accountHistory';
@@ -113,6 +114,8 @@ export const AccountHistoryCharts: React.FC<AccountHistoryChartsProps> = ({
     };
 
     loadConnectors();
+    // Only re-run when collection size changes to avoid excessive API calls
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [accounts.length, connections.length]);
 
   const chartData = useMemo(() => {
@@ -257,7 +260,7 @@ export const AccountHistoryCharts: React.FC<AccountHistoryChartsProps> = ({
         },
         tooltip: {
           callbacks: {
-            label: function (context: any) {
+            label: function (context: TooltipItem<'bar' | 'line'>) {
               const value = context.parsed.y;
               const accountName = context.dataset.label;
               return `${accountName}: ${new Intl.NumberFormat('fr-FR', {
@@ -267,7 +270,7 @@ export const AccountHistoryCharts: React.FC<AccountHistoryChartsProps> = ({
                 maximumFractionDigits: 0,
               }).format(value)}`;
             },
-            footer: function (tooltipItems: any[]) {
+            footer: function (tooltipItems: TooltipItem<'bar' | 'line'>[]) {
               if (chartType === 'stacked' || chartType === 'area') {
                 const total = tooltipItems.reduce((sum, item) => sum + item.parsed.y, 0);
                 return `Total: ${new Intl.NumberFormat('fr-FR', {
@@ -282,11 +285,12 @@ export const AccountHistoryCharts: React.FC<AccountHistoryChartsProps> = ({
           },
         },
         datalabels: {
-          display: function(context: any) {
+          display: function(context: DataLabelsContext) {
             // Only show labels for significant values to avoid clutter
-            return context.dataset.data[context.dataIndex] > 1000;
+            const value = context.dataset.data[context.dataIndex];
+            return typeof value === 'number' && value > 1000;
           },
-          color: function(context: any) {
+          color: function(context: DataLabelsContext) {
             // Only use dynamic color for stacked charts (where labels are inside bars)
             if (chartType === 'stacked') {
               const bgColor = context.dataset.backgroundColor;
@@ -301,7 +305,7 @@ export const AccountHistoryCharts: React.FC<AccountHistoryChartsProps> = ({
             weight: 'bold' as const,
             size: 11,
           },
-          formatter: function(value: any) {
+          formatter: function(value: number) {
             return new Intl.NumberFormat('fr-FR', {
               style: 'currency',
               currency: 'EUR',
@@ -345,14 +349,15 @@ export const AccountHistoryCharts: React.FC<AccountHistoryChartsProps> = ({
           },
           ticks: {
             color: '#374151',
-            callback: function (value: any) {
+            callback: function (value: number | string) {
+              const numValue = typeof value === 'string' ? parseFloat(value) : value;
               return new Intl.NumberFormat('fr-FR', {
                 style: 'currency',
                 currency: 'EUR',
                 minimumFractionDigits: 0,
                 maximumFractionDigits: 0,
                 notation: 'compact',
-              }).format(value);
+              }).format(numValue);
             },
           },
         },
