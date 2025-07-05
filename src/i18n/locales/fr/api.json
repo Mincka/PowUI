@@ -120,5 +120,22 @@
   "confirm_disable_demo": "Êtes-vous sûr de vouloir désactiver le mode démo ? Cela effacera toute la configuration et les données utilisateur actuelles, et vous devrez configurer l'application manuellement.",
   "demo_disabled_success": "Mode démo désactivé. Vous pouvez maintenant configurer l'application manuellement.",
   "enable_demo_mode": "Passer au Mode Démo",
-  "enable_demo_description": "Passez en mode démo pour explorer l'application avec des données d'exemple."
+  "enable_demo_description": "Passez en mode démo pour explorer l'application avec des données d'exemple.",
+  "user_configured_successfully": "Utilisateur configuré avec succès",
+  "show_advanced_connection_steps": "Afficher les étapes avancées de connexion",
+  "show_advanced_connection_steps_description": "Activez ceci pour voir le code temporaire et l'URL avant d'ouvrir l'interface de connexion (utile pour le débogage)",
+  "connect_to_bank": "🏦 Se connecter à la banque",
+  "add_bank_connection": "🏦 Ajouter une connexion bancaire",
+  "open_bank_management": "🌐 Ouvrir la gestion bancaire",
+  "reconnect_to_bank": "🔐 Se reconnecter à la banque",
+  "connecting_to_bank": "🔄 Connexion en cours...",
+  "opening_connection": "🔄 Ouverture de la connexion...",
+  "connection_opened_successfully": "Interface de connexion ouverte avec succès",
+  "failed_to_open_connection": "Échec de l'ouverture de l'interface de connexion",
+  "popup_blocked_message": "Le popup a été bloqué. Veuillez autoriser les popups pour ce site et réessayer.",
+  "one_click_connection_info": "Cliquez sur le bouton ci-dessous pour générer automatiquement un code temporaire et ouvrir l'interface de connexion",
+  "switch_to_advanced_mode": "Passer en mode avancé",
+  "switch_to_simple_mode": "Passer en mode simple",
+  "checking_new_connections": "Vérification des nouvelles connexions...",
+  "connection_interface_closed": "Interface de connexion fermée. Vous pouvez ajouter une autre connexion si nécessaire."
 }

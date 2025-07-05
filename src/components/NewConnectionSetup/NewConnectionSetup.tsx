@@ -1,8 +1,9 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useApiConfig } from '../../hooks/useApiConfig';
 import { validateApiConfigForNewConnection } from '../../config/api';
 import { AccountsService } from '../../services/accountsService';
+import { isAdvancedConnectionStepsEnabled, getCurrentLanguage } from '../../utils/connectionUtils';
 import styles from './NewConnectionSetup.module.css';
 
 interface NewConnectionSetupProps {
@@ -12,15 +13,28 @@ interface NewConnectionSetupProps {
 type SetupStep = 'configure' | 'get-code' | 'open-url';
 
 export const NewConnectionSetup: React.FC<NewConnectionSetupProps> = ({ onClose }) => {
-  const { t } = useTranslation('connections');
+  const { t } = useTranslation(['connections', 'api']);
   const { apiConfig } = useApiConfig();
   const [currentStep, setCurrentStep] = useState<SetupStep>('configure');
   const [isLoading, setIsLoading] = useState(false);
   const [temporaryCode, setTemporaryCode] = useState<string>('');
   const [error, setError] = useState<string>('');
+  const [success, setSuccess] = useState<string>('');
   const [webviewUrl, setWebviewUrl] = useState<string>('');
+  const [isAdvancedMode, setIsAdvancedMode] = useState(false);
 
   const isConfigValid = validateApiConfigForNewConnection(apiConfig);
+
+  // Check if we should use advanced mode or simplified mode
+  useEffect(() => {
+    const shouldUseAdvanced = isAdvancedConnectionStepsEnabled();
+    setIsAdvancedMode(shouldUseAdvanced);
+    
+    // If simplified mode and config is valid, we can skip the step progression
+    if (!shouldUseAdvanced && isConfigValid) {
+      setCurrentStep('get-code');
+    }
+  }, [isConfigValid]);
 
   // Auto-advance to step 1 if config is already valid
   React.useEffect(() => {
@@ -65,6 +79,84 @@ export const NewConnectionSetup: React.FC<NewConnectionSetupProps> = ({ onClose 
     setTemporaryCode('');
     setError('');
     setWebviewUrl('');
+  };
+
+  // Simplified one-click connection flow for new connections
+  const handleOneClickBankConnection = async () => {
+    if (!isConfigValid) {
+      setError(
+        t('api:config_incomplete_error', "Configuration incomplète. Veuillez configurer tous les champs requis dans les paramètres API.")
+      );
+      return;
+    }
+
+    setIsLoading(true);
+    setError('');
+
+    try {
+      // Use the unified service method to get code and URL directly
+      const lang = getCurrentLanguage();
+      
+      const result = await AccountsService.getConnectionUrlDirectly(
+        apiConfig,
+        undefined, // No connection ID for new connections
+        'connect',
+        lang
+      );
+
+      // Store the code/URL and immediately open the webview
+      setTemporaryCode(result.code);
+      setWebviewUrl(result.url);
+
+      // Open the webview directly with close detection
+      const popup = AccountsService.openConnectionWebview(result.url, () => {
+        // Popup was closed - close the modal
+        setTimeout(() => {
+          onClose();
+        }, 500);
+      });
+      
+      if (popup) {
+        setSuccess(t('api:connection_opened_successfully', 'Connection interface opened successfully! Close the popup when you\'re done.'));
+        setError(''); // Clear any previous errors
+      } else {
+        setError(t('api:popup_blocked_message', 'Le popup a été bloqué. Veuillez autoriser les popups pour ce site et réessayer.'));
+      }
+    } catch (err) {
+      const errorMessage = err instanceof Error ? err.message : t('errors:unknown_error', 'Erreur inconnue');
+      setError(t('api:failed_to_open_connection', `Échec de l'ouverture de l'interface de connexion: ${errorMessage}`));
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const toggleAdvancedMode = () => {
+    const newAdvancedMode = !isAdvancedMode;
+    setIsAdvancedMode(newAdvancedMode);
+    
+    // Save the preference
+    try {
+      const saved = localStorage.getItem('apiConfig');
+      if (saved) {
+        const config = JSON.parse(saved);
+        config.showAdvancedConnectionSteps = newAdvancedMode;
+        localStorage.setItem('apiConfig', JSON.stringify(config));
+      }
+    } catch (error) {
+      console.error('Error saving advanced mode preference:', error);
+    }
+
+    // Reset to appropriate step
+    if (newAdvancedMode) {
+      setCurrentStep(isConfigValid ? 'get-code' : 'configure');
+    } else {
+      setCurrentStep('get-code');
+    }
+    
+    // Clear any existing state
+    setTemporaryCode('');
+    setWebviewUrl('');
+    setError('');
   };
 
   const renderConfigureStep = () => (
@@ -131,30 +223,72 @@ export const NewConnectionSetup: React.FC<NewConnectionSetupProps> = ({ onClose 
     </div>
   );
 
-  const renderGetCodeStep = () => (
-    <div className={styles.stepContent}>
-      <div className={styles.stepHeader}>
-        <h3>{t('step_1_get_temp_code')}</h3>
-        <p>{t('step_1_description')}</p>
-      </div>
+  const renderGetCodeStep = () => {
+    // Simplified mode UI
+    if (!isAdvancedMode) {
+      return (
+        <div className={styles.stepContent}>
+          <div className={styles.stepHeader}>
+            <h3>{t('api:add_bank_connection')}</h3>
+            <p>{t('api:one_click_connection_info')}</p>
+          </div>
 
-      {error && (
-        <div className={styles.error}>
-          <span>❌ {error}</span>
+          {error && (
+            <div className={styles.error}>
+              <span>❌ {error}</span>
+            </div>
+          )}
+
+          <div className={styles.stepActions}>
+            <button 
+              onClick={handleOneClickBankConnection} 
+              disabled={isLoading || !isConfigValid} 
+              className={styles.btnPrimary}
+            >
+              {isLoading 
+                ? t('api:connecting_to_bank')
+                : t('api:add_bank_connection')
+              }
+            </button>
+
+            <button onClick={toggleAdvancedMode} className={styles.btnSecondary}>
+              {t('api:switch_to_advanced_mode')}
+            </button>
+          </div>
         </div>
-      )}
+      );
+    }
 
-      <div className={styles.stepActions}>
-        <button onClick={handleGetTemporaryCode} disabled={isLoading} className={styles.btnPrimary}>
-          {isLoading ? t('fetching_in_progress') : t('get_temp_code')}
-        </button>
+    // Advanced mode UI (original)
+    return (
+      <div className={styles.stepContent}>
+        <div className={styles.stepHeader}>
+          <h3>{t('step_1_get_temp_code')}</h3>
+          <p>{t('step_1_description')}</p>
+        </div>
 
-        <button onClick={() => setCurrentStep('configure')} className={styles.btnSecondary}>
-          {t('common:back')}
-        </button>
+        {error && (
+          <div className={styles.error}>
+            <span>❌ {error}</span>
+          </div>
+        )}
+
+        <div className={styles.stepActions}>
+          <button onClick={handleGetTemporaryCode} disabled={isLoading} className={styles.btnPrimary}>
+            {isLoading ? t('fetching_in_progress') : t('get_temp_code')}
+          </button>
+
+          <button onClick={toggleAdvancedMode} className={styles.btnSecondary}>
+            {t('api:switch_to_simple_mode')}
+          </button>
+
+          <button onClick={() => setCurrentStep('configure')} className={styles.btnSecondary}>
+            {t('common:back')}
+          </button>
+        </div>
       </div>
-    </div>
-  );
+    );
+  };
 
   const renderOpenUrlStep = () => (
     <div className={styles.stepContent}>
@@ -199,26 +333,29 @@ export const NewConnectionSetup: React.FC<NewConnectionSetupProps> = ({ onClose 
           </button>
         </div>
 
-        <div className={styles.progressBar}>
-          <div
-            className={`${styles.progressStep} ${currentStep === 'configure' ? styles.active : styles.completed}`}
-          >
-            <span className={styles.stepNumber}>1</span>
-            <span className={styles.stepLabel}>{t('step_label_configuration')}</span>
+        {/* Only show progress bar in advanced mode */}
+        {isAdvancedMode && (
+          <div className={styles.progressBar}>
+            <div
+              className={`${styles.progressStep} ${currentStep === 'configure' ? styles.active : styles.completed}`}
+            >
+              <span className={styles.stepNumber}>1</span>
+              <span className={styles.stepLabel}>{t('step_label_configuration')}</span>
+            </div>
+            <div
+              className={`${styles.progressStep} ${currentStep === 'get-code' ? styles.active : currentStep === 'open-url' ? styles.completed : ''}`}
+            >
+              <span className={styles.stepNumber}>2</span>
+              <span className={styles.stepLabel}>{t('step_label_temp_code')}</span>
+            </div>
+            <div
+              className={`${styles.progressStep} ${currentStep === 'open-url' ? styles.active : ''}`}
+            >
+              <span className={styles.stepNumber}>3</span>
+              <span className={styles.stepLabel}>{t('step_label_connection')}</span>
+            </div>
           </div>
-          <div
-            className={`${styles.progressStep} ${currentStep === 'get-code' ? styles.active : currentStep === 'open-url' ? styles.completed : ''}`}
-          >
-            <span className={styles.stepNumber}>2</span>
-            <span className={styles.stepLabel}>{t('step_label_temp_code')}</span>
-          </div>
-          <div
-            className={`${styles.progressStep} ${currentStep === 'open-url' ? styles.active : ''}`}
-          >
-            <span className={styles.stepNumber}>3</span>
-            <span className={styles.stepLabel}>{t('step_label_connection')}</span>
-          </div>
-        </div>
+        )}
 
         <div className={styles.content}>
           {currentStep === 'configure' && renderConfigureStep()}

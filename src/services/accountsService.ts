@@ -576,6 +576,78 @@ export class AccountsService {
   }
 
   /**
+   * Unified method to get temporary code and build webview URL in one call
+   * This is used for the simplified one-click connection flow
+   */
+  static async getConnectionUrlDirectly(
+    customConfig?: ApiConfig,
+    connectionId?: number,
+    mode: 'connect' | 'manage' | 'reconnect' = 'connect',
+    lang: string = 'fr'
+  ): Promise<{
+    code: string;
+    url: string;
+  }> {
+    const config = customConfig || this.config;
+
+    // First, get the temporary code
+    const { code } = await this.getTemporaryCode(config);
+
+    // Then build the appropriate URL based on mode
+    let url: string;
+    switch (mode) {
+      case 'manage':
+        if (!connectionId) {
+          throw new Error('Connection ID is required for manage mode');
+        }
+        url = this.buildManageWebviewUrl(connectionId, code, config, lang);
+        break;
+      case 'reconnect':
+        if (!connectionId) {
+          throw new Error('Connection ID is required for reconnect mode');
+        }
+        url = this.buildReconnectWebviewUrl(connectionId, code, config, lang);
+        break;
+      case 'connect':
+      default:
+        url = this.buildWebviewUrl(config.clientId, code, config);
+        break;
+    }
+
+    return { code, url };
+  }
+
+  /**
+   * Open connection webview URL in a new window
+   * Returns true if successful, false if popup was blocked
+   */
+  static openConnectionWebview(url: string, onClose?: () => void): Window | null {
+    try {
+      const popup = window.open(url, '_blank', 'width=800,height=600,scrollbars=yes,resizable=yes');
+      
+      if (popup && !popup.closed && onClose) {
+        // Monitor popup closure
+        const checkClosed = setInterval(() => {
+          if (popup.closed) {
+            clearInterval(checkClosed);
+            onClose();
+          }
+        }, 1000);
+        
+        // Cleanup interval if popup is still open after 30 minutes
+        setTimeout(() => {
+          clearInterval(checkClosed);
+        }, 30 * 60 * 1000);
+      }
+      
+      return popup;
+    } catch (error) {
+      console.error('Failed to open popup:', error);
+      return null;
+    }
+  }
+
+  /**
    * Returns mock data for development and testing
    * Mock data is now maintained in a separate file for better organization
    */

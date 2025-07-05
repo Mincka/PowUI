@@ -119,5 +119,22 @@
   "confirm_disable_demo": "Are you sure you want to disable demo mode? This will clear all current configuration and user data, and you will need to configure the application manually.",
   "demo_disabled_success": "Demo mode disabled. You can now configure the application manually.",
   "enable_demo_mode": "Switch to Demo Mode",
-  "enable_demo_description": "Switch to demo mode to explore the application with sample data."
+  "enable_demo_description": "Switch to demo mode to explore the application with sample data.",
+  "user_configured_successfully": "User configured successfully",
+  "show_advanced_connection_steps": "Show advanced connection steps",
+  "show_advanced_connection_steps_description": "Enable this to see the temporary code and URL before opening the connection interface (useful for debugging)",
+  "connect_to_bank": "🏦 Connect to Bank",
+  "add_bank_connection": "🏦 Add Bank Connection",
+  "open_bank_management": "🌐 Open Bank Management",
+  "reconnect_to_bank": "🔐 Reconnect to Bank",
+  "connecting_to_bank": "🔄 Connecting...",
+  "opening_connection": "🔄 Opening connection...",
+  "connection_opened_successfully": "Connection interface opened successfully",
+  "failed_to_open_connection": "Failed to open connection interface",
+  "popup_blocked_message": "Popup was blocked. Please allow popups for this site and try again.",
+  "one_click_connection_info": "Click the button below to automatically generate a temporary code and open the connection interface",
+  "switch_to_advanced_mode": "Switch to advanced mode",
+  "switch_to_simple_mode": "Switch to simple mode",
+  "checking_new_connections": "Checking for new connections...",
+  "connection_interface_closed": "Connection interface closed. You can add another connection if needed."
 }

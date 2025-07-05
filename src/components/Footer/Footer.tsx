@@ -6,7 +6,7 @@ export const Footer: React.FC = () => {
   const { t } = useTranslation('common');
   
   // Get version from package.json
-  const version = '1.0.0';
+  const version = '1.1.0';
   
   return (
     <footer className={styles.footer}>

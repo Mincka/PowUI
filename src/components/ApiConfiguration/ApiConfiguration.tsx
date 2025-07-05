@@ -36,6 +36,7 @@ export const ApiConfiguration: React.FC<ApiConfigurationProps> = ({
     message: string;
   } | null>(null);
   const [useMockData, setUseMockData] = useState(false);
+  const [showAdvancedConnectionSteps, setShowAdvancedConnectionSteps] = useState(false);
   const [showUserManager, setShowUserManager] = useState(false);
   const [showInitialSetup, setShowInitialSetup] = useState(false);
   const [activeUser, setActiveUser] = useState<PowensUser | null>(null);
@@ -67,6 +68,8 @@ export const ApiConfiguration: React.FC<ApiConfigurationProps> = ({
         setConfig(updatedConfig);
         // Set mock data based on mode or fallback to useMockData for backward compatibility
         setUseMockData(savedConfig.mode === 'mock' || savedConfig.useMockData || false);
+        // Load advanced connection steps setting (default to false for simplified mode)
+        setShowAdvancedConnectionSteps(savedConfig.showAdvancedConnectionSteps || false);
       }
     } catch (error) {
       console.error('Error loading saved configuration:', error);
@@ -113,6 +116,7 @@ export const ApiConfiguration: React.FC<ApiConfigurationProps> = ({
             clientSecret: configWithMode.clientSecret || '',
             usersToken: configWithMode.usersToken || '',
             useMockData: useMockData, // Keep for backward compatibility
+            showAdvancedConnectionSteps: showAdvancedConnectionSteps,
           })
         );
 
@@ -510,6 +514,7 @@ export const ApiConfiguration: React.FC<ApiConfigurationProps> = ({
                 {t('manage_users')}
               </button>
             </div>
+
           </>
         )}
 
@@ -523,20 +528,6 @@ export const ApiConfiguration: React.FC<ApiConfigurationProps> = ({
           </div>
         )}
 
-        {!useMockData && (
-          <div className={styles.enableDemoOption}>
-            <button
-              onClick={() => setUseMockData(true)}
-              className={styles.btnEnableDemo}
-              type="button"
-            >
-              {t('enable_demo_mode', 'Switch to Demo Mode')}
-            </button>
-            <p className={styles.enableDemoDescription}>
-              {t('enable_demo_description', 'Switch to demo mode to explore the application with sample data.')}
-            </p>
-          </div>
-        )}
 
         {!useMockData && (
           <div className={styles.testConnection}>
@@ -579,14 +570,6 @@ export const ApiConfiguration: React.FC<ApiConfigurationProps> = ({
             <div className={styles.utilityActions}>
               <button onClick={clearConfiguration} className={styles.btnClear} type="button">
                 {t('common:reset')}
-              </button>
-              <button
-                onClick={resetToInitialSetup}
-                className={styles.btnReset}
-                type="button"
-                title={t('configuration_wizard_tooltip')}
-              >
-                {t('configuration_wizard')}
               </button>
             </div>
             <div className={styles.mainActions}>

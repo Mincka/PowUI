@@ -447,6 +447,119 @@
   font-size: 0.875rem;
 }
 
+/* Connection setup styles */
+.connectionSetup {
+  margin-bottom: 24px;
+}
+
+.loadingConnections {
+  text-align: center;
+  padding: 20px;
+  color: #6b7280;
+  font-style: italic;
+}
+
+.existingConnections {
+  background-color: #f0fdf4;
+  border: 1px solid #bbf7d0;
+  border-radius: 8px;
+  padding: 16px;
+  margin-bottom: 24px;
+}
+
+.existingConnections h4 {
+  margin: 0 0 8px;
+  color: #166534;
+  font-size: 1rem;
+  font-weight: 600;
+}
+
+.existingConnections p {
+  margin: 0 0 12px;
+  color: #166534;
+  font-size: 0.875rem;
+}
+
+.connectionsList {
+  margin-top: 12px;
+}
+
+.connectionItem {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 12px;
+  background-color: white;
+  border: 1px solid #d1fae5;
+  border-radius: 6px;
+  margin-bottom: 8px;
+}
+
+.bankName {
+  font-weight: 500;
+  color: #374151;
+}
+
+.connectionStatus {
+  font-size: 0.75rem;
+  font-weight: 500;
+}
+
+.moreConnections {
+  margin: 8px 0 0;
+  font-size: 0.875rem;
+  color: #6b7280;
+  font-style: italic;
+}
+
+.connectionDetails {
+  margin-bottom: 20px;
+}
+
+.codeValue,
+.urlValue {
+  background-color: #f9fafb;
+  border: 1px solid #d1d5db;
+  border-radius: 6px;
+  padding: 12px;
+  font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+  font-size: 0.875rem;
+  color: #1f2937;
+  word-break: break-all;
+  margin-top: 6px;
+}
+
+.codeValue code,
+.urlValue code {
+  background: none;
+  padding: 0;
+  color: inherit;
+  font-size: inherit;
+}
+
+.connectionActions {
+  display: flex;
+  justify-content: center;
+  margin: 20px 0;
+}
+
+.btnSecondary {
+  padding: 10px 20px;
+  border: 2px solid #6b7280;
+  background-color: white;
+  color: #6b7280;
+  border-radius: 6px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.btnSecondary:hover {
+  border-color: #4b5563;
+  color: #4b5563;
+  background-color: #f9fafb;
+}
+
 /* Responsive design */
 @media (max-width: 640px) {
   .modal {
@@ -464,7 +577,20 @@
     gap: 12px;
   }
 
+  .connectionItem {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 8px;
+    text-align: center;
+  }
+
   .stepIndicator {
     transform: scale(0.9);
+  }
+
+  .codeValue,
+  .urlValue {
+    font-size: 0.75rem;
+    padding: 8px;
   }
 }

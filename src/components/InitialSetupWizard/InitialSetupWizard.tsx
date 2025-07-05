@@ -1,9 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
-import { ApiConfig } from '../../config/api';
+import { ApiConfig, validateApiConfigForNewConnection } from '../../config/api';
 import { UserService } from '../../services/userService';
 import { AccountHistoryService } from '../../services/accountHistoryService';
-import { CombinedUserData } from '../../types/accounts';
+import { AccountsService } from '../../services/accountsService';
+import { ConnectorService } from '../../services/connectorService';
+import { CombinedUserData, Connector } from '../../types/accounts';
+import { isAdvancedConnectionStepsEnabled, getCurrentLanguage } from '../../utils/connectionUtils';
 import styles from './InitialSetupWizard.module.css';
 
 interface InitialSetupWizardProps {
@@ -12,7 +15,7 @@ interface InitialSetupWizardProps {
   onCancel: () => void;
 }
 
-type SetupStep = 'basic' | 'users' | 'configure';
+type SetupStep = 'basic' | 'users' | 'configure' | 'connections';
 
 export const InitialSetupWizard: React.FC<InitialSetupWizardProps> = ({
   isVisible,
@@ -45,6 +48,16 @@ export const InitialSetupWizard: React.FC<InitialSetupWizardProps> = ({
   const [userAuthToken, setUserAuthToken] = useState('');
   const [shouldGenerateToken, setShouldGenerateToken] = useState(true);
   const [isCreatingUser, setIsCreatingUser] = useState(false);
+
+  // Connection setup state
+  const [temporaryCode, setTemporaryCode] = useState<string>('');
+  const [webviewUrl, setWebviewUrl] = useState<string>('');
+  const [isLoadingConnection, setIsLoadingConnection] = useState(false);
+  const [connectionError, setConnectionError] = useState<string>('');
+  const [finalConfig, setFinalConfig] = useState<ApiConfig | null>(null);
+  const [existingConnections, setExistingConnections] = useState<any[]>([]);
+  const [isLoadingConnections, setIsLoadingConnections] = useState(false);
+  const [connectorMap, setConnectorMap] = useState<Map<number, Connector>>(new Map());
 
   // Allow demo mode on any domain
   const isDemoDomain = () => {
@@ -310,8 +323,14 @@ export const InitialSetupWizard: React.FC<InitialSetupWizardProps> = ({
         })
       );
 
-      // Complete the setup
-      onComplete(finalConfig);
+      // Store the final config and advance to connections step
+      setFinalConfig(finalConfig);
+      
+      // Check for existing connections
+      checkExistingConnections(finalConfig);
+      
+      setCurrentStep('connections');
+      setSuccess(t('user_configured_successfully'));
     } catch (err) {
       const errorMessage = err instanceof Error ? err.message : 'Erreur lors de la configuration';
       setError(`Impossible de configurer l'utilisateur: ${errorMessage}`);
@@ -328,6 +347,157 @@ export const InitialSetupWizard: React.FC<InitialSetupWizardProps> = ({
       setCurrentStep('basic');
     } else if (currentStep === 'configure') {
       setCurrentStep('users');
+    } else if (currentStep === 'connections') {
+      // Reset connection state when going back
+      setTemporaryCode('');
+      setWebviewUrl('');
+      setConnectionError('');
+      setCurrentStep('configure');
+    }
+  };
+
+  // Check for existing connections with connector info
+  const checkExistingConnections = async (config: ApiConfig) => {
+    if (!config) return;
+
+    setIsLoadingConnections(true);
+    try {
+      // Fetch existing connections
+      const response = await AccountsService.fetchConnections(config);
+      const connections = response?.connections || [];
+      
+      if (connections.length > 0) {
+        // Get unique connector IDs from connections
+        const connectorIds = [
+          ...new Set(
+            connections
+              .map(conn => conn.id_connector)
+              .filter((id): id is number => typeof id === 'number')
+          ),
+        ];
+
+        if (connectorIds.length > 0) {
+          // Load connector information using ConnectorService
+          const connectors = await ConnectorService.getConnectorsWithCache(connectorIds, config);
+          setConnectorMap(connectors);
+        }
+      }
+      
+      setExistingConnections(connections);
+    } catch (err) {
+      console.log('No existing connections found or error fetching:', err);
+      setExistingConnections([]);
+    } finally {
+      setIsLoadingConnections(false);
+    }
+  };
+
+  // Get bank name from connector
+  const getBankName = (connection: any): string => {
+    if (!connection.id_connector) {
+      return connection.name || `Connection ${connection.id}`;
+    }
+    return ConnectorService.getConnectorName(connection.id_connector, connectorMap);
+  };
+
+  // Connection setup functions
+  const handleGetTemporaryCode = async () => {
+    if (!finalConfig) return;
+
+    setIsLoadingConnection(true);
+    setConnectionError('');
+
+    try {
+      const result = await AccountsService.getTemporaryCode(finalConfig);
+      setTemporaryCode(result.code);
+
+      // Build the webview URL
+      const url = AccountsService.buildWebviewUrl(finalConfig.clientId, result.code, finalConfig);
+      setWebviewUrl(url);
+      setSuccess('Temporary code generated successfully!');
+    } catch (err) {
+      const errorMessage = err instanceof Error ? err.message : 'Failed to get temporary code';
+      setConnectionError(`Failed to get temporary code: ${errorMessage}`);
+    } finally {
+      setIsLoadingConnection(false);
+    }
+  };
+
+  const handleOpenWebview = () => {
+    if (webviewUrl) {
+      window.open(webviewUrl, '_blank', 'width=800,height=600,scrollbars=yes,resizable=yes');
+      
+      // Reset the temporary code state since it's single-use
+      // This will show the "Get Temporary Code" button again
+      setTemporaryCode('');
+      setWebviewUrl('');
+      setSuccess('Connection page opened. You can generate a new temporary code if needed.');
+    }
+  };
+
+  // Simplified one-click connection flow for the wizard
+  const handleOneClickBankConnection = async () => {
+    if (!finalConfig) return;
+
+    setIsLoadingConnection(true);
+    setConnectionError('');
+
+    try {
+      // Use the unified service method to get code and URL directly
+      const lang = getCurrentLanguage();
+      
+      const result = await AccountsService.getConnectionUrlDirectly(
+        finalConfig,
+        undefined, // No connection ID for new connections
+        'connect',
+        lang
+      );
+
+      // Store the code/URL and immediately open the webview
+      setTemporaryCode(result.code);
+      setWebviewUrl(result.url);
+
+      // Open the webview directly with close detection
+      const popup = AccountsService.openConnectionWebview(result.url, () => {
+        // Popup was closed - refresh connections
+        setSuccess(t('checking_new_connections', 'Checking for new connections...'));
+        setConnectionError('');
+        
+        // Refresh connections after popup closes
+        setTimeout(() => {
+          if (finalConfig) {
+            checkExistingConnections(finalConfig);
+          }
+          // Reset the state so user can create another connection if needed
+          setTemporaryCode('');
+          setWebviewUrl('');
+          setConnectionError('');
+          setSuccess(t('connection_interface_closed', 'Connection interface closed. You can add another connection if needed.'));
+        }, 1000);
+      });
+      
+      if (popup) {
+        setSuccess(t('connection_opened_successfully', 'Connection interface opened successfully! Close the popup when you\'re done to refresh the connections list.'));
+      } else {
+        setConnectionError(t('popup_blocked_message', 'Popup was blocked. Please allow popups for this site and try again.'));
+      }
+    } catch (err) {
+      const errorMessage = err instanceof Error ? err.message : t('errors:unknown_error', 'Unknown error');
+      setConnectionError(t('failed_to_open_connection', `Failed to open connection interface: ${errorMessage}`));
+    } finally {
+      setIsLoadingConnection(false);
+    }
+  };
+
+  const handleSkipConnections = () => {
+    if (finalConfig) {
+      onComplete(finalConfig);
+    }
+  };
+
+  const handleCompleteSetup = () => {
+    if (finalConfig) {
+      onComplete(finalConfig);
     }
   };
 
@@ -597,6 +767,137 @@ export const InitialSetupWizard: React.FC<InitialSetupWizardProps> = ({
     </div>
   );
 
+  const renderConnectionsStep = () => (
+    <div className={styles.step}>
+      <div className={styles.stepHeader}>
+        <h3>🏦 Bank Connections Setup</h3>
+        <p>You can now add bank connections through Powens to access your accounts. This step is optional and you can add connections later from the connection manager.</p>
+      </div>
+
+      {/* Show existing connections if any */}
+      {isLoadingConnections ? (
+        <div className={styles.loadingConnections}>
+          <p>🔄 Checking for existing connections...</p>
+        </div>
+      ) : existingConnections.length > 0 ? (
+        <div className={styles.existingConnections}>
+          <h4>✅ Existing Connections Found</h4>
+          <p>You already have {existingConnections.length} bank connection(s) configured:</p>
+          <div className={styles.connectionsList}>
+            {existingConnections.map((connection, index) => (
+              <div key={connection.id || index} className={styles.connectionItem}>
+                <span className={styles.bankName}>
+                  {getBankName(connection)}
+                </span>
+                <span className={styles.connectionStatus}>
+                  {connection.error ? '❌ Error' : '✅ Active'}
+                </span>
+              </div>
+            ))}
+          </div>
+        </div>
+      ) : null}
+
+      {/* Check if advanced mode is enabled */}
+      {isAdvancedConnectionStepsEnabled() ? (
+        // Advanced mode: Show traditional two-step flow
+        !temporaryCode ? (
+          <div className={styles.connectionSetup}>
+            <div className={styles.infoBox}>
+              <h4>🔗 Add {existingConnections.length > 0 ? 'Another' : 'Your First'} Bank Connection</h4>
+              <p>Click the button below to generate a temporary code and open the Powens connection interface where you can securely connect your bank accounts.</p>
+            </div>
+
+            {connectionError && (
+              <div className={styles.error}>
+                ❌ {connectionError}
+              </div>
+            )}
+
+            <div className={styles.connectionActions}>
+              <button
+                onClick={handleGetTemporaryCode}
+                disabled={isLoadingConnection}
+                className={styles.btnNext}
+                type="button"
+              >
+                {isLoadingConnection ? '🔄 Generating...' : '🔑 Get Temporary Code'}
+              </button>
+            </div>
+          </div>
+        ) : (
+          <div className={styles.connectionSetup}>
+            <div className={styles.connectionDetails}>
+              <div className={styles.formGroup}>
+                <label>Temporary Code:</label>
+                <div className={styles.codeValue}>
+                  <code>{temporaryCode}</code>
+                </div>
+              </div>
+
+              <div className={styles.formGroup}>
+                <label>Connection URL:</label>
+                <div className={styles.urlValue}>
+                  <code>{webviewUrl}</code>
+                </div>
+              </div>
+            </div>
+
+            <div className={styles.connectionActions}>
+              <button
+                onClick={handleOpenWebview}
+                className={styles.btnNext}
+                type="button"
+              >
+                🌐 Open Connection Page
+              </button>
+            </div>
+          </div>
+        )
+      ) : (
+        // Simplified mode: One-click connection
+        <div className={styles.connectionSetup}>
+          <div className={styles.infoBox}>
+            <h4>🔗 Add {existingConnections.length > 0 ? 'Another' : 'Your First'} Bank Connection</h4>
+            <p>{t('one_click_connection_info', 'Click the button below to automatically generate a temporary code and open the connection interface')}</p>
+          </div>
+
+          {connectionError && (
+            <div className={styles.error}>
+              ❌ {connectionError}
+            </div>
+          )}
+
+          <div className={styles.connectionActions}>
+            <button
+              onClick={handleOneClickBankConnection}
+              disabled={isLoadingConnection}
+              className={styles.btnNext}
+              type="button"
+            >
+              {isLoadingConnection 
+                ? t('connecting_to_bank', '🔄 Connecting...')
+                : t('add_bank_connection', '🏦 Add Bank Connection')
+              }
+            </button>
+          </div>
+        </div>
+      )}
+
+      <div className={styles.stepActions}>
+        <button onClick={handleBack} className={styles.btnBack} type="button">
+          {t('common:back')}
+        </button>
+        <button onClick={handleSkipConnections} className={styles.btnCancel} type="button">
+          Skip for Now
+        </button>
+        <button onClick={handleCompleteSetup} className={styles.btnNext} type="button">
+          ✅ Complete Setup
+        </button>
+      </div>
+    </div>
+  );
+
   if (!isVisible) return null;
 
   const handleLanguageChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
@@ -631,15 +932,21 @@ export const InitialSetupWizard: React.FC<InitialSetupWizardProps> = ({
             </div>
             <div className={styles.stepLine}></div>
             <div
-              className={`${styles.stepDot} ${currentStep === 'users' ? styles.active : currentStep === 'configure' ? styles.completed : ''}`}
+              className={`${styles.stepDot} ${currentStep === 'users' ? styles.active : (currentStep === 'configure' || currentStep === 'connections') ? styles.completed : ''}`}
             >
               2
             </div>
             <div className={styles.stepLine}></div>
             <div
-              className={`${styles.stepDot} ${currentStep === 'configure' ? styles.active : ''}`}
+              className={`${styles.stepDot} ${currentStep === 'configure' ? styles.active : currentStep === 'connections' ? styles.completed : ''}`}
             >
               3
+            </div>
+            <div className={styles.stepLine}></div>
+            <div
+              className={`${styles.stepDot} ${currentStep === 'connections' ? styles.active : ''}`}
+            >
+              4
             </div>
           </div>
         </div>
@@ -651,6 +958,7 @@ export const InitialSetupWizard: React.FC<InitialSetupWizardProps> = ({
         {currentStep === 'basic' && renderBasicStep()}
         {currentStep === 'users' && renderUsersStep()}
         {currentStep === 'configure' && renderConfigureStep()}
+        {currentStep === 'connections' && renderConnectionsStep()}
       </div>
     </div>
   );
