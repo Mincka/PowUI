@@ -155,32 +155,6 @@ export const ApiConfiguration: React.FC<ApiConfigurationProps> = ({
     window.location.reload();
   };
 
-  const resetToInitialSetup = () => {
-    // Clear all configuration and user data
-    const resetConfig = {
-      mode: 'mock' as const,
-      apiUrl: '',
-      userId: '',
-      bearerToken: '',
-      clientId: '',
-      clientSecret: '',
-      usersToken: '',
-    };
-
-    setConfig(resetConfig);
-    localStorage.removeItem('apiConfig');
-    localStorage.removeItem('powensUsers');
-    localStorage.removeItem('powensUsersToken');
-    setTestResult(null);
-    setActiveUser(null);
-
-    // Update parent component with reset config
-    onConfigChange(resetConfig);
-
-    // Show the initial setup wizard but keep the config panel open
-    setShowInitialSetup(true);
-    // Don't close the config panel - setIsVisible(false);
-  };
 
   const testConnection = async () => {
     // Create config with direct mode for testing

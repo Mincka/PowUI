@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
-import { ApiConfig, validateApiConfigForNewConnection } from '../../config/api';
+import { ApiConfig } from '../../config/api';
 import { UserService } from '../../services/userService';
 import { AccountHistoryService } from '../../services/accountHistoryService';
 import { AccountsService } from '../../services/accountsService';

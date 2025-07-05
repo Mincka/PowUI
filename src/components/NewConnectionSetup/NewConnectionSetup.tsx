@@ -19,7 +19,6 @@ export const NewConnectionSetup: React.FC<NewConnectionSetupProps> = ({ onClose 
   const [isLoading, setIsLoading] = useState(false);
   const [temporaryCode, setTemporaryCode] = useState<string>('');
   const [error, setError] = useState<string>('');
-  const [success, setSuccess] = useState<string>('');
   const [webviewUrl, setWebviewUrl] = useState<string>('');
   const [isAdvancedMode, setIsAdvancedMode] = useState(false);
 
@@ -117,7 +116,6 @@ export const NewConnectionSetup: React.FC<NewConnectionSetupProps> = ({ onClose 
       });
       
       if (popup) {
-        setSuccess(t('api:connection_opened_successfully', 'Connection interface opened successfully! Close the popup when you\'re done.'));
         setError(''); // Clear any previous errors
       } else {
         setError(t('api:popup_blocked_message', 'Le popup a été bloqué. Veuillez autoriser les popups pour ce site et réessayer.'));
