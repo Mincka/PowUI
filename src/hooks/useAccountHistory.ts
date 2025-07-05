@@ -18,7 +18,7 @@ export const useAccountHistory = () => {
     if (userId > 0) {
       const userSelectedAccounts = AccountHistoryService.getSelectedAccounts(userId);
       const userChartType = AccountHistoryService.getPreferredChartType(userId);
-      
+
       setSelectedAccounts(userSelectedAccounts);
       setPreferredChartType(userChartType);
     }
@@ -34,14 +34,17 @@ export const useAccountHistory = () => {
     }
   }, [userId, selectedAccounts]);
 
-  const recordAccountValues = useCallback((accounts: Account[]) => {
-    if (userId > 0 && isEnabled) {
-      AccountHistoryService.recordDailyValues(accounts, userId);
-      // Refresh history after recording
-      const updatedHistory = AccountHistoryService.getHistoryForSelectedAccounts(userId);
-      setHistory(updatedHistory);
-    }
-  }, [userId, isEnabled]);
+  const recordAccountValues = useCallback(
+    (accounts: Account[]) => {
+      if (userId > 0 && isEnabled) {
+        AccountHistoryService.recordDailyValues(accounts, userId);
+        // Refresh history after recording
+        const updatedHistory = AccountHistoryService.getHistoryForSelectedAccounts(userId);
+        setHistory(updatedHistory);
+      }
+    },
+    [userId, isEnabled]
+  );
 
   const toggleEnabled = useCallback((enabled: boolean) => {
     AccountHistoryService.setEnabled(enabled);
@@ -52,22 +55,28 @@ export const useAccountHistory = () => {
     }
   }, []);
 
-  const updateSelectedAccounts = useCallback((accountIds: number[]) => {
-    if (userId > 0) {
-      AccountHistoryService.setSelectedAccounts(userId, accountIds);
-      setSelectedAccounts(accountIds);
-      // Refresh history with new selection
-      const updatedHistory = AccountHistoryService.getHistoryForSelectedAccounts(userId);
-      setHistory(updatedHistory);
-    }
-  }, [userId]);
+  const updateSelectedAccounts = useCallback(
+    (accountIds: number[]) => {
+      if (userId > 0) {
+        AccountHistoryService.setSelectedAccounts(userId, accountIds);
+        setSelectedAccounts(accountIds);
+        // Refresh history with new selection
+        const updatedHistory = AccountHistoryService.getHistoryForSelectedAccounts(userId);
+        setHistory(updatedHistory);
+      }
+    },
+    [userId]
+  );
 
-  const updatePreferredChartType = useCallback((chartType: ChartType) => {
-    if (userId > 0) {
-      AccountHistoryService.setPreferredChartType(userId, chartType);
-      setPreferredChartType(chartType);
-    }
-  }, [userId]);
+  const updatePreferredChartType = useCallback(
+    (chartType: ChartType) => {
+      if (userId > 0) {
+        AccountHistoryService.setPreferredChartType(userId, chartType);
+        setPreferredChartType(chartType);
+      }
+    },
+    [userId]
+  );
 
   const clearUserHistory = useCallback(() => {
     if (userId > 0) {
@@ -78,19 +87,25 @@ export const useAccountHistory = () => {
     }
   }, [userId]);
 
-  const getHistoryForPeriod = useCallback((startDate: string, endDate: string) => {
-    if (userId > 0) {
-      return AccountHistoryService.getHistoryForPeriod(userId, startDate, endDate);
-    }
-    return [];
-  }, [userId]);
+  const getHistoryForPeriod = useCallback(
+    (startDate: string, endDate: string) => {
+      if (userId > 0) {
+        return AccountHistoryService.getHistoryForPeriod(userId, startDate, endDate);
+      }
+      return [];
+    },
+    [userId]
+  );
 
-  const getHistoryForAccount = useCallback((accountId: number) => {
-    if (userId > 0) {
-      return AccountHistoryService.getHistoryForAccount(accountId, userId);
-    }
-    return [];
-  }, [userId]);
+  const getHistoryForAccount = useCallback(
+    (accountId: number) => {
+      if (userId > 0) {
+        return AccountHistoryService.getHistoryForAccount(accountId, userId);
+      }
+      return [];
+    },
+    [userId]
+  );
 
   const getAvailableDates = useCallback(() => {
     if (userId > 0) {
@@ -110,14 +125,14 @@ export const useAccountHistory = () => {
     preferredChartType,
     history,
     userId,
-    
+
     // Actions
     recordAccountValues,
     toggleEnabled,
     updateSelectedAccounts,
     updatePreferredChartType,
     clearUserHistory,
-    
+
     // Data getters
     getHistoryForPeriod,
     getHistoryForAccount,

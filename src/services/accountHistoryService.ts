@@ -122,10 +122,10 @@ export class AccountHistoryService {
 
     const today = getLocalDateString(); // YYYY-MM-DD in user's local timezone
     const selectedAccounts = this.getSelectedAccounts(userId);
-    
+
     // Filter accounts to only eligible ones
     const eligibleAccounts = accounts.filter(account => this.isAccountEligible(account));
-    
+
     // If no accounts are selected yet, auto-select all eligible accounts
     if (selectedAccounts.length === 0 && eligibleAccounts.length > 0) {
       const autoSelectedIds = eligibleAccounts.map(account => account.id);
@@ -134,9 +134,9 @@ export class AccountHistoryService {
 
     // Get current selection (might have been auto-updated)
     const currentSelection = this.getSelectedAccounts(userId);
-    
+
     // Record history for selected accounts only
-    const accountsToRecord = eligibleAccounts.filter(account => 
+    const accountsToRecord = eligibleAccounts.filter(account =>
       currentSelection.includes(account.id)
     );
 
@@ -146,10 +146,10 @@ export class AccountHistoryService {
 
     try {
       const existingHistory = this.getAllHistory(userId);
-      
+
       // Remove any existing entries for today (replace if app runs multiple times)
       const filteredHistory = existingHistory.filter(entry => entry.date !== today);
-      
+
       // Add new entries for today
       const newEntries: AccountHistoryEntry[] = accountsToRecord.map(account => ({
         accountId: account.id,
@@ -276,7 +276,7 @@ export class AccountHistoryService {
     }
 
     const eligibleAccounts = accounts.filter(account => this.isAccountEligible(account));
-    
+
     if (eligibleAccounts.length === 0) {
       return;
     }
@@ -288,19 +288,19 @@ export class AccountHistoryService {
     // Generate history for the past 10 days (including today)
     const historyEntries: AccountHistoryEntry[] = [];
     const today = new Date();
-    
+
     for (let dayOffset = 9; dayOffset >= 0; dayOffset--) {
       const date = new Date(today);
       date.setDate(today.getDate() - dayOffset);
       const dateString = formatLocalDate(date);
-      
+
       eligibleAccounts.forEach(account => {
         // Generate realistic balance progression
         const currentBalance = account.balance;
         const baseVariation = this.getAccountVariationPattern(account, dayOffset);
         const randomVariation = (Math.random() - 0.5) * 0.02; // ±1% random variation
         const totalVariation = baseVariation + randomVariation;
-        
+
         // Calculate historical balance
         let historicalBalance: number;
         if (dayOffset === 0) {
@@ -308,12 +308,12 @@ export class AccountHistoryService {
           historicalBalance = currentBalance;
         } else {
           // Apply variation to get historical balance
-          historicalBalance = currentBalance * (1 - totalVariation * dayOffset / 10);
+          historicalBalance = currentBalance * (1 - (totalVariation * dayOffset) / 10);
         }
-        
+
         // Round to 2 decimal places for realistic banking values
         historicalBalance = Math.round(historicalBalance * 100) / 100;
-        
+
         historyEntries.push({
           accountId: account.id,
           date: dateString,
@@ -334,10 +334,10 @@ export class AccountHistoryService {
   private static getAccountVariationPattern(account: Account, dayOffset: number): number {
     const accountType = account.type?.toLowerCase() || '';
     const isBusinessAccount = account.usage === 'ORGA';
-    
+
     // Base variation patterns by account type
     let baseVariation = 0;
-    
+
     if (accountType.includes('checking')) {
       // Checking accounts have moderate daily variations
       baseVariation = isBusinessAccount ? 0.08 : 0.05; // Business accounts vary more
@@ -368,7 +368,7 @@ export class AccountHistoryService {
       // Default variation for other account types
       baseVariation = 0.03;
     }
-    
+
     return baseVariation;
   }
 }

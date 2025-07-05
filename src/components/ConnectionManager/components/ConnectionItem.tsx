@@ -62,15 +62,23 @@ export const ConnectionItem: React.FC<ConnectionItemProps> = ({
   // Helper function to determine if connection needs re-authentication
   const needsReauth = () => {
     if (!connection.state && !connection.error) return false;
-    const authErrors = ['SCARequired', 'webauthRequired', 'additionalInformationNeeded', 'decoupled', 'wrongpass'];
-    return authErrors.includes(connection.state || '') || authErrors.includes(connection.error || '');
+    const authErrors = [
+      'SCARequired',
+      'webauthRequired',
+      'additionalInformationNeeded',
+      'decoupled',
+      'wrongpass',
+    ];
+    return (
+      authErrors.includes(connection.state || '') || authErrors.includes(connection.error || '')
+    );
   };
 
   const getConnectionStatusDisplay = () => {
     if (connection.state || connection.error) {
       const errorCode = connection.state || connection.error || 'unknown_error';
       const descriptionKey = `errors:${errorCode}_description`;
-      
+
       // Try to get translated error description, fallback to original message or error code
       let detailedMessage;
       try {
@@ -161,7 +169,7 @@ export const ConnectionItem: React.FC<ConnectionItemProps> = ({
             <div className={styles.statusInfo}>
               <span className={status.class}>{status.text}</span>
               {needsReauth() && onReauth && (
-                <button 
+                <button
                   onClick={onReauth}
                   className={styles.errorActionButton}
                   disabled={syncStatus.isLoading}

@@ -19,7 +19,7 @@ export const AccountHistoryViewer: React.FC<AccountHistoryViewerProps> = ({ acco
   const [viewMode, setViewMode] = useState<ViewMode>('chart');
   const [startDate, setStartDate] = useState('');
   const [endDate, setEndDate] = useState('');
-  
+
   const {
     selectedAccounts,
     preferredChartType,
@@ -30,10 +30,10 @@ export const AccountHistoryViewer: React.FC<AccountHistoryViewerProps> = ({ acco
   } = useAccountHistory();
 
   const eligibleAccounts = getEligibleAccounts(accounts);
-  const selectedAccountsData = eligibleAccounts.filter(account => 
+  const selectedAccountsData = eligibleAccounts.filter(account =>
     selectedAccounts.includes(account.id)
   );
-  
+
   const availableDates = getAvailableDates();
   const minDate = availableDates[0] || '';
   const maxDate = availableDates[availableDates.length - 1] || '';
@@ -93,7 +93,7 @@ export const AccountHistoryViewer: React.FC<AccountHistoryViewerProps> = ({ acco
               id="startDate"
               type="date"
               value={startDate}
-              onChange={(e) => setStartDate(e.target.value)}
+              onChange={e => setStartDate(e.target.value)}
               min={minDate}
               max={maxDate}
               className={styles.dateField}
@@ -107,7 +107,7 @@ export const AccountHistoryViewer: React.FC<AccountHistoryViewerProps> = ({ acco
               id="endDate"
               type="date"
               value={endDate}
-              onChange={(e) => setEndDate(e.target.value)}
+              onChange={e => setEndDate(e.target.value)}
               min={minDate}
               max={maxDate}
               className={styles.dateField}
@@ -147,13 +147,9 @@ export const AccountHistoryViewer: React.FC<AccountHistoryViewerProps> = ({ acco
 
       {viewMode === 'table' && (
         <div className={styles.tableSection}>
-          <HistoryTable
-            history={filteredHistory}
-            accounts={selectedAccountsData}
-          />
+          <HistoryTable history={filteredHistory} accounts={selectedAccountsData} />
         </div>
       )}
-
     </div>
   );
 };

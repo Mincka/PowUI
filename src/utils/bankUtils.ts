@@ -98,7 +98,7 @@ export const generateBankColor = (bankName: string): string => {
   let hash = 0;
   for (let i = 0; i < bankName.length; i++) {
     const char = bankName.charCodeAt(i);
-    hash = ((hash << 5) - hash) + char;
+    hash = (hash << 5) - hash + char;
     hash = hash & hash; // Convert to 32-bit integer
   }
 
@@ -122,7 +122,7 @@ export const isUnknownBank = (bankName: string): boolean => {
     'Crédit Agricole',
     'BRED',
     'Crédit Coopératif',
-    'Caisse d\'Épargne',
+    "Caisse d'Épargne",
     'Crédit Mutuel',
     'HSBC',
     'Société Générale',
@@ -130,7 +130,7 @@ export const isUnknownBank = (bankName: string): boolean => {
     'Revolut',
     'N26',
     'Boursorama',
-    'Orange Bank'
+    'Orange Bank',
   ];
 
   return !knownBanks.includes(bankName) || bankName === 'Banque Inconnue';

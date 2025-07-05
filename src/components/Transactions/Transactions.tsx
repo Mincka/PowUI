@@ -36,56 +36,59 @@ export const Transactions: React.FC<TransactionsProps> = ({ accountId, accountNa
   // Use useRef to track if we're already loading to prevent double calls
   const isLoadingRef = React.useRef(false);
 
-  const loadTransactions = useCallback(async (reset = false, currentOffset?: number) => {
-    // Prevent concurrent calls
-    if (isLoadingRef.current) {
-      console.log('Skipping duplicate transaction load call');
-      return;
-    }
-
-    isLoadingRef.current = true;
-    setIsLoading(true);
-    setError(null);
-
-    try {
-      const offsetToUse = reset ? 0 : (currentOffset ?? offset);
-      
-      console.log('Loading transactions:', { accountId, reset, offsetToUse, filters });
-      
-      const result = await TransactionService.fetchAccountTransactions(accountId, {
-        ...filters,
-        offset: offsetToUse,
-      });
-
-      const newTransactions = result.transactions;
-
-      if (reset) {
-        setTransactions(newTransactions);
-        setOffset(newTransactions.length);
-      } else {
-        setTransactions(prev => [...prev, ...newTransactions]);
-        setOffset(prev => prev + newTransactions.length);
+  const loadTransactions = useCallback(
+    async (reset = false, currentOffset?: number) => {
+      // Prevent concurrent calls
+      if (isLoadingRef.current) {
+        console.log('Skipping duplicate transaction load call');
+        return;
       }
 
-      setHasMore(!!result._links.next);
-    } catch (err) {
-      console.error('Error loading transactions:', err);
-      setError(err instanceof Error ? err.message : 'Failed to load transactions');
-    } finally {
-      setIsLoading(false);
-      isLoadingRef.current = false;
-    }
-  }, [accountId, filters, offset]);
+      isLoadingRef.current = true;
+      setIsLoading(true);
+      setError(null);
+
+      try {
+        const offsetToUse = reset ? 0 : (currentOffset ?? offset);
+
+        console.log('Loading transactions:', { accountId, reset, offsetToUse, filters });
+
+        const result = await TransactionService.fetchAccountTransactions(accountId, {
+          ...filters,
+          offset: offsetToUse,
+        });
+
+        const newTransactions = result.transactions;
+
+        if (reset) {
+          setTransactions(newTransactions);
+          setOffset(newTransactions.length);
+        } else {
+          setTransactions(prev => [...prev, ...newTransactions]);
+          setOffset(prev => prev + newTransactions.length);
+        }
+
+        setHasMore(!!result._links.next);
+      } catch (err) {
+        console.error('Error loading transactions:', err);
+        setError(err instanceof Error ? err.message : 'Failed to load transactions');
+      } finally {
+        setIsLoading(false);
+        isLoadingRef.current = false;
+      }
+    },
+    [accountId, filters, offset]
+  );
 
   useEffect(() => {
     console.log('Transaction useEffect triggered:', { accountId, filters });
-    
+
     // Reset state
     setOffset(0);
     setTransactions([]);
     setHasMore(true);
     setError(null);
-    
+
     // Load transactions after a brief delay to avoid race conditions
     const timeoutId = setTimeout(() => {
       loadTransactions(true, 0);
@@ -95,7 +98,7 @@ export const Transactions: React.FC<TransactionsProps> = ({ accountId, accountNa
       clearTimeout(timeoutId);
       isLoadingRef.current = false;
     };
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [accountId, filters]);
 
   const handleLoadMore = () => {
@@ -172,7 +175,7 @@ export const Transactions: React.FC<TransactionsProps> = ({ accountId, accountNa
           id="search-filter"
           type="text"
           value={filters.search || ''}
-          onChange={(e) => handleFilterChange({ search: e.target.value || undefined })}
+          onChange={e => handleFilterChange({ search: e.target.value || undefined })}
           placeholder={t('transaction_filter_search_placeholder')}
           className={styles.filterInput}
         />
@@ -185,9 +188,11 @@ export const Transactions: React.FC<TransactionsProps> = ({ accountId, accountNa
           type="number"
           step="0.01"
           value={filters.minValue !== undefined ? filters.minValue : ''}
-          onChange={(e) => handleFilterChange({ 
-            minValue: e.target.value ? parseFloat(e.target.value) : undefined 
-          })}
+          onChange={e =>
+            handleFilterChange({
+              minValue: e.target.value ? parseFloat(e.target.value) : undefined,
+            })
+          }
           placeholder={t('transaction_filter_min_value_placeholder')}
           className={styles.filterInput}
         />
@@ -200,9 +205,11 @@ export const Transactions: React.FC<TransactionsProps> = ({ accountId, accountNa
           type="number"
           step="0.01"
           value={filters.maxValue !== undefined ? filters.maxValue : ''}
-          onChange={(e) => handleFilterChange({ 
-            maxValue: e.target.value ? parseFloat(e.target.value) : undefined 
-          })}
+          onChange={e =>
+            handleFilterChange({
+              maxValue: e.target.value ? parseFloat(e.target.value) : undefined,
+            })
+          }
           placeholder={t('transaction_filter_max_value_placeholder')}
           className={styles.filterInput}
         />
@@ -214,7 +221,7 @@ export const Transactions: React.FC<TransactionsProps> = ({ accountId, accountNa
           id="min-date-filter"
           type="date"
           value={filters.minDate || ''}
-          onChange={(e) => handleFilterChange({ minDate: e.target.value || undefined })}
+          onChange={e => handleFilterChange({ minDate: e.target.value || undefined })}
           className={styles.filterInput}
         />
       </div>
@@ -225,7 +232,7 @@ export const Transactions: React.FC<TransactionsProps> = ({ accountId, accountNa
           id="max-date-filter"
           type="date"
           value={filters.maxDate || ''}
-          onChange={(e) => handleFilterChange({ maxDate: e.target.value || undefined })}
+          onChange={e => handleFilterChange({ maxDate: e.target.value || undefined })}
           className={styles.filterInput}
         />
       </div>
@@ -236,7 +243,9 @@ export const Transactions: React.FC<TransactionsProps> = ({ accountId, accountNa
     return (
       <div className={styles.container}>
         <div className={styles.error}>
-          <p>{t('transaction_error')}: {error}</p>
+          <p>
+            {t('transaction_error')}: {error}
+          </p>
           <button onClick={() => loadTransactions(true)} className={styles.retryButton}>
             {t('transaction_retry')}
           </button>
@@ -257,7 +266,7 @@ export const Transactions: React.FC<TransactionsProps> = ({ accountId, accountNa
       <div className={styles.filtersContainer}>
         {renderFilters()}
         <div className={styles.filterActions}>
-          <button 
+          <button
             onClick={handleResetFilters}
             className={styles.resetButton}
             title={t('transaction_filter_reset')}
@@ -303,9 +312,7 @@ export const Transactions: React.FC<TransactionsProps> = ({ accountId, accountNa
                     </td>
                     <td className={styles.colDescription}>
                       <div className={styles.description}>
-                        <div className={styles.wording}>
-                          {transaction.original_wording}
-                        </div>
+                        <div className={styles.wording}>{transaction.original_wording}</div>
                       </div>
                     </td>
                     <td className={styles.colType}>

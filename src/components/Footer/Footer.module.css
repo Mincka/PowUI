@@ -60,13 +60,13 @@
   .footer {
     padding: 1rem;
   }
-  
+
   .content {
     flex-direction: column;
     gap: 0.75rem;
     text-align: center;
   }
-  
+
   .githubText {
     display: none;
   }

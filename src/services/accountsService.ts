@@ -133,7 +133,9 @@ export class AccountsService {
     if (!validateApiConfig(config)) {
       const missingFields = getApiConfigValidationErrors(config);
       const missingFieldsList = missingFields.join(', ');
-      throw new Error(`API configuration is incomplete for ${config.mode} mode. Missing fields: ${missingFieldsList}`);
+      throw new Error(
+        `API configuration is incomplete for ${config.mode} mode. Missing fields: ${missingFieldsList}`
+      );
     }
 
     // Handle different modes
@@ -624,7 +626,7 @@ export class AccountsService {
   static openConnectionWebview(url: string, onClose?: () => void): Window | null {
     try {
       const popup = window.open(url, '_blank', 'width=800,height=600,scrollbars=yes,resizable=yes');
-      
+
       if (popup && !popup.closed && onClose) {
         // Monitor popup closure
         const checkClosed = setInterval(() => {
@@ -633,13 +635,16 @@ export class AccountsService {
             onClose();
           }
         }, 1000);
-        
+
         // Cleanup interval if popup is still open after 30 minutes
-        setTimeout(() => {
-          clearInterval(checkClosed);
-        }, 30 * 60 * 1000);
+        setTimeout(
+          () => {
+            clearInterval(checkClosed);
+          },
+          30 * 60 * 1000
+        );
       }
-      
+
       return popup;
     } catch (error) {
       console.error('Failed to open popup:', error);

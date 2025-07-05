@@ -1,9 +1,10 @@
-import { TransactionsList, TransactionFilters, Transaction, TransactionType } from '../types/transactions';
 import {
-  ApiConfig,
-  validateApiConfig,
-  getBaseUrl,
-} from '../config/api';
+  TransactionsList,
+  TransactionFilters,
+  Transaction,
+  TransactionType,
+} from '../types/transactions';
+import { ApiConfig, validateApiConfig, getBaseUrl } from '../config/api';
 import { AccountsService } from './accountsService';
 
 export class TransactionService {
@@ -47,7 +48,7 @@ export class TransactionService {
     try {
       const baseUrl = getBaseUrl(config);
       const params = this.buildQueryParams(filters);
-      const apiUrl = filters.accountId 
+      const apiUrl = filters.accountId
         ? `${baseUrl}/accounts/${filters.accountId}/transactions?${params}`
         : `${baseUrl}/transactions?${params}`;
 
@@ -140,7 +141,6 @@ export class TransactionService {
       params.append('max_date', filters.maxDate);
     }
 
-
     if (filters.search) {
       params.append('wording', filters.search);
     }
@@ -228,7 +228,7 @@ export class TransactionService {
         } else {
           acc.totalExpenses += Math.abs(transaction.value);
         }
-        
+
         acc.transactionCount++;
         return acc;
       },
@@ -238,9 +238,10 @@ export class TransactionService {
     return {
       ...summary,
       netAmount: summary.totalIncome - summary.totalExpenses,
-      averageTransaction: summary.transactionCount > 0 
-        ? (summary.totalIncome - summary.totalExpenses) / summary.transactionCount 
-        : 0,
+      averageTransaction:
+        summary.transactionCount > 0
+          ? (summary.totalIncome - summary.totalExpenses) / summary.transactionCount
+          : 0,
     };
   }
 
@@ -268,7 +269,7 @@ export class TransactionService {
     // Generate account-specific mock transactions
     const accountId = filters.accountId || 7890;
     const seed = accountId * 123; // Use account ID to generate different data for each account
-    
+
     const mockTransactionTemplates = [
       // General transactions
       {
@@ -278,52 +279,52 @@ export class TransactionService {
         wording: 'Courses alimentaires',
         value: -45.67,
         categories: [{ code: 'alimentaire', parent_code: 'vie_quotidienne' }],
-        card: '****1234'
+        card: '****1234',
       },
       {
         type: TransactionType.TRANSFER,
         original_wording: 'VIREMENT DE M. MARTIN SALAIRE',
         simplified_wording: 'Virement salaire',
         wording: 'Salaire février',
-        value: 2500.00,
+        value: 2500.0,
         categories: [{ code: 'salaire', parent_code: 'revenus' }],
-        card: null
+        card: null,
       },
       {
         type: TransactionType.CARD,
         original_wording: 'SHELL STATION SERVICE',
         simplified_wording: 'Shell',
         wording: 'Carburant',
-        value: -65.30,
+        value: -65.3,
         categories: [{ code: 'transport', parent_code: 'vie_quotidienne' }],
-        card: '****5678'
+        card: '****5678',
       },
       {
         type: TransactionType.CHECK,
         original_wording: 'CHEQUE N°1234567',
         simplified_wording: 'Chèque',
         wording: 'Loyer appartement',
-        value: -850.00,
+        value: -850.0,
         categories: [{ code: 'logement', parent_code: 'vie_quotidienne' }],
-        card: null
+        card: null,
       },
       {
         type: TransactionType.WITHDRAWAL,
         original_wording: 'RETRAIT DAB BNP PARIBAS',
         simplified_wording: 'Retrait DAB',
         wording: 'Retrait espèces',
-        value: -100.00,
+        value: -100.0,
         categories: [{ code: 'liquide', parent_code: 'vie_quotidienne' }],
-        card: '****1234'
+        card: '****1234',
       },
       {
         type: TransactionType.TRANSFER,
         original_wording: 'VIREMENT REMBOURSEMENT CAF',
         simplified_wording: 'CAF',
         wording: 'Allocation familiale',
-        value: 320.50,
+        value: 320.5,
         categories: [{ code: 'aide_sociale', parent_code: 'revenus' }],
-        card: null
+        card: null,
       },
       // Business-specific transactions
       {
@@ -331,9 +332,9 @@ export class TransactionService {
         original_wording: 'VIREMENT CLIENT ABC COMPANY',
         simplified_wording: 'ABC Company',
         wording: 'Paiement facture #2025-001',
-        value: 1250.00,
+        value: 1250.0,
         categories: [{ code: 'revenus_entreprise', parent_code: 'revenus' }],
-        card: null
+        card: null,
       },
       {
         type: TransactionType.CARD,
@@ -342,7 +343,7 @@ export class TransactionService {
         wording: 'Fournitures bureau',
         value: -89.99,
         categories: [{ code: 'fournitures', parent_code: 'entreprise' }],
-        card: '****9876'
+        card: '****9876',
       },
       {
         type: TransactionType.TRANSFER,
@@ -351,7 +352,7 @@ export class TransactionService {
         wording: 'Cotisations sociales',
         value: -456.78,
         categories: [{ code: 'charges_sociales', parent_code: 'entreprise' }],
-        card: null
+        card: null,
       },
       // Investment-related transactions
       {
@@ -359,27 +360,27 @@ export class TransactionService {
         original_wording: 'VIREMENT VERS COMPTE TITRES',
         simplified_wording: 'Versement investissement',
         wording: 'Apport compte titres',
-        value: -1000.00,
+        value: -1000.0,
         categories: [{ code: 'investissement', parent_code: 'epargne' }],
-        card: null
+        card: null,
       },
       {
         type: TransactionType.TRANSFER,
         original_wording: 'DIVIDENDE ACTIONS TOTAL',
         simplified_wording: 'Dividende Total',
         wording: 'Dividende actions',
-        value: 125.50,
+        value: 125.5,
         categories: [{ code: 'dividendes', parent_code: 'revenus' }],
-        card: null
+        card: null,
       },
       {
         type: TransactionType.FEE,
         original_wording: 'FRAIS COURTAGE BOURSE',
         simplified_wording: 'Frais courtage',
         wording: 'Commission transaction',
-        value: -9.90,
+        value: -9.9,
         categories: [{ code: 'frais_bancaires', parent_code: 'frais' }],
-        card: null
+        card: null,
       },
       // Credit card specific
       {
@@ -389,16 +390,16 @@ export class TransactionService {
         wording: 'Achat électronique',
         value: -299.99,
         categories: [{ code: 'loisirs', parent_code: 'vie_quotidienne' }],
-        card: '****2468'
+        card: '****2468',
       },
       {
         type: TransactionType.CARD,
         original_wording: 'RESTAURANT LE PETIT PARIS',
         simplified_wording: 'Restaurant',
         wording: 'Déjeuner professionnel',
-        value: -89.50,
+        value: -89.5,
         categories: [{ code: 'restaurants', parent_code: 'vie_quotidienne' }],
-        card: '****3579'
+        card: '****3579',
       },
       // Loan payments
       {
@@ -406,18 +407,18 @@ export class TransactionService {
         original_wording: 'PAIEMENT PRET IMMOBILIER',
         simplified_wording: 'Paiement prêt',
         wording: 'Mensualité prêt immobilier',
-        value: -800.00,
+        value: -800.0,
         categories: [{ code: 'pret_immo', parent_code: 'logement' }],
-        card: null
+        card: null,
       },
       {
         type: TransactionType.TRANSFER,
         original_wording: 'PAIEMENT PRET AUTO',
         simplified_wording: 'Paiement prêt auto',
         wording: 'Mensualité véhicule',
-        value: -420.00,
+        value: -420.0,
         categories: [{ code: 'pret_auto', parent_code: 'transport' }],
-        card: null
+        card: null,
       },
       // High-yield savings specific
       {
@@ -425,18 +426,18 @@ export class TransactionService {
         original_wording: 'INTERETS CREDITEURS',
         simplified_wording: 'Intérêts',
         wording: 'Intérêts livret épargne',
-        value: 25.30,
+        value: 25.3,
         categories: [{ code: 'interets', parent_code: 'revenus' }],
-        card: null
+        card: null,
       },
       {
         type: TransactionType.TRANSFER,
         original_wording: 'VIREMENT EPARGNE AUTOMATIQUE',
         simplified_wording: 'Épargne automatique',
         wording: 'Versement programmé',
-        value: 500.00,
+        value: 500.0,
         categories: [{ code: 'epargne', parent_code: 'epargne' }],
-        card: null
+        card: null,
       },
       // Line of credit transactions
       {
@@ -444,9 +445,9 @@ export class TransactionService {
         original_wording: 'UTILISATION LIGNE CREDIT',
         simplified_wording: 'Utilisation crédit',
         wording: 'Tirage ligne de crédit',
-        value: -2000.00,
+        value: -2000.0,
         categories: [{ code: 'credit', parent_code: 'financement' }],
-        card: null
+        card: null,
       },
       {
         type: TransactionType.FEE,
@@ -455,20 +456,20 @@ export class TransactionService {
         wording: 'Intérêts ligne de crédit',
         value: -18.75,
         categories: [{ code: 'interets_debiteurs', parent_code: 'frais' }],
-        card: null
-      }
+        card: null,
+      },
     ];
 
     // Generate transactions for the specific account
     const mockTransactions: Transaction[] = [];
     const numTransactions = Math.min(10, filters.limit || 20);
-    
+
     for (let i = 0; i < numTransactions; i++) {
       const templateIndex = (seed + i) % mockTransactionTemplates.length;
       const template = mockTransactionTemplates[templateIndex];
       const transactionDate = new Date();
       transactionDate.setDate(transactionDate.getDate() - i - 1); // Each transaction 1 day earlier
-      
+
       mockTransactions.push({
         id: accountId * 1000 + i + 1, // Unique ID based on account
         id_account: accountId,
@@ -505,7 +506,7 @@ export class TransactionService {
           precision: 2,
           marketcap: null,
           datetime: null,
-          name: 'Euro'
+          name: 'Euro',
         },
         commission: null,
         commission_currency: null,
@@ -515,8 +516,8 @@ export class TransactionService {
           label: template.simplified_wording.toUpperCase(),
           account_scheme_name: null,
           account_identification: null,
-          type: template.value > 0 ? 'debtor' : 'creditor'
-        }
+          type: template.value > 0 ? 'debtor' : 'creditor',
+        },
       });
     }
 
@@ -524,23 +525,20 @@ export class TransactionService {
     let filteredTransactions = mockTransactions;
 
     if (filters.minValue !== undefined) {
-      filteredTransactions = filteredTransactions.filter(t => 
-        (t.value || 0) >= filters.minValue!
-      );
+      filteredTransactions = filteredTransactions.filter(t => (t.value || 0) >= filters.minValue!);
     }
 
     if (filters.maxValue !== undefined) {
-      filteredTransactions = filteredTransactions.filter(t => 
-        (t.value || 0) <= filters.maxValue!
-      );
+      filteredTransactions = filteredTransactions.filter(t => (t.value || 0) <= filters.maxValue!);
     }
 
     if (filters.search) {
       const searchLower = filters.search.toLowerCase();
-      filteredTransactions = filteredTransactions.filter(t =>
-        t.original_wording.toLowerCase().includes(searchLower) ||
-        (t.wording && t.wording.toLowerCase().includes(searchLower)) ||
-        t.simplified_wording.toLowerCase().includes(searchLower)
+      filteredTransactions = filteredTransactions.filter(
+        t =>
+          t.original_wording.toLowerCase().includes(searchLower) ||
+          (t.wording && t.wording.toLowerCase().includes(searchLower)) ||
+          t.simplified_wording.toLowerCase().includes(searchLower)
       );
     }
 
@@ -557,13 +555,15 @@ export class TransactionService {
       result_max_date: filters.maxDate || '2025-02-07',
       _links: {
         current: `mock://transactions?limit=${limit}&offset=${offset}`,
-        next: offset + limit < filteredTransactions.length 
-          ? `mock://transactions?limit=${limit}&offset=${offset + limit}` 
-          : undefined,
-        previous: offset > 0 
-          ? `mock://transactions?limit=${limit}&offset=${Math.max(0, offset - limit)}` 
-          : undefined,
-      }
+        next:
+          offset + limit < filteredTransactions.length
+            ? `mock://transactions?limit=${limit}&offset=${offset + limit}`
+            : undefined,
+        previous:
+          offset > 0
+            ? `mock://transactions?limit=${limit}&offset=${Math.max(0, offset - limit)}`
+            : undefined,
+      },
     };
   }
 
@@ -592,8 +592,8 @@ export class TransactionService {
       categories: [
         {
           code: 'alimentaire',
-          parent_code: 'vie_quotidienne'
-        }
+          parent_code: 'vie_quotidienne',
+        },
       ],
       date_scraped: '2025-02-06T08:00:00Z',
       coming: false,
@@ -612,7 +612,7 @@ export class TransactionService {
         precision: 2,
         marketcap: null,
         datetime: null,
-        name: 'Euro'
+        name: 'Euro',
       },
       commission: null,
       commission_currency: null,
@@ -622,8 +622,8 @@ export class TransactionService {
         label: 'CARREFOUR MARKET',
         account_scheme_name: null,
         account_identification: null,
-        type: 'creditor'
-      }
+        type: 'creditor',
+      },
     };
   }
 }

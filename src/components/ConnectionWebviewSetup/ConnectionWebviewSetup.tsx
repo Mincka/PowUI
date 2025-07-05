@@ -38,7 +38,7 @@ export const ConnectionWebviewSetup: React.FC<ConnectionWebviewSetupProps> = ({
   useEffect(() => {
     const shouldUseAdvanced = isAdvancedConnectionStepsEnabled();
     setIsAdvancedMode(shouldUseAdvanced);
-    
+
     // If simplified mode and config is valid, we can skip the step progression
     if (!shouldUseAdvanced && isConfigValid) {
       setCurrentStep('get-code');
@@ -61,7 +61,7 @@ export const ConnectionWebviewSetup: React.FC<ConnectionWebviewSetupProps> = ({
   };
 
   const getStepDescription = () => {
-    return mode === 'reconnect' 
+    return mode === 'reconnect'
       ? `Ré-authentifiez votre connexion ${connectionBankName} pour résoudre les problèmes d'authentification.`
       : `Gérez les comptes et paramètres de votre connexion ${connectionBankName}.`;
   };
@@ -100,9 +100,10 @@ export const ConnectionWebviewSetup: React.FC<ConnectionWebviewSetupProps> = ({
 
       // Build the webview URL based on mode
       const lang = currentLanguage === 'en' ? 'en' : 'fr';
-      const url = mode === 'reconnect' 
-        ? AccountsService.buildReconnectWebviewUrl(connectionId, result.code, apiConfig, lang)
-        : AccountsService.buildManageWebviewUrl(connectionId, result.code, apiConfig, lang);
+      const url =
+        mode === 'reconnect'
+          ? AccountsService.buildReconnectWebviewUrl(connectionId, result.code, apiConfig, lang)
+          : AccountsService.buildManageWebviewUrl(connectionId, result.code, apiConfig, lang);
 
       setWebviewUrl(url);
     } catch (err) {
@@ -130,7 +131,10 @@ export const ConnectionWebviewSetup: React.FC<ConnectionWebviewSetupProps> = ({
   const handleOneClickConnection = async () => {
     if (!isConfigValid) {
       setError(
-        t('config_incomplete_error', "Configuration incomplète. Veuillez configurer tous les champs requis dans les paramètres API.")
+        t(
+          'config_incomplete_error',
+          'Configuration incomplète. Veuillez configurer tous les champs requis dans les paramètres API.'
+        )
       );
       return;
     }
@@ -142,7 +146,7 @@ export const ConnectionWebviewSetup: React.FC<ConnectionWebviewSetupProps> = ({
       // Use the unified service method to get code and URL directly
       const connectionMode = mode === 'reconnect' ? 'reconnect' : 'manage';
       const lang = currentLanguage === 'en' ? 'en' : 'fr';
-      
+
       const result = await AccountsService.getConnectionUrlDirectly(
         apiConfig,
         connectionId,
@@ -161,17 +165,28 @@ export const ConnectionWebviewSetup: React.FC<ConnectionWebviewSetupProps> = ({
           onClose();
         }, 500);
       });
-      
+
       if (popup) {
         // Show success message and clear any previous errors
-        setError(''); 
+        setError('');
         // Don't auto-close, let the popup close detection handle it
       } else {
-        setError(t('popup_blocked_message', 'Le popup a été bloqué. Veuillez autoriser les popups pour ce site et réessayer.'));
+        setError(
+          t(
+            'popup_blocked_message',
+            'Le popup a été bloqué. Veuillez autoriser les popups pour ce site et réessayer.'
+          )
+        );
       }
     } catch (err) {
-      const errorMessage = err instanceof Error ? err.message : t('errors:unknown_error', 'Erreur inconnue');
-      setError(t('failed_to_open_connection', `Échec de l'ouverture de l'interface de connexion: ${errorMessage}`));
+      const errorMessage =
+        err instanceof Error ? err.message : t('errors:unknown_error', 'Erreur inconnue');
+      setError(
+        t(
+          'failed_to_open_connection',
+          `Échec de l'ouverture de l'interface de connexion: ${errorMessage}`
+        )
+      );
     } finally {
       setIsLoading(false);
     }
@@ -180,7 +195,7 @@ export const ConnectionWebviewSetup: React.FC<ConnectionWebviewSetupProps> = ({
   const toggleAdvancedMode = () => {
     const newAdvancedMode = !isAdvancedMode;
     setIsAdvancedMode(newAdvancedMode);
-    
+
     // Save the preference
     try {
       const saved = localStorage.getItem('apiConfig');
@@ -199,7 +214,7 @@ export const ConnectionWebviewSetup: React.FC<ConnectionWebviewSetupProps> = ({
     } else {
       setCurrentStep('get-code');
     }
-    
+
     // Clear any existing state
     setTemporaryCode('');
     setWebviewUrl('');
@@ -305,15 +320,16 @@ export const ConnectionWebviewSetup: React.FC<ConnectionWebviewSetupProps> = ({
           )}
 
           <div className={styles.stepActions}>
-            <button 
-              onClick={handleOneClickConnection} 
-              disabled={isLoading || !isConfigValid} 
+            <button
+              onClick={handleOneClickConnection}
+              disabled={isLoading || !isConfigValid}
               className={styles.btnPrimary}
             >
-              {isLoading 
+              {isLoading
                 ? t('opening_connection')
-                : (mode === 'reconnect' ? t('reconnect_to_bank') : t('open_bank_management'))
-              }
+                : mode === 'reconnect'
+                  ? t('reconnect_to_bank')
+                  : t('open_bank_management')}
             </button>
 
             <button onClick={toggleAdvancedMode} className={styles.btnSecondary}>
@@ -329,7 +345,9 @@ export const ConnectionWebviewSetup: React.FC<ConnectionWebviewSetupProps> = ({
       <div className={styles.stepContent}>
         <div className={styles.stepHeader}>
           <h3>🔑 Étape 1: Obtenir le code temporaire</h3>
-          <p>Cliquez sur le bouton ci-dessous pour récupérer un code temporaire depuis l&apos;API.</p>
+          <p>
+            Cliquez sur le bouton ci-dessous pour récupérer un code temporaire depuis l&apos;API.
+          </p>
         </div>
 
         <div className={styles.connectionInfo}>
@@ -348,7 +366,11 @@ export const ConnectionWebviewSetup: React.FC<ConnectionWebviewSetupProps> = ({
         )}
 
         <div className={styles.stepActions}>
-          <button onClick={handleGetTemporaryCode} disabled={isLoading} className={styles.btnPrimary}>
+          <button
+            onClick={handleGetTemporaryCode}
+            disabled={isLoading}
+            className={styles.btnPrimary}
+          >
             {isLoading ? '🔄 Récupération en cours...' : '🔑 Obtenir le code temporaire'}
           </button>
 

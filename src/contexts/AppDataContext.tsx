@@ -114,13 +114,13 @@ export const AppDataProvider: React.FC<AppDataProviderProps> = ({ children }) =>
         // Check if we should update (cache might have been valid)
         if (prev.isLoadingAccounts) {
           const now = Date.now();
-          
+
           // Record account history if user is active
           const activeUser = UserService.getActiveUser();
           if (activeUser) {
             AccountHistoryService.recordDailyValues(accountsData.accounts, activeUser.id);
           }
-          
+
           return {
             ...prev,
             accountsData,
@@ -193,7 +193,7 @@ export const AppDataProvider: React.FC<AppDataProviderProps> = ({ children }) =>
         if (activeUser) {
           AccountHistoryService.recordDailyValues(mockData.accounts, activeUser.id);
         }
-        
+
         setState(prev => ({
           ...prev,
           accountsData: mockData,
@@ -277,7 +277,7 @@ export const AppDataProvider: React.FC<AppDataProviderProps> = ({ children }) =>
                   lastFetch: Date.now(),
                   isLoadingAccounts: false,
                 }));
-                
+
                 // Record account history if user is active
                 const activeUser = UserService.getActiveUser();
                 if (activeUser) {

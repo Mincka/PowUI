@@ -91,7 +91,6 @@ export const ApiConfiguration: React.FC<ApiConfigurationProps> = ({
     setConfig(updatedConfig);
   };
 
-
   const handleSave = () => {
     // Set the mode based on the mock data preference
     const configWithMode = {
@@ -155,7 +154,6 @@ export const ApiConfiguration: React.FC<ApiConfigurationProps> = ({
     window.location.reload();
   };
 
-
   const testConnection = async () => {
     // Create config with direct mode for testing
     const testConfig = {
@@ -168,8 +166,9 @@ export const ApiConfiguration: React.FC<ApiConfigurationProps> = ({
       const missingFieldsList = missingFields.join(', ');
       setTestResult({
         success: false,
-        message: t('config_incomplete_detailed', { fields: missingFieldsList }) || 
-                `Configuration incomplete. Missing fields: ${missingFieldsList}`,
+        message:
+          t('config_incomplete_detailed', { fields: missingFieldsList }) ||
+          `Configuration incomplete. Missing fields: ${missingFieldsList}`,
       });
       return;
     }
@@ -376,7 +375,12 @@ export const ApiConfiguration: React.FC<ApiConfigurationProps> = ({
           <div className={styles.demoModeActive}>
             <div className={styles.demoModeInfo}>
               <h4>{t('demo_mode_active', 'Demo Mode Active')}</h4>
-              <p>{t('demo_mode_active_description', 'The application is currently running in demo mode with sample data. To configure real API access, you must reset the application to start manual setup.')}</p>
+              <p>
+                {t(
+                  'demo_mode_active_description',
+                  'The application is currently running in demo mode with sample data. To configure real API access, you must reset the application to start manual setup.'
+                )}
+              </p>
             </div>
           </div>
         ) : (
@@ -489,7 +493,6 @@ export const ApiConfiguration: React.FC<ApiConfigurationProps> = ({
                 {t('manage_users')}
               </button>
             </div>
-
           </>
         )}
 
@@ -502,7 +505,6 @@ export const ApiConfiguration: React.FC<ApiConfigurationProps> = ({
             )}
           </div>
         )}
-
 
         {!useMockData && (
           <div className={styles.testConnection}>

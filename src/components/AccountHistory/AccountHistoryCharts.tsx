@@ -49,7 +49,7 @@ interface AccountHistoryChartsProps {
 const isColorDark = (color: string): boolean => {
   // Convert color to RGB
   let r: number, g: number, b: number;
-  
+
   if (color.startsWith('#')) {
     const hex = color.slice(1);
     r = parseInt(hex.slice(0, 2), 16);
@@ -70,7 +70,7 @@ const isColorDark = (color: string): boolean => {
   } else {
     return false; // Unknown format, assume light
   }
-  
+
   // Calculate relative luminance
   const luminance = (0.299 * r + 0.587 * g + 0.114 * b) / 255;
   return luminance < 0.5;
@@ -84,7 +84,7 @@ export const AccountHistoryCharts: React.FC<AccountHistoryChartsProps> = ({
   const { t } = useTranslation('financial');
   const { connections } = useAppData();
   const [connectorMap, setConnectorMap] = useState<Map<number, Connector>>(new Map());
-  
+
   // Load connectors for bank names
   useEffect(() => {
     const loadConnectors = async () => {
@@ -120,26 +120,36 @@ export const AccountHistoryCharts: React.FC<AccountHistoryChartsProps> = ({
 
   const chartData = useMemo(() => {
     // Get bank info for accounts
-    const accountsByBank = organizeAccountsByBankWithConnectors(accounts, connections, connectorMap);
-    
+    const accountsByBank = organizeAccountsByBankWithConnectors(
+      accounts,
+      connections,
+      connectorMap
+    );
+
     // Group history by date
-    const groupedByDate = history.reduce((acc, entry) => {
-      if (!acc[entry.date]) {
-        acc[entry.date] = {};
-      }
-      acc[entry.date][entry.accountId] = entry.balance;
-      return acc;
-    }, {} as Record<string, Record<number, number>>);
+    const groupedByDate = history.reduce(
+      (acc, entry) => {
+        if (!acc[entry.date]) {
+          acc[entry.date] = {};
+        }
+        acc[entry.date][entry.accountId] = entry.balance;
+        return acc;
+      },
+      {} as Record<string, Record<number, number>>
+    );
 
     // Get sorted dates
     const dates = Object.keys(groupedByDate).sort();
-    
+
     // Helper function to get connector color for an account
     const getAccountColor = (account: Account): string => {
       if (account.id_connection) {
         const connection = connections.find(conn => conn.id === account.id_connection);
         if (connection?.id_connector) {
-          const connectorInfo = ConnectorService.getConnectorInfo(connection.id_connector, connectorMap);
+          const connectorInfo = ConnectorService.getConnectorInfo(
+            connection.id_connector,
+            connectorMap
+          );
           return connectorInfo.color;
         }
       }
@@ -147,13 +157,13 @@ export const AccountHistoryCharts: React.FC<AccountHistoryChartsProps> = ({
       const hue = (account.id * 137.508) % 360;
       return `hsl(${Math.floor(hue)}, 65%, 50%)`;
     };
-    
+
     // Calculate average balance for each account to sort by
     const accountsWithAverage = accounts.map(account => {
       const data = dates.map(date => groupedByDate[date][account.id] || 0);
       const averageBalance = data.reduce((sum, val) => sum + val, 0) / data.length;
       const latestBalance = data[data.length - 1] || 0;
-      
+
       // Find bank name for this account
       let bankName = 'Unknown Bank';
       for (const [bank, bankInfo] of Object.entries(accountsByBank)) {
@@ -162,7 +172,7 @@ export const AccountHistoryCharts: React.FC<AccountHistoryChartsProps> = ({
           break;
         }
       }
-      
+
       return {
         account,
         bankName,
@@ -177,9 +187,9 @@ export const AccountHistoryCharts: React.FC<AccountHistoryChartsProps> = ({
     accountsWithAverage.sort((a, b) => Math.abs(b.latestBalance) - Math.abs(a.latestBalance));
 
     // Create datasets for each account
-    const datasets = accountsWithAverage.map((item) => {
+    const datasets = accountsWithAverage.map(item => {
       const { account, bankName, data, latestBalance, color } = item;
-      
+
       // Format currency for legend - no cents, compact notation
       const formattedAmount = new Intl.NumberFormat('fr-FR', {
         style: 'currency',
@@ -188,7 +198,7 @@ export const AccountHistoryCharts: React.FC<AccountHistoryChartsProps> = ({
         maximumFractionDigits: 0,
         notation: 'compact',
       }).format(latestBalance);
-      
+
       const baseDataset = {
         label: `${bankName} - ${account.name} (${formattedAmount})`,
         data,
@@ -232,7 +242,7 @@ export const AccountHistoryCharts: React.FC<AccountHistoryChartsProps> = ({
     });
 
     return {
-      labels: dates.map(date => 
+      labels: dates.map(date =>
         new Date(date).toLocaleDateString('fr-FR', {
           day: '2-digit',
           month: '2-digit',
@@ -285,12 +295,12 @@ export const AccountHistoryCharts: React.FC<AccountHistoryChartsProps> = ({
           },
         },
         datalabels: {
-          display: function(context: DataLabelsContext) {
+          display: function (context: DataLabelsContext) {
             // Only show labels for significant values to avoid clutter
             const value = context.dataset.data[context.dataIndex];
             return typeof value === 'number' && value > 1000;
           },
-          color: function(context: DataLabelsContext) {
+          color: function (context: DataLabelsContext) {
             // Only use dynamic color for stacked charts (where labels are inside bars)
             if (chartType === 'stacked') {
               const bgColor = context.dataset.backgroundColor;
@@ -305,7 +315,7 @@ export const AccountHistoryCharts: React.FC<AccountHistoryChartsProps> = ({
             weight: 'bold' as const,
             size: 11,
           },
-          formatter: function(value: number) {
+          formatter: function (value: number) {
             return new Intl.NumberFormat('fr-FR', {
               style: 'currency',
               currency: 'EUR',
@@ -314,8 +324,8 @@ export const AccountHistoryCharts: React.FC<AccountHistoryChartsProps> = ({
               notation: 'compact',
             }).format(value);
           },
-          anchor: chartType === 'stacked' ? 'center' as const : 'end' as const,
-          align: chartType === 'stacked' ? 'center' as const : 'top' as const,
+          anchor: chartType === 'stacked' ? ('center' as const) : ('end' as const),
+          align: chartType === 'stacked' ? ('center' as const) : ('top' as const),
           offset: chartType === 'stacked' ? 0 : 4,
         },
       },
@@ -418,16 +428,12 @@ export const AccountHistoryCharts: React.FC<AccountHistoryChartsProps> = ({
     );
   }
 
-  const ChartComponent = (chartType === 'area' || chartType === 'line') ? Line : Bar;
+  const ChartComponent = chartType === 'area' || chartType === 'line' ? Line : Bar;
 
   return (
     <div className={styles.chartContainer}>
       <div className={styles.chartWrapper}>
-        <ChartComponent 
-          key={`chart-${chartType}`} 
-          data={chartData} 
-          options={chartOptions} 
-        />
+        <ChartComponent key={`chart-${chartType}`} data={chartData} options={chartOptions} />
       </div>
     </div>
   );

@@ -11,7 +11,10 @@ export const useApiConfig = () => {
     const activeUser = UserService.getActiveUser();
     if (activeUser && config.mode === 'direct') {
       // Update the config if the active user's token differs from the current bearerToken
-      if (config.userId === activeUser.id.toString() && config.bearerToken !== activeUser.authToken) {
+      if (
+        config.userId === activeUser.id.toString() &&
+        config.bearerToken !== activeUser.authToken
+      ) {
         const updatedConfig = {
           ...config,
           bearerToken: activeUser.authToken,
@@ -58,7 +61,11 @@ export const useApiConfig = () => {
   useEffect(() => {
     const checkActiveUserToken = () => {
       const activeUser = UserService.getActiveUser();
-      if (activeUser && apiConfig.mode === 'direct' && apiConfig.userId === activeUser.id.toString()) {
+      if (
+        activeUser &&
+        apiConfig.mode === 'direct' &&
+        apiConfig.userId === activeUser.id.toString()
+      ) {
         if (apiConfig.bearerToken !== activeUser.authToken) {
           const updatedConfig = {
             ...apiConfig,
@@ -66,7 +73,7 @@ export const useApiConfig = () => {
           };
           setApiConfig(updatedConfig);
           AccountsService.setConfig(updatedConfig);
-          
+
           // Save to localStorage
           try {
             localStorage.setItem('apiConfig', JSON.stringify(updatedConfig));

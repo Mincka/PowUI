@@ -78,14 +78,17 @@ export const HistoryTable: React.FC<HistoryTableProps> = ({ history, accounts })
   // Create bank color mapping using actual connector colors
   const bankColorMap = useMemo(() => {
     const map: Record<string, string> = {};
-    
+
     Object.entries(accountsByBank).forEach(([bankName, bankInfo]) => {
       if (bankInfo.accounts.length > 0) {
         const account = bankInfo.accounts[0];
         if (account.id_connection) {
           const connection = connections.find(conn => conn.id === account.id_connection);
           if (connection?.id_connector) {
-            const connectorInfo = ConnectorService.getConnectorInfo(connection.id_connector, connectorMap);
+            const connectorInfo = ConnectorService.getConnectorInfo(
+              connection.id_connector,
+              connectorMap
+            );
             if (connectorInfo.color) {
               // Convert to light background color
               map[bankName] = hexToRgba(connectorInfo.color, 0.1);
@@ -93,26 +96,29 @@ export const HistoryTable: React.FC<HistoryTableProps> = ({ history, accounts })
           }
         }
       }
-      
+
       // Fallback if no color found
       if (!map[bankName]) {
         const hue = (bankName.length * 37) % 360;
         map[bankName] = `hsla(${hue}, 65%, 50%, 0.1)`;
       }
     });
-    
+
     return map;
   }, [accountsByBank, connections, connectorMap]);
 
   const tableData = useMemo(() => {
     // Group history by date
-    const groupedByDate = history.reduce((acc, entry) => {
-      if (!acc[entry.date]) {
-        acc[entry.date] = {};
-      }
-      acc[entry.date][entry.accountId] = entry.balance;
-      return acc;
-    }, {} as Record<string, Record<number, number>>);
+    const groupedByDate = history.reduce(
+      (acc, entry) => {
+        if (!acc[entry.date]) {
+          acc[entry.date] = {};
+        }
+        acc[entry.date][entry.accountId] = entry.balance;
+        return acc;
+      },
+      {} as Record<string, Record<number, number>>
+    );
 
     // Convert to table rows
     const rows: TableRow[] = Object.entries(groupedByDate)
@@ -161,11 +167,7 @@ export const HistoryTable: React.FC<HistoryTableProps> = ({ history, accounts })
             <tr>
               <th className={styles.dateHeader}>{t('date')}</th>
               {Object.entries(accountsByBank).map(([bankName, bankInfo]) => (
-                <th 
-                  key={bankName} 
-                  className={styles.bankHeader} 
-                  colSpan={bankInfo.accounts.length}
-                >
+                <th key={bankName} className={styles.bankHeader} colSpan={bankInfo.accounts.length}>
                   {bankName}
                 </th>
               ))}
@@ -174,10 +176,10 @@ export const HistoryTable: React.FC<HistoryTableProps> = ({ history, accounts })
             {/* Account header row */}
             <tr>
               <th className={styles.dateHeader}></th>
-              {Object.entries(accountsByBank).flatMap(([bankName, bankInfo]) => 
+              {Object.entries(accountsByBank).flatMap(([bankName, bankInfo]) =>
                 bankInfo.accounts.map(account => (
-                  <th 
-                    key={account.id} 
+                  <th
+                    key={account.id}
                     className={styles.accountHeader}
                     style={{ backgroundColor: bankColorMap[bankName] }}
                   >
@@ -194,20 +196,22 @@ export const HistoryTable: React.FC<HistoryTableProps> = ({ history, accounts })
           <tbody>
             {tableData.map(row => (
               <tr key={row.date} className={styles.dataRow}>
-                <td className={styles.dateCell}>
-                  {formatDate(row.date)}
-                </td>
-                {Object.entries(accountsByBank).flatMap(([bankName, bankInfo]) => 
+                <td className={styles.dateCell}>{formatDate(row.date)}</td>
+                {Object.entries(accountsByBank).flatMap(([bankName, bankInfo]) =>
                   bankInfo.accounts.map(account => {
                     const balance = row.accountBalances[account.id];
                     return (
-                      <td 
-                        key={account.id} 
+                      <td
+                        key={account.id}
                         className={styles.balanceCell}
                         style={{ backgroundColor: bankColorMap[bankName] }}
                       >
                         {balance !== undefined ? (
-                          <span className={balance >= 0 ? styles.positiveBalance : styles.negativeBalance}>
+                          <span
+                            className={
+                              balance >= 0 ? styles.positiveBalance : styles.negativeBalance
+                            }
+                          >
                             {formatCurrency(balance, 'EUR')}
                           </span>
                         ) : (
@@ -218,7 +222,9 @@ export const HistoryTable: React.FC<HistoryTableProps> = ({ history, accounts })
                   })
                 )}
                 <td className={styles.totalCell}>
-                  <span className={row.total >= 0 ? styles.positiveBalance : styles.negativeBalance}>
+                  <span
+                    className={row.total >= 0 ? styles.positiveBalance : styles.negativeBalance}
+                  >
                     {formatCurrency(row.total)}
                   </span>
                 </td>

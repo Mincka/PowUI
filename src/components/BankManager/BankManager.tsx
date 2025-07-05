@@ -221,7 +221,9 @@ export const BankManager: React.FC<BankManagerProps> = ({ accounts }) => {
                 <div
                   className={styles.bankHeader}
                   style={{
-                    backgroundColor: connectorInfo?.color || (isUnknownBank(bankName) ? generateBankColor(bankName) : undefined),
+                    backgroundColor:
+                      connectorInfo?.color ||
+                      (isUnknownBank(bankName) ? generateBankColor(bankName) : undefined),
                     cursor: 'pointer',
                   }}
                   onClick={() => toggleBankCollapse(bankName)}
@@ -305,7 +307,11 @@ export const BankManager: React.FC<BankManagerProps> = ({ accounts }) => {
                                   <button
                                     onClick={() => toggleTransactions(account.id)}
                                     className={styles.transactionToggle}
-                                    title={showTransactions ? t('hide_transactions') : t('show_transactions')}
+                                    title={
+                                      showTransactions
+                                        ? t('hide_transactions')
+                                        : t('show_transactions')
+                                    }
                                   >
                                     📋 {showTransactions ? '▼' : '▶'}
                                   </button>

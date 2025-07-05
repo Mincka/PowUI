@@ -17,13 +17,9 @@ export const AccountHistorySettings: React.FC<AccountHistorySettingsProps> = ({ 
   const [showConfirmClear, setShowConfirmClear] = useState(false);
   const { connections } = useAppData();
   const [connectorMap, setConnectorMap] = useState<Map<number, Connector>>(new Map());
-  
-  const {
-    selectedAccounts,
-    updateSelectedAccounts,
-    clearUserHistory,
-    getEligibleAccounts,
-  } = useAccountHistory();
+
+  const { selectedAccounts, updateSelectedAccounts, clearUserHistory, getEligibleAccounts } =
+    useAccountHistory();
 
   const eligibleAccounts = getEligibleAccounts(accounts);
 
@@ -36,7 +32,9 @@ export const AccountHistorySettings: React.FC<AccountHistorySettingsProps> = ({ 
         const config = AccountsService.getConfig();
 
         // Get unique connection IDs from accounts
-        const connectionIds = [...new Set(eligibleAccounts.map(acc => acc.id_connection).filter(Boolean))];
+        const connectionIds = [
+          ...new Set(eligibleAccounts.map(acc => acc.id_connection).filter(Boolean)),
+        ];
         if (connectionIds.length === 0) {
           return;
         }
@@ -68,8 +66,12 @@ export const AccountHistorySettings: React.FC<AccountHistorySettingsProps> = ({ 
 
   // Group accounts by bank using proper connector logic
   const accountsByBank = useMemo(() => {
-    const bankInfo = organizeAccountsByBankWithConnectors(eligibleAccounts, connections, connectorMap);
-    
+    const bankInfo = organizeAccountsByBankWithConnectors(
+      eligibleAccounts,
+      connections,
+      connectorMap
+    );
+
     // Convert to simple bank->accounts mapping and sort
     const result: Record<string, Account[]> = {};
     Object.entries(bankInfo)
@@ -78,7 +80,7 @@ export const AccountHistorySettings: React.FC<AccountHistorySettingsProps> = ({ 
         // Sort accounts within bank by balance (descending)
         result[bankName] = info.accounts.sort((a, b) => Math.abs(b.balance) - Math.abs(a.balance));
       });
-    
+
     return result;
   }, [eligibleAccounts, connections, connectorMap]);
 
@@ -86,7 +88,7 @@ export const AccountHistorySettings: React.FC<AccountHistorySettingsProps> = ({ 
     const newSelection = selectedAccounts.includes(accountId)
       ? selectedAccounts.filter(id => id !== accountId)
       : [...selectedAccounts, accountId];
-    
+
     updateSelectedAccounts(newSelection);
   };
 
@@ -119,10 +121,8 @@ export const AccountHistorySettings: React.FC<AccountHistorySettingsProps> = ({ 
     <div className={styles.settings}>
       <div className={styles.section}>
         <h3 className={styles.sectionTitle}>{t('account_selection')}</h3>
-        <p className={styles.sectionDescription}>
-          {t('account_selection_description')}
-        </p>
-        
+        <p className={styles.sectionDescription}>{t('account_selection_description')}</p>
+
         <div className={styles.selectionControls}>
           <button
             className={styles.controlButton}
@@ -171,42 +171,29 @@ export const AccountHistorySettings: React.FC<AccountHistorySettingsProps> = ({ 
         </div>
 
         <div className={styles.selectionSummary}>
-          {t('accounts_selected', { 
-            selected: selectedAccounts.length, 
-            total: eligibleAccounts.length 
+          {t('accounts_selected', {
+            selected: selectedAccounts.length,
+            total: eligibleAccounts.length,
           })}
         </div>
       </div>
 
       <div className={styles.section}>
         <h3 className={styles.sectionTitle}>{t('data_management')}</h3>
-        <p className={styles.sectionDescription}>
-          {t('data_management_description')}
-        </p>
+        <p className={styles.sectionDescription}>{t('data_management_description')}</p>
 
         {!showConfirmClear ? (
-          <button
-            className={styles.clearButton}
-            onClick={() => setShowConfirmClear(true)}
-          >
+          <button className={styles.clearButton} onClick={() => setShowConfirmClear(true)}>
             {t('clear_all_history')}
           </button>
         ) : (
           <div className={styles.confirmationBox}>
-            <p className={styles.confirmationText}>
-              {t('clear_history_confirmation')}
-            </p>
+            <p className={styles.confirmationText}>{t('clear_history_confirmation')}</p>
             <div className={styles.confirmationButtons}>
-              <button
-                className={styles.confirmButton}
-                onClick={handleClearHistory}
-              >
+              <button className={styles.confirmButton} onClick={handleClearHistory}>
                 {t('yes_clear')}
               </button>
-              <button
-                className={styles.cancelButton}
-                onClick={() => setShowConfirmClear(false)}
-              >
+              <button className={styles.cancelButton} onClick={() => setShowConfirmClear(false)}>
                 {t('cancel')}
               </button>
             </div>

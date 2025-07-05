@@ -6,9 +6,9 @@ import { AccountsResponse } from '../types/accounts';
  * All PII, IBANs, and values are replaced with fake/test data.
  */
 export const mockAccountsData: AccountsResponse = {
-  balance: 345678.90,
+  balance: 345678.9,
   balances: {
-    EUR: 345678.90,
+    EUR: 345678.9,
   },
   coming_balances: {
     EUR: 342000.0,

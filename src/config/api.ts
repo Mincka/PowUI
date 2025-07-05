@@ -64,7 +64,7 @@ export const validateApiConfig = (apiConfig: ApiConfig): boolean => {
 // Function to get detailed validation errors
 export const getApiConfigValidationErrors = (apiConfig: ApiConfig): string[] => {
   const errors: string[] = [];
-  
+
   switch (apiConfig.mode) {
     case 'direct':
       if (!apiConfig.apiUrl) errors.push('API URL');
@@ -78,7 +78,7 @@ export const getApiConfigValidationErrors = (apiConfig: ApiConfig): string[] => 
     default:
       errors.push('Invalid mode');
   }
-  
+
   return errors;
 };
 

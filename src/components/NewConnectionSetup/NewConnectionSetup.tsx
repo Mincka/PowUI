@@ -28,7 +28,7 @@ export const NewConnectionSetup: React.FC<NewConnectionSetupProps> = ({ onClose 
   useEffect(() => {
     const shouldUseAdvanced = isAdvancedConnectionStepsEnabled();
     setIsAdvancedMode(shouldUseAdvanced);
-    
+
     // If simplified mode and config is valid, we can skip the step progression
     if (!shouldUseAdvanced && isConfigValid) {
       setCurrentStep('get-code');
@@ -84,7 +84,10 @@ export const NewConnectionSetup: React.FC<NewConnectionSetupProps> = ({ onClose 
   const handleOneClickBankConnection = async () => {
     if (!isConfigValid) {
       setError(
-        t('api:config_incomplete_error', "Configuration incomplète. Veuillez configurer tous les champs requis dans les paramètres API.")
+        t(
+          'api:config_incomplete_error',
+          'Configuration incomplète. Veuillez configurer tous les champs requis dans les paramètres API.'
+        )
       );
       return;
     }
@@ -95,7 +98,7 @@ export const NewConnectionSetup: React.FC<NewConnectionSetupProps> = ({ onClose 
     try {
       // Use the unified service method to get code and URL directly
       const lang = getCurrentLanguage();
-      
+
       const result = await AccountsService.getConnectionUrlDirectly(
         apiConfig,
         undefined, // No connection ID for new connections
@@ -114,15 +117,26 @@ export const NewConnectionSetup: React.FC<NewConnectionSetupProps> = ({ onClose 
           onClose();
         }, 500);
       });
-      
+
       if (popup) {
         setError(''); // Clear any previous errors
       } else {
-        setError(t('api:popup_blocked_message', 'Le popup a été bloqué. Veuillez autoriser les popups pour ce site et réessayer.'));
+        setError(
+          t(
+            'api:popup_blocked_message',
+            'Le popup a été bloqué. Veuillez autoriser les popups pour ce site et réessayer.'
+          )
+        );
       }
     } catch (err) {
-      const errorMessage = err instanceof Error ? err.message : t('errors:unknown_error', 'Erreur inconnue');
-      setError(t('api:failed_to_open_connection', `Échec de l'ouverture de l'interface de connexion: ${errorMessage}`));
+      const errorMessage =
+        err instanceof Error ? err.message : t('errors:unknown_error', 'Erreur inconnue');
+      setError(
+        t(
+          'api:failed_to_open_connection',
+          `Échec de l'ouverture de l'interface de connexion: ${errorMessage}`
+        )
+      );
     } finally {
       setIsLoading(false);
     }
@@ -131,7 +145,7 @@ export const NewConnectionSetup: React.FC<NewConnectionSetupProps> = ({ onClose 
   const toggleAdvancedMode = () => {
     const newAdvancedMode = !isAdvancedMode;
     setIsAdvancedMode(newAdvancedMode);
-    
+
     // Save the preference
     try {
       const saved = localStorage.getItem('apiConfig');
@@ -150,7 +164,7 @@ export const NewConnectionSetup: React.FC<NewConnectionSetupProps> = ({ onClose 
     } else {
       setCurrentStep('get-code');
     }
-    
+
     // Clear any existing state
     setTemporaryCode('');
     setWebviewUrl('');
@@ -238,15 +252,12 @@ export const NewConnectionSetup: React.FC<NewConnectionSetupProps> = ({ onClose 
           )}
 
           <div className={styles.stepActions}>
-            <button 
-              onClick={handleOneClickBankConnection} 
-              disabled={isLoading || !isConfigValid} 
+            <button
+              onClick={handleOneClickBankConnection}
+              disabled={isLoading || !isConfigValid}
               className={styles.btnPrimary}
             >
-              {isLoading 
-                ? t('api:connecting_to_bank')
-                : t('api:add_bank_connection')
-              }
+              {isLoading ? t('api:connecting_to_bank') : t('api:add_bank_connection')}
             </button>
 
             <button onClick={toggleAdvancedMode} className={styles.btnSecondary}>
@@ -272,7 +283,11 @@ export const NewConnectionSetup: React.FC<NewConnectionSetupProps> = ({ onClose 
         )}
 
         <div className={styles.stepActions}>
-          <button onClick={handleGetTemporaryCode} disabled={isLoading} className={styles.btnPrimary}>
+          <button
+            onClick={handleGetTemporaryCode}
+            disabled={isLoading}
+            className={styles.btnPrimary}
+          >
             {isLoading ? t('fetching_in_progress') : t('get_temp_code')}
           </button>
 
