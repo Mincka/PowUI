@@ -301,8 +301,12 @@ export const UserManager: React.FC<UserManagerProps> = ({
 
     try {
       const existingUser = combinedUsers.find(u => u.apiUser.id === showEditForm);
+      let wasActiveUser = false;
 
       if (existingUser?.isConfigured && existingUser.localUser) {
+        // Check if this is the currently active user
+        wasActiveUser = existingUser.localUser.isActive;
+
         // Update existing user
         if (userName.trim()) {
           UserService.updateUserName(showEditForm, userName.trim());
@@ -315,15 +319,27 @@ export const UserManager: React.FC<UserManagerProps> = ({
             name: userName.trim() || existingUser.localUser.name,
           };
           UserService.addUser(updatedUser);
+
+          // If this was the active user, notify parent component of the token change
+          if (wasActiveUser) {
+            onUserSwitch(updatedUser);
+          }
         }
       } else {
         // Configure new user
         if (authToken.trim()) {
-          UserService.configureUser(
+          const configuredUser = UserService.configureUser(
             showEditForm,
             authToken.trim(),
             userName.trim() || `User ${showEditForm}`
           );
+
+          // Check if this should be the active user
+          const activeUser = UserService.getActiveUser();
+          if (!activeUser) {
+            UserService.setActiveUser(configuredUser.id);
+            onUserSwitch(configuredUser);
+          }
         } else if (userName.trim()) {
           // Just update name without auth token - create placeholder
           UserService.configureUser(
