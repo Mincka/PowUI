@@ -13,3 +13,28 @@ export const getLocalDateString = (): string => {
 export const formatLocalDate = (date: Date): string => {
   return date.toLocaleDateString('en-CA');
 };
+
+/**
+ * Compare two date strings and return true if they represent different dates
+ */
+export const areDatesEqual = (date1: string, date2: string): boolean => {
+  const d1 = new Date(date1);
+  const d2 = new Date(date2);
+
+  return (
+    d1.getFullYear() === d2.getFullYear() &&
+    d1.getMonth() === d2.getMonth() &&
+    d1.getDate() === d2.getDate()
+  );
+};
+
+/**
+ * Format a date string for display in French format (DD/MM/YYYY)
+ */
+export const formatDisplayDate = (dateString: string): string => {
+  return new Date(dateString).toLocaleDateString('fr-FR', {
+    day: '2-digit',
+    month: '2-digit',
+    year: 'numeric',
+  });
+};

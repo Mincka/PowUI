@@ -69,5 +69,6 @@
   "transaction_type_market_order": "Market Order",
   "transaction_type_market_fee": "Market Fee",
   "transaction_type_arbitrage": "Arbitrage",
-  "transaction_type_unknown": "Unknown"
+  "transaction_type_unknown": "Unknown",
+  "transaction_order_date_tooltip": "Order date: {{date}}"
 }

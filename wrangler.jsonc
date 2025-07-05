@@ -2,6 +2,6 @@
   "name": "powui",
   "compatibility_date": "2025-07-04",
   "assets": {
-    "directory": "./dist"
-  }
+    "directory": "./dist",
+  },
 }

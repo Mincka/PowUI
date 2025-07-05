@@ -3,6 +3,7 @@ import { useTranslation } from 'react-i18next';
 import { Transaction, TransactionFilters } from '../../types/transactions';
 import { TransactionService } from '../../services/transactionService';
 import { formatCurrency } from '../../utils/accountUtils';
+import { areDatesEqual, formatDisplayDate } from '../../utils/dateUtils';
 import styles from './Transactions.module.css';
 
 interface TransactionsProps {
@@ -299,7 +300,59 @@ export const Transactions: React.FC<TransactionsProps> = ({ accountId, accountNa
                   <tr key={transaction.id} className={styles.transactionRow}>
                     <td className={styles.colDate}>
                       <div className={styles.dateInfo}>
-                        <div className={styles.mainDate}>{formatDate(transaction.date)}</div>
+                        <div className={styles.mainDate}>
+                          {!areDatesEqual(transaction.date, transaction.rdate) ? (
+                            <span className={styles.dateWithTooltip}>
+                              {formatDate(transaction.date)}
+                              <span
+                                className={styles.dateIndicator}
+                                aria-label="Order date"
+                                title="Order date"
+                              >
+                                <svg
+                                  width="14"
+                                  height="14"
+                                  viewBox="0 0 20 20"
+                                  fill="none"
+                                  className={styles.infoIcon}
+                                  xmlns="http://www.w3.org/2000/svg"
+                                >
+                                  <circle
+                                    cx="10"
+                                    cy="10"
+                                    r="8.5"
+                                    stroke="currentColor"
+                                    strokeWidth="1.5"
+                                    fill="none"
+                                  />
+                                  <rect
+                                    x="9"
+                                    y="7"
+                                    width="2"
+                                    height="2"
+                                    rx="1"
+                                    fill="currentColor"
+                                  />
+                                  <rect
+                                    x="9"
+                                    y="10"
+                                    width="2"
+                                    height="5"
+                                    rx="1"
+                                    fill="currentColor"
+                                  />
+                                </svg>
+                              </span>
+                              <div className={styles.tooltip}>
+                                {t('transaction_order_date_tooltip', {
+                                  date: formatDisplayDate(transaction.rdate),
+                                })}
+                              </div>
+                            </span>
+                          ) : (
+                            formatDate(transaction.date)
+                          )}
+                        </div>
                         {transaction.datetime && (
                           <div className={styles.dateTime}>
                             {new Date(transaction.datetime).toLocaleTimeString('fr-FR', {

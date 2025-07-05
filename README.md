@@ -34,13 +34,14 @@ The latest development version of PowUI is available for demonstration and testi
 6. **Add New Bank Connections:**  
    Follow the connection wizard in PowUI to add your bank accounts:
    - Go to the Connection Manager at the bottom of the page
-   - Click "Add New Connection" 
+   - Click "Add New Connection"
    - Follow the setup wizard to connect your bank accounts
    - Create a new connection for each bank you want to aggregate (make sure the `Connector` is `Activated` in Powens).
 
 ## 🚀 Getting Started
 
 ### Prerequisites
+
 - Node.js (v20.19+ or 22.12+)
 - npm or yarn
 
@@ -48,11 +49,13 @@ The latest development version of PowUI is available for demonstration and testi
 
 1. Clone the repository
 2. Install dependencies:
+
 ```bash
 npm install
 ```
 
 3. Start the development server:
+
 ```bash
 npm run dev
 ```
@@ -85,11 +88,13 @@ Powens uses different methods to retrieve banking information, each with differe
 **🔐 Data Retrieval Methods**
 
 **Primary Method - Open Banking (PSD2 API):**
+
 - Uses standardized European banking APIs (PSD2 regulation)
 - More secure as it doesn't require sharing actual banking credentials
 - Limited to banks that fully support Open Banking standards
 
 **Secondary Method - Web Scraping/Robots:**
+
 - For banks not supporting Open Banking or for additional account access
 - Uses automated systems that connect directly to banking interfaces with your actual credentials
 - **This method is significantly less secure** as it involves sharing your real banking credentials
@@ -97,7 +102,8 @@ Powens uses different methods to retrieve banking information, each with differe
 
 **Adding Additional Accounts:**
 To access more accounts from the same bank with `directaccess` method:
-1. Go to the Connection Manager 
+
+1. Go to the Connection Manager
 2. Use the gear icon for an existing connection
 3. Connect to your bank initially
 4. You may be prompted to "Add more accounts" during or after the connection process
@@ -106,12 +112,14 @@ To access more accounts from the same bank with `directaccess` method:
 ## Development Tool Notice
 
 **PowUI is designed as a development and prototyping tool, not a production-ready aggregator.** Since it operates in Powens' sandbox environment, this application serves as a convenient way for developers to:
+
 - Familiarize themselves with the Powens API workflows
 - Test and validate their integration setup before building production applications
 - Prototype user interfaces and data visualization concepts
 - Understand the API's capabilities and limitations
 
 **Sandbox Environment Limitations:**
+
 - Bank connectors in the sandbox environment may break more frequently than in production
 - Powens prioritizes connector fixes and maintenance for paying customers over free sandbox users
 - Some banking institutions may have limited or unstable connectivity in sandbox mode
@@ -134,6 +142,7 @@ To access more accounts from the same bank with `directaccess` method:
 Powens is a trademark of its respective owners. All references to Powens services and APIs are for compatibility and integration purposes only.
 
 ## Credits
+
 This project was inspired by the blog post ["Je récupère le solde de son compte bancaire et les dernières opérations"](https://www.sigalou-domotique.fr/je-recuperer-le-solde-de-son-compte-bancaire-et-les-dernieres-operations) by [Sigalou](https://github.com/Sigalou).  
 Many thanks to the author for sharing their work and providing inspiration for this application.
 

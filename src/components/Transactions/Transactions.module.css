@@ -192,6 +192,79 @@
   color: var(--color-text-secondary);
 }
 
+/* Date tooltip styling */
+.dateWithTooltip {
+  position: relative;
+  display: inline-block;
+  cursor: help;
+}
+
+.dateIndicator {
+  color: var(--color-primary);
+  font-weight: var(--font-weight-semibold);
+  margin-left: 4px;
+  font-size: var(--font-size-xs);
+  display: inline-flex;
+  align-items: center;
+  vertical-align: text-bottom;
+  position: relative;
+  top: -2px;
+}
+
+.infoIcon {
+  display: inline-block;
+  vertical-align: middle;
+}
+
+.tooltip {
+  position: absolute;
+  bottom: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--color-text-primary);
+  color: var(--color-bg-white);
+  padding: var(--spacing-sm);
+  border-radius: var(--radius-sm);
+  font-size: var(--font-size-xs);
+  white-space: nowrap;
+  z-index: 1000;
+  opacity: 0;
+  visibility: hidden;
+  transition:
+    opacity var(--transition-fast),
+    visibility var(--transition-fast);
+  pointer-events: none;
+  box-shadow: var(--shadow-md);
+  max-width: 400px;
+  white-space: normal;
+  text-align: center;
+}
+
+.tooltip::after {
+  content: '';
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  border: 5px solid transparent;
+  border-top-color: var(--color-text-primary);
+}
+
+.dateWithTooltip:hover .tooltip {
+  opacity: 1;
+  visibility: visible;
+}
+
+.tooltipTitle {
+  font-weight: var(--font-weight-semibold);
+  margin-bottom: 2px;
+}
+
+.tooltipDescription {
+  font-size: var(--font-size-xs);
+  opacity: 0.9;
+}
+
 /* Description styling */
 .description {
   display: flex;
