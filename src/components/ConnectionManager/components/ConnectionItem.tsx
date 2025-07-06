@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { formatDateTimeLocalized, formatRelativeTime } from '../../../utils/dateUtils';
 import { SyncStatus } from '../../../types/accounts';
