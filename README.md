@@ -68,7 +68,13 @@ npm run dev
 
 ## 🐳 Docker Usage
 
-You can build and run this application using Docker:
+### Deploy from GitHub Container Registry
+
+To run the latest published image:
+
+```sh
+docker run -p 3000:80 ghcr.io/Mincka/powui:latest
+```
 
 ### Build the Docker image
 
