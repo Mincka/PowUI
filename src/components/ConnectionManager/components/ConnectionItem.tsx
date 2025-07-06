@@ -1,5 +1,6 @@
 import React, { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
+import { formatDateTimeLocalized, formatRelativeTime } from '../../../utils/dateUtils';
 import { SyncStatus } from '../../../types/accounts';
 import { ConnectionWithDetails } from '../ConnectionManager';
 import { AccountsList } from './AccountsList';
@@ -30,33 +31,20 @@ export const ConnectionItem: React.FC<ConnectionItemProps> = ({
   getNextSyncTime,
   connectionNeedsAttention,
 }) => {
-  const { t } = useTranslation('connections');
-  const formatDateTime = useMemo(
-    () => (dateString: string | null) => {
-      if (!dateString) return t('never');
-      return new Date(dateString).toLocaleDateString();
-    },
-    [t]
-  );
+  const { t, i18n } = useTranslation('connections');
+  const lang = i18n.language.startsWith('fr') ? 'fr' : 'en';
 
-  const formatDateTimeShort = (dateString: string | null) => {
-    if (!dateString) return 'N/A';
+  // Helper to format date/time for display
+  const getDateTimeParts = (dateString: string | null) => {
+    if (!dateString) return { date: t('never'), time: '' };
     const date = new Date(dateString);
-    const now = new Date();
-    const diffMs = date.getTime() - now.getTime();
-    const diffMins = Math.round(diffMs / (1000 * 60));
+    return formatDateTimeLocalized(date, lang);
+  };
 
-    if (diffMins < 0) {
-      return t('exceeded');
-    } else if (diffMins < 60) {
-      return `${diffMins}min`;
-    } else if (diffMins < 24 * 60) {
-      const hours = Math.round(diffMins / 60);
-      return `${hours}h`;
-    } else {
-      const days = Math.round(diffMins / (24 * 60));
-      return `${days}j`;
-    }
+  const getRelative = (dateString: string | null) => {
+    if (!dateString) return '';
+    const date = new Date(dateString);
+    return formatRelativeTime(date, lang);
   };
 
   // Helper function to determine if connection needs re-authentication
@@ -178,16 +166,27 @@ export const ConnectionItem: React.FC<ConnectionItemProps> = ({
                 </button>
               )}
               <span className={styles.lastUpdate}>
-                {t('update_label')} {formatDateTime(connection.last_update)}
+                {(() => {
+                  const { date, time } = getDateTimeParts(connection.last_update);
+                  return t('last_update', { date, time });
+                })()}
               </span>
               {nextSync && (
                 <span className={styles.nextSync}>
-                  {t('next_sync_label')} {formatDateTimeShort(nextSync)}
+                  {(() => {
+                    const { time } = getDateTimeParts(nextSync);
+                    const relative = getRelative(nextSync);
+                    return t('next_update', { relative, time });
+                  })()}
                 </span>
               )}
               {connection.expire && (
-                <span className={styles.expireDate}>
-                  {t('access_expire_label')} {formatDateTime(connection.expire)}
+                <span className={styles.lastUpdate}>
+                  {(() => {
+                    const { date, time } = getDateTimeParts(connection.expire);
+                    const relative = getRelative(connection.expire);
+                    return t('expiration', { relative, date, time });
+                  })()}
                 </span>
               )}
             </div>
