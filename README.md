@@ -7,7 +7,7 @@ PowUI is an interface to easily interact with the Powens API. It enables you to 
 The latest development version of PowUI is available for demonstration and testing here:
 **[https://powui.jehrhart.workers.dev/](https://powui.jehrhart.workers.dev/)**
 
-> ⚠️ **This demo is for demo, testing and development purposes only.**
+> ⚠️ **This demo is for testing and development purposes only.**
 > It should not be used for production or with real financial data.
 
 ## Step-by-step setup:
@@ -18,7 +18,7 @@ The latest development version of PowUI is available for demonstration and testi
    Sign up at [Powens](https://www.powens.com/) to access their banking aggregation API (free sandbox available for developers and small projects).
 
 2. **Set Up Your Workspace and Domain:**  
-   After registration, create a workspace (e.g., "my-finance-dashboard") and add a domain for your project.
+   After registration, create a workspace (e.g., "my-finance-dashboard") and add a domain for your project. The domain will be the base URL of the **API URL** and a **Users Token** will be generated for this domain to let you manage the users.
 
 3. **Add a Client Application:**  
    Add a new application (e.g., "PowUI") in your workspace. This will generate a **Client ID** and **Client Secret** needed for API authentication.
@@ -29,14 +29,19 @@ The latest development version of PowUI is available for demonstration and testi
    Enter your Powens credentials (API URL, Users Token, Client ID and Client Secret) in PowUI's configuration wizard.
 
 5. **Set Up a User:**  
-   Create a user through PowUI's interface. This user will be used to aggregate and access banking data.
+   Create a user through PowUI's interface. This user will be used to aggregate and access banking data. Each user needs to have a *permanent user access token*. It's created automatically for new users and it can be modified or renewed at a later time.
 
 6. **Add New Bank Connections:**  
    Follow the connection wizard in PowUI to add your bank accounts:
-   - Go to the Connection Manager at the bottom of the page
-   - Click "Add New Connection"
-   - Follow the setup wizard to connect your bank accounts
    - Create a new connection for each bank you want to aggregate (make sure the `Connector` is `Activated` in Powens).
+ 
+   Additional connections can be added later:
+   - Go to the Connection Manager at the bottom of the page.
+   - Click "Add New Connection".
+
+7. 🎉 **Setup Completed**  
+   You can check the accounts balance and the latest transactions.  
+   Powens automatically refreshes the values periodically in the background.
 
 ## 🚀 Getting Started
 

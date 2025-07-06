@@ -520,6 +520,7 @@ export const InitialSetupWizard: React.FC<InitialSetupWizardProps> = ({
 
   const renderBasicStep = () => (
     <div className={styles.step}>
+  
       <div className={styles.stepHeader}>
         <h3>{t('initial_setup_title')}</h3>
         <p>{t('initial_setup_description')}</p>
@@ -542,6 +543,20 @@ export const InitialSetupWizard: React.FC<InitialSetupWizardProps> = ({
           </button>
         </div>
       )}
+      
+    <div className={styles.infoBox} style={{ marginBottom: 16 }}>
+        <p>
+          For a detailed step-by-step setup guide, see&nbsp;
+          <a
+            href="https://github.com/Mincka/PowUI?tab=readme-ov-file#step-by-step-setup"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            PowUI Setup Instructions
+          </a>
+          .
+        </p>
+      </div>
 
       {/* Organization-level settings */}
       <div className={styles.sectionHeader}>{t('organization_settings')}</div>
