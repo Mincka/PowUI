@@ -18,7 +18,7 @@
   "connector": "Connecteur",
   "connector_id": "Connecteur #{{id}}",
   "no_connection": "Aucune connexion",
-  "bank_organization": "Organisation par Banque",
+  "bank_organization": "Banques",
   "loading_connector_info": " Chargement des informations des connecteurs...",
   "loading_connector_info_detailed": "🔄 Chargement des informations des connecteurs...",
   "filters": "Filtres",
