@@ -267,6 +267,35 @@
   transform: none;
 }
 
+.errorActionButton {
+  background: #ffebee;
+  color: #d32f2f;
+  padding: 6px 14px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 15px;
+  font-weight: 500;
+  margin-left: 8px;
+  transition:
+    background 0.2s,
+    transform 0.2s;
+  display: inline-flex;
+  align-items: center;
+  min-width: 40px;
+  height: 32px;
+}
+.errorActionButton:hover:not(:disabled) {
+  background: #ffcdd2;
+  transform: translateY(-1px);
+}
+.errorActionButton:disabled {
+  background: #f5f5f5;
+  color: #ccc;
+  cursor: not-allowed;
+  transform: none;
+}
+
 /* Responsive Design */
 @media (max-width: 768px) {
   .connectionHeader {

@@ -520,7 +520,6 @@ export const InitialSetupWizard: React.FC<InitialSetupWizardProps> = ({
 
   const renderBasicStep = () => (
     <div className={styles.step}>
-  
       <div className={styles.stepHeader}>
         <h3>{t('initial_setup_title')}</h3>
         <p>{t('initial_setup_description')}</p>
@@ -543,8 +542,8 @@ export const InitialSetupWizard: React.FC<InitialSetupWizardProps> = ({
           </button>
         </div>
       )}
-      
-    <div className={styles.infoBox} style={{ marginBottom: 16 }}>
+
+      <div className={styles.infoBox} style={{ marginBottom: 16 }}>
         <p>
           For a detailed step-by-step setup guide, see&nbsp;
           <a
