@@ -235,7 +235,13 @@ function AppContent() {
       <AccountHistory accounts={data.accounts} />
 
       {showNewConnectionSetup && (
-        <NewConnectionSetup onClose={() => setShowNewConnectionSetup(false)} />
+        <NewConnectionSetup
+          onClose={() => setShowNewConnectionSetup(false)}
+          onConnectionAdded={() => {
+            refetch();
+            setShowNewConnectionSetup(false);
+          }}
+        />
       )}
 
       <ConnectionManager

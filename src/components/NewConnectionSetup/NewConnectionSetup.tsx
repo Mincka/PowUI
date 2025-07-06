@@ -8,11 +8,15 @@ import styles from './NewConnectionSetup.module.css';
 
 interface NewConnectionSetupProps {
   onClose: () => void;
+  onConnectionAdded?: () => void;
 }
 
 type SetupStep = 'configure' | 'get-code' | 'open-url';
 
-export const NewConnectionSetup: React.FC<NewConnectionSetupProps> = ({ onClose }) => {
+export const NewConnectionSetup: React.FC<NewConnectionSetupProps> = ({
+  onClose,
+  onConnectionAdded,
+}) => {
   const { t } = useTranslation(['connections', 'api']);
   const { apiConfig } = useApiConfig();
   const [currentStep, setCurrentStep] = useState<SetupStep>('configure');
@@ -112,8 +116,11 @@ export const NewConnectionSetup: React.FC<NewConnectionSetupProps> = ({ onClose 
 
       // Open the webview directly with close detection
       const popup = AccountsService.openConnectionWebview(result.url, () => {
-        // Popup was closed - close the modal
+        // Popup was closed - notify parent and close the modal
         setTimeout(() => {
+          if (typeof onConnectionAdded === 'function') {
+            onConnectionAdded();
+          }
           onClose();
         }, 500);
       });
