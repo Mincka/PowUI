@@ -47,8 +47,16 @@ export const formatDateTimeLocalized = (
   date: Date,
   lang: string
 ): { date: string; time: string } => {
-  let dateOptions: Intl.DateTimeFormatOptions = { year: 'numeric', month: '2-digit', day: '2-digit' };
-  let timeOptions: Intl.DateTimeFormatOptions = { hour: '2-digit', minute: '2-digit', hour12: false };
+  let dateOptions: Intl.DateTimeFormatOptions = {
+    year: 'numeric',
+    month: '2-digit',
+    day: '2-digit',
+  };
+  let timeOptions: Intl.DateTimeFormatOptions = {
+    hour: '2-digit',
+    minute: '2-digit',
+    hour12: false,
+  };
 
   if (lang === 'en') {
     // Use 24h for Europe, 12h for US/Canada
@@ -76,10 +84,7 @@ export const formatDateTimeLocalized = (
  * Format relative time (e.g., "in 2 hours", "in 3 days") for EN/FR.
  * Returns a localized string.
  */
-export const formatRelativeTime = (
-  target: Date,
-  lang: string
-): string => {
+export const formatRelativeTime = (target: Date, lang: string): string => {
   const now = new Date();
   const diffMs = target.getTime() - now.getTime();
   const diffSec = Math.round(diffMs / 1000);
