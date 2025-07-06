@@ -73,7 +73,7 @@ npm run dev
 To run the latest published image:
 
 ```sh
-docker run -p 3000:80 ghcr.io/Mincka/powui:latest
+docker run -p 3000:80 ghcr.io/mincka/powui:latest
 ```
 
 ### Build the Docker image
