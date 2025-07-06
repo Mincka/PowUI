@@ -165,57 +165,6 @@ export class TransactionService {
   }
 
   /**
-   * Get a single transaction by ID
-   */
-  static async getTransaction(
-    transactionId: number,
-    customConfig?: ApiConfig
-  ): Promise<Transaction> {
-    const config = customConfig || this.getConfig();
-
-    if (!validateApiConfig(config)) {
-      throw new Error(`API configuration is incomplete for ${config.mode} mode.`);
-    }
-
-    // Handle different modes
-    switch (config.mode) {
-      case 'mock':
-        return this.getMockTransaction(transactionId);
-      case 'direct':
-      default:
-        return this.getTransactionFromBiApi(transactionId, config);
-    }
-  }
-
-  private static async getTransactionFromBiApi(
-    transactionId: number,
-    config: ApiConfig
-  ): Promise<Transaction> {
-    try {
-      const baseUrl = getBaseUrl(config);
-      const apiUrl = `${baseUrl}/transactions/${transactionId}`;
-
-      const response = await fetch(apiUrl, {
-        method: 'GET',
-        headers: {
-          Authorization: `Bearer ${config.bearerToken}`,
-          'Content-Type': 'application/json',
-        },
-      });
-
-      if (!response.ok) {
-        throw new Error(`Failed to fetch transaction: HTTP ${response.status}`);
-      }
-
-      const transaction: Transaction = await response.json();
-      return transaction;
-    } catch (error) {
-      console.error('Error fetching transaction from BiAPI:', error);
-      throw error;
-    }
-  }
-
-  /**
    * Calculate transaction summary for a list of transactions
    */
   static calculateSummary(transactions: Transaction[]) {
@@ -563,66 +512,6 @@ export class TransactionService {
           offset > 0
             ? `mock://transactions?limit=${limit}&offset=${Math.max(0, offset - limit)}`
             : undefined,
-      },
-    };
-  }
-
-  private static async getMockTransaction(transactionId: number): Promise<Transaction> {
-    // Simulate API delay
-    await new Promise(resolve => setTimeout(resolve, 300));
-
-    return {
-      id: transactionId,
-      id_account: 7890,
-      application_date: '2025-02-05',
-      date: '2025-02-05',
-      datetime: '2025-02-05T14:30:00Z',
-      vdate: '2025-02-05',
-      vdatetime: '2025-02-05T14:30:00Z',
-      rdate: '2025-02-05',
-      rdatetime: '2025-02-05T14:30:00Z',
-      bdate: null,
-      bdatetime: null,
-      value: -45.67,
-      gross_value: -45.67,
-      type: TransactionType.CARD,
-      original_wording: 'CARREFOUR MARKET PARIS 15',
-      simplified_wording: 'Carrefour Market',
-      wording: 'Courses alimentaires',
-      categories: [
-        {
-          code: 'alimentaire',
-          parent_code: 'vie_quotidienne',
-        },
-      ],
-      date_scraped: '2025-02-06T08:00:00Z',
-      coming: false,
-      active: true,
-      id_cluster: null,
-      comment: null,
-      last_update: '2025-02-06T08:00:00Z',
-      deleted: null,
-      original_value: -45.67,
-      original_gross_value: -45.67,
-      original_currency: {
-        id: 'EUR',
-        symbol: '€',
-        prefix: false,
-        crypto: false,
-        precision: 2,
-        marketcap: null,
-        datetime: null,
-        name: 'Euro',
-      },
-      commission: null,
-      commission_currency: null,
-      country: null,
-      card: '****1234',
-      counterparty: {
-        label: 'CARREFOUR MARKET',
-        account_scheme_name: null,
-        account_identification: null,
-        type: 'creditor',
       },
     };
   }
