@@ -7,8 +7,7 @@ PowUI is an interface to easily interact with the Powens API. It enables you to 
 The latest development version of PowUI is available for demonstration and testing here:
 **[https://powui.jehrhart.workers.dev/](https://powui.jehrhart.workers.dev/)**
 
-> ⚠️ **This demo is for testing and development purposes only.**
-> It should not be used for production or with real financial data.
+> ⚠️ **This site is for testing and development purposes only.**
 
 ## Step-by-step setup:
 
