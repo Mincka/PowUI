@@ -135,10 +135,8 @@ export class AccountHistoryService {
     // Get current selection (might have been auto-updated)
     const currentSelection = this.getSelectedAccounts(userId);
 
-    // Record history for selected accounts only
-    const accountsToRecord = eligibleAccounts.filter(account =>
-      currentSelection.includes(account.id)
-    );
+    // Record history for all eligible accounts (not just selected)
+    const accountsToRecord = eligibleAccounts;
 
     if (accountsToRecord.length === 0) {
       return;
